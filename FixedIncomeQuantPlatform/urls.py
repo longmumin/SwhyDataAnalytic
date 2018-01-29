@@ -16,15 +16,21 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
-from . import dao, dataAnalytic
+#from . import dao
+from . import dataAnalytic
 
 urlpatterns = [
-
-    path('', dao.insertDataToBondYTM, name='insertDataToBondYTM'),
-
+    #加载页面
     path('YTMAnalytic/', dataAnalytic.loadPage, name='loadYTMAnalytic'),
+
+    #导入数据
+    #path('YTMAnalytic/insertDataToBondYTM', dao.insertDataToBondYTM, name='insertDataToBondYTM'),
+    #页面初始化数据
     path('YTMAnalytic/loadData', dataAnalytic.loadData, name='loadData'),
+    #时序数据分析
     path('YTMAnalytic/getBondYTMAnalyicData', dataAnalytic.getBondYTMAnalyicData, name='getBondYTMAnalyicData'),
+    #获得价差
     path('YTMAnalytic/getBondYTMDiffCacl', dataAnalytic.getBondYTMDiffCacl, name='getBondYTMDiffCacl'),
+    #获得比价矩阵
     path('YTMAnalytic/generateYTMMatrix', dataAnalytic.getBondYTMMatrix, name='getBondYTMMatrix'),
 ]
