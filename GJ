@@ -1,0 +1,764 @@
+01/02 08:53:12.775 INFO [2900/8448] [cFrame] 客户端进程启动，准备初始化，appClass=4055
+01/02 08:53:12.776 INFO [2900/8448] [MainCache] IsWBoxExist=FALSE,name is null
+01/02 08:53:12.776 INFO [2900/8448] [MainCache] KillWBox pid=0
+01/02 08:53:12.777 INFO [2900/8448] [MainCache] ClearHandle
+01/02 08:53:12.777 INFO [2900/8448] [cFrame] 重启WBox!
+01/02 08:53:12.777 INFO [2900/8448] [MainCache] StartupWBox Caller=D:\Program Files (x86)\Anaconda3\python.exe, ProcessID=2900
+01/02 08:53:12.777 INFO [2900/8448] [MainCache] CreateProcess
+01/02 08:53:12.791 INFO [2900/8456] [Client] 配置文件打开成功！
+01/02 08:53:12.840 INFO [2900/8456] [cFrame] 客户端进程启动，准备初始化，appClass=4055
+01/02 08:53:12.840 INFO [2900/8456] [MainCache] IsWBoxExist=FALSE,name is null
+01/02 08:53:12.841 INFO [2900/8456] [MainCache] KillWBox pid=0
+01/02 08:53:12.841 INFO [2900/8456] [MainCache] ClearHandle
+01/02 08:53:12.841 INFO [2900/8456] [cFrame] 重启WBox!
+01/02 08:53:12.841 INFO [2900/8456] [MainCache] StartupWBox Caller=D:\Program Files (x86)\Anaconda3\python.exe, ProcessID=2900
+01/02 08:53:12.841 INFO [2900/8456] [MainCache] CreateProcess
+01/02 08:53:12.905 INFO [2900/8456] [MainCache] CreateProcess OK
+01/02 08:53:12.905 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:12.913 INFO [2900/8448] [MainCache] CreateProcess OK
+01/02 08:53:12.916 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:12.924 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:12.927 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:12.935 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:12.938 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:12.946 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:12.949 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:12.957 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:12.960 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:12.968 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:12.971 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:12.979 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:12.982 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:12.990 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:12.993 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.001 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.004 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.012 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.015 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.023 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.026 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.034 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.037 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.044 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.047 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.055 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.058 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.066 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.069 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.077 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.080 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.088 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.091 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.099 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.102 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.110 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.113 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.121 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.124 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.132 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.135 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.143 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.146 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.153 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.157 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.164 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.168 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.175 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.179 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.186 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.190 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.197 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.200 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.208 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.211 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.219 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.222 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.230 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.233 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.241 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.244 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.252 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.255 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.263 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.266 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.274 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.277 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.285 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.287 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.296 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.298 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.307 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.309 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.318 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.320 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.329 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.331 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.340 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.342 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.351 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.353 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.362 INFO [2900/8448] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.364 INFO [2900/8456] [MainCache] IsWBoxOK=FALSE,name is null
+01/02 08:53:13.373 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.375 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.384 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.386 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.397 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.397 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.408 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.408 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.419 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.419 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.430 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.430 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.441 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.441 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.452 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.452 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.463 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.463 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.474 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.474 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.484 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.484 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.495 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.495 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.506 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.506 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.517 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.517 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.528 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.528 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.540 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.540 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.551 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.551 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.561 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.561 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.572 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.572 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.583 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.583 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.594 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.594 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.605 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.606 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.616 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.617 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.628 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.630 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.639 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.641 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.650 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.652 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.661 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.663 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.672 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.674 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.683 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.685 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.694 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.696 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.705 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.707 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.716 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.718 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.727 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.729 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.738 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.740 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.749 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.751 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.760 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.762 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.771 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.773 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.782 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.784 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.793 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.804 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.815 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.826 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.827 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.837 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.841 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.848 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.854 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.859 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.865 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.870 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.877 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.881 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.888 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.892 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.899 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.903 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.910 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.914 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.921 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.925 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.932 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.936 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.943 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.947 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.958 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.960 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.969 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.973 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.980 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.988 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:13.991 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.002 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.002 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.013 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.018 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.024 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.029 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.035 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.040 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.046 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.051 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.057 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.062 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.068 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.073 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.079 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.084 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.090 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.095 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.101 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.106 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.112 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.117 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.123 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.128 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.134 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.143 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.145 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.156 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.160 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.167 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.171 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.178 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.182 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.189 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.193 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.200 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.204 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.211 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.215 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.222 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.226 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.233 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.237 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.244 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.248 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.254 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.259 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.265 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.270 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.276 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.281 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.287 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.292 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.298 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.303 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.309 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.314 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.320 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.325 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.331 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.336 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.342 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.347 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.353 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.358 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.364 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.369 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.375 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.380 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.386 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.391 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.397 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.402 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.408 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.413 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.419 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.424 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.430 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.435 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.441 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.446 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.452 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.457 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.463 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.467 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.474 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.478 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.485 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.489 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.496 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.500 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.507 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.511 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.518 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.522 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.529 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.533 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.540 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.543 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.551 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.554 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.562 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.565 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.573 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.575 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.584 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.586 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.595 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.597 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.607 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.608 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.617 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.618 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.628 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.629 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.639 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.640 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.649 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.650 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.660 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.661 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.671 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.672 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.682 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.683 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.693 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.694 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.704 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.705 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.715 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.716 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.726 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.727 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.737 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.738 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.748 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.749 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.759 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.760 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.770 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.771 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.781 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.782 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.792 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.793 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.803 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.804 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.814 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.815 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.825 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.826 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.836 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.837 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.847 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.848 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.858 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.859 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.869 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.870 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.880 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.881 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.891 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.892 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.902 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.903 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.913 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.914 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.924 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.925 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.935 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.936 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.946 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.947 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.957 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.958 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.968 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.969 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.979 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.980 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.990 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:14.991 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.001 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.002 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.012 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.013 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.023 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.024 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.034 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.035 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.045 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.046 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.055 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.057 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.066 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.068 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.077 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.079 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.088 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.090 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.099 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.101 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.110 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.112 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.120 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.122 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.131 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.133 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.142 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.144 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.153 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.155 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.164 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.166 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.175 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.177 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.186 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.188 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.197 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.199 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.208 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.210 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.219 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.221 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.230 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.232 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.241 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.243 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.252 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.254 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.263 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.265 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.274 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.276 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.285 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.287 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.296 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.298 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.307 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.309 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.318 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.320 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.329 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.331 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.340 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.342 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.351 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.353 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.362 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.364 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.373 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.375 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.384 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.386 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.395 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.397 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.406 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.408 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.417 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.419 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.428 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.430 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.439 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.441 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.450 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.452 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.461 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.463 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.472 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.474 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.483 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.485 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.494 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.496 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.505 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.507 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.516 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.518 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.527 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.529 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.538 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.540 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.549 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.551 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.560 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.562 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.571 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.573 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.582 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.584 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.593 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.595 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.604 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.606 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.615 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.617 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.626 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.628 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.637 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.639 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.648 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.650 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.659 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.661 INFO [2900/8448] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.670 INFO [2900/8456] [MainCache] IsWBoxOK handle=0
+01/02 08:53:15.672 INFO [2900/8448] [MainCache] IsWBoxOK handle=1956
+01/02 08:53:15.672 INFO [2900/8448] [MainCache] IsWBoxOK handle=1956
+01/02 08:53:15.672 INFO [2900/8448] [cFrame] 等待时间=2440ms,t=2390.587202
+01/02 08:53:15.672 INFO [2900/8448] [cFrame] 开始CExpo连接,AppClass=4055,5
+01/02 08:53:15.681 INFO [2900/8456] [MainCache] IsWBoxOK handle=1860
+01/02 08:53:15.681 INFO [2900/8456] [MainCache] IsWBoxOK handle=1860
+01/02 08:53:15.681 INFO [2900/8456] [cFrame] 等待时间=2530ms,t=2390.596199
+01/02 08:53:15.681 INFO [2900/8456] [cFrame] 开始CExpo连接,AppClass=4055,5
+01/02 08:53:15.765 INFO [2900/8456] [cFrame] CExpo连接初始化成功,AppClass=4055
+01/02 08:53:15.765 ERROR [2900/8456] [cFrame] 访问wbox成功
+01/02 08:53:15.776 INFO [2900/8456] [MainCache] IsWBoxExist ,handle=1940
+01/02 08:53:15.776 INFO [2900/8456] [cFrame] 开始加载动态库
+01/02 08:53:15.776 INFO [2900/8816] [MainCache] IsWBoxExist ,handle=1784
+01/02 08:53:15.937 INFO [2900/8456] [cFrame] cAuth.dll的Processor初始化成功,Appclass=4092
+01/02 08:53:15.937 INFO [2900/8456] [cFrame] CClientAPI.dll的Processor初始化成功,Appclass=65311
+01/02 08:53:15.937 INFO [2900/8456] [cFrame] CClientAPI.dll的Processor初始化成功,Appclass=1403
+01/02 08:53:15.937 INFO [2900/8456] [cFrame] CClientAPI.dll的Processor初始化成功,Appclass=65309
+01/02 08:53:15.937 INFO [2900/8456] [cFrame] CClientAPI.dll的Processor初始化成功,Appclass=65310
+01/02 08:53:15.938 INFO [2900/8456] [cFrame] CClientAPI.dll的Processor初始化成功,Appclass=1260
+01/02 08:53:15.938 INFO [2900/8456] [cFrame] cSector.dll的Processor初始化成功,Appclass=4091
+01/02 08:53:15.938 INFO [2900/8456] [cFrame] 多进程模式初始化成功,WBoxID=8476,AppClass=4055,InitCount=1
+01/02 08:53:15.938 INFO [2900/8456] [QuantData] App InitInstance
+01/02 08:53:17.916 ERROR [2900/8456] [BKT] Create Send2SQLEvent Error
+01/02 08:53:17.919 INFO [2900/8852] [QuantData] CAuthService::answerLogin
+01/02 08:53:17.932 INFO [2900/8852] [cAuth] Call Login
+01/02 08:53:18.779 INFO [2900/8816] [MainCache] IsWBoxExist ,handle=2320
+01/02 08:53:19.299 INFO [2900/8788] [ModelDelegate] CCfgMgrProcessor::OnExpoMessage, 客户端与Sky服务器建立连接
+01/02 08:53:19.299 INFO [2900/8788] [ModelDelegate] CToolProcessor::OnExpoMessage, 客户端与Sky服务器建立连接
+01/02 08:53:20.103 INFO [2900/8852] [cAuth] Client Login Success
+01/02 08:53:20.132 INFO [2900/8852] [QuantData] CWEAuthCenter: Login Successfully.
+01/02 08:53:20.132 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.132 INFO [2900/8852] [QuantData] curDate = 20180102, BeginDate = 20171217, EndDate = 20181231
+01/02 08:53:20.132 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.132 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.132 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.132 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.132 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.132 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.132 INFO [2900/8852] [CTMClient] NotifyEvent[Event=12]
+01/02 08:53:20.132 INFO [2900/8852] [QuantData] CAuthService::Login result: 0.
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] curDate = 20180102, BeginDate = 20170705, EndDate = 20181231
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] Permission Status [*] [2] = F_HKRQ
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] curDate = 20180102, BeginDate = 20170705, EndDate = 20181231
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] Permission Status [*] [9] = F_HKRQ
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] Permission Status [ ] [3] = F_SGXRQ
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] Permission Status [ ] [4] = F_WH_FUTURES
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] curDate = 20180102, BeginDate = 19000101, EndDate = 20500101
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] Permission Status [*] [4] = F_FUTURESRQ
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] Permission Status [ ] [5] = F_WH_CFF
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] curDate = 20180102, BeginDate = 19000101, EndDate = 20500101
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] Permission Status [*] [5] = F_FXRQ
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] curDate = 20180102, BeginDate = 19000101, EndDate = 20500101
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] Permission Status [*] [5] = F_CFFRQ
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.138 INFO [2900/8852] [QuantData] Permission Status [ ] [30] = F_CFFRQ_L2
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] curDate = 20180102, BeginDate = 19000101, EndDate = 20500101
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] Permission Status [*] [6] = F_FXRQ
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] Permission Status [ ] [7] = F_WH_GOLD
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] curDate = 20180102, BeginDate = 19000101, EndDate = 20500101
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] Permission Status [*] [7] = F_GOLDRQ
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] Permission Status [ ] [8] = F_TWRQ
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] Permission Status [ ] [10] = F_GLOBALINDEX
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] Permission Status [ ] [11] = F_SSERQ_L2
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] Permission Status [ ] [11] = 4001
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] Permission Status [ ] [12] = F_SZSERQ_L2
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] Permission Status [ ] [12] = 4002
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] Permission Status [ ] [14] = F_LSERQ
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] curDate = 20180102, BeginDate = 19000101, EndDate = 20500101
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] Permission Status [*] [15] = F_NASDAQRQ
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] curDate = 20180102, BeginDate = 19000101, EndDate = 20500101
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] Permission Status [*] [16] = F_NYSERQ
+01/02 08:53:20.139 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] curDate = 20180102, BeginDate = 19000101, EndDate = 20500101
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] Permission Status [*] [17] = F_AMEXRQ
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] Permission Status [ ] [18] = F_CBOTRQ
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] Permission Status [ ] [19] = F_CMERQ
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] Permission Status [ ] [20] = F_NYMEXRQ
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] Permission Status [ ] [21] = F_COMEXRQ
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] Permission Status [ ] [22] = F_LMERQ
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] Permission Status [ ] [23] = F_IPERQ
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] Permission Status [ ] [24] = F_NYBOTRQ
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] Permission Status [ ] [25] = F_LMERQ_P
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] Permission Status [ ] [26] = F_LMERQ_S
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] curDate = 20180102, BeginDate = 19000101, EndDate = 20500101
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] Permission Status [*] [27] = F_SHFERQ
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] curDate = 20180102, BeginDate = 19000101, EndDate = 20500101
+01/02 08:53:20.140 INFO [2900/8852] [QuantData] Permission Status [*] [28] = F_DCERQ
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] curDate = 20180102, BeginDate = 19000101, EndDate = 20500101
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] Permission Status [*] [29] = F_CZCERQ
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] Permission Status [ ] [35] = F_SWINDEXRQ
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] curDate = 20180102, BeginDate = 19000101, EndDate = 20500101
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] Permission Status [*] [38] = F_RQ_CLSAINDEX
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] curDate = 20180102, BeginDate = 19000101, EndDate = 20500101
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] Permission Status [*] [39] = F_RQ_CI_INDUSTRY
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] Permission Status [ ] [40] = F_IBRQ
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] Permission Status [ ] [41] = F_RQ_HKPRS
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] Permission Status [ ] [41] = F_RQ_HKPRS_L1
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] Permission Status [ ] [42] = F_RQ_GI
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] Permission Status [ ] [43] = CM_SGX_FUTURE
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] Permission Status [ ] [44] = CM_TCM_RUBBER
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] Permission Status [ ] [102] = F_DQ_HK
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] Permission Status [ ] [103] = F_DQ_SGX
+01/02 08:53:20.141 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] Permission Status [ ] [105] = F_DQ_CFF
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] Permission Status [ ] [106] = F_DQ_FX
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] Permission Status [ ] [107] = F_DQ_SGE
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] Permission Status [ ] [108] = F_DQ_TW
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] Permission Status [ ] [114] = F_DQ_LSE
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] Permission Status [ ] [115] = F_DQ_NASDAQ
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] Permission Status [ ] [116] = F_DQ_NYSE
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] Permission Status [ ] [117] = F_DQ_AMEX
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] Permission Status [ ] [118] = F_DQ_CBOT
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] Permission Status [ ] [119] = F_DQ_CME
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] Permission Status [ ] [120] = F_DQ_NYMEX
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] Permission Status [ ] [121] = F_DQ_COMEX
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.142 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] Permission Status [ ] [122] = F_DQ_LME
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] Permission Status [ ] [123] = F_DQ_IPE
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] Permission Status [ ] [124] = F_DQ_NYBOT
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] Permission Status [ ] [125] = F_DQ_LME_P
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] Permission Status [ ] [126] = F_DQ_LME_S
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] Permission Status [ ] [127] = F_DQ_SHFE
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] Permission Status [ ] [128] = F_DQ_DCE
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] Permission Status [ ] [129] = F_DQ_CZCE
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] Permission Status [ ] [135] = F_DQ_SWINDEX
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] Enter IsHasFunction().
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] FindProductByName() failed.
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] Permission Status [ ] [140] = F_DQ_IB
+01/02 08:53:20.143 INFO [2900/8852] [QuantData] 1,2,4,5,6,7,9,15,16,17,27,28,29,38,39,
+01/02 08:53:20.181 INFO [2900/8456] [WMatlab] App InitInstance
+01/02 08:53:20.181 INFO [2900/8456] [cFrame] ClientFrame已经初始化AppClass=4052,InitCount=2
+01/02 08:53:20.442 INFO [2900/8848] [CTMClient] Add AuditLog2
+01/02 08:53:20.442 INFO [2900/8848] [CTMClient] Add AuditLog2

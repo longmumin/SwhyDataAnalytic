@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <!--允许全屏-->
+        <meta content="yes" name="apple-mobile-web-app-capable">
+        <meta content="yes" name="apple-touch-fullscreen">
+        <meta content="telephone=no,email=no" name="format-detection">
+        <script src="/static/js/flexible_css.debug.js"></script>
+        <script src="/static/js/flexible.debug.js"></script>
+        <script src="/static/js/jquery-3.2.1.min.js"></script>
+        <script src="/static/js/jquery.mloading.js"></script>
+        <title>申万宏源FICC</title>
+        <link href="/static/css/quotes.css" rel="stylesheet" type="text/css">
+        <link href="/static/css/jquery.mloading.css" rel="stylesheet" type="text/css">
+
+        <style>
+            html,body{
+                height: 100vh;
+                background-color: #050505;
+            }
+        </style>
+    </head>
+
+    <body>
+    <!-- Item Header Template -->
+        <div class="html_content">
+            <div class="item-section" data-repeat="sections">
+                <div class="item-section_header">
+                    <h2><img src="/static/image/swhylogo.png" style="width:6rem; float:left;"></h2>
+{#                    <h2>申万宏源证券有限公司--期权报价</h2>#}
+                </div>
+
+                <table id="optionTable" class="table">
+                    <tr id="tableTitle">
+                        <th class="table-th">品种</th>
+                        <th class="table-th">标的</th>
+                        <th class="table-th">标的价格</th>
+                        <th class="table-th">买价</th>
+                        <th class="table-th">卖价</th>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+
+        <script>
+             $(function() {
+                 //进度条
+                 $('body').mLoading({
+                    text:"申万宏源欢迎您，加载数据中",//加载文字，默认值：加载中...
+                 });
+                 //加载报价数据
+                 loadQuotesData()
+
+                //刷新页面，每隔10秒刷新一次数据
+                setInterval(refreshQuoteData,5000);
+            });
+
+             function loadQuotesData(){
+                 var url = '/quotes/loadQuotes/'
+                 $.ajax({
+                     type: 'POST',
+                     data:{
+                     },
+                     dataType: 'json',
+                     url: url,
+                     success: loadData,
+                     error : errorInfo,
+                     //采用异步
+                     async: true
+                 });
+             }
+
+             var loadData = function(data){
+                //更新数据
+                console.log(data);
+                $.each(data, function(i, item){
+                     itemId = item[0].substr(0, item[0].indexOf('.'));
+                     //判断当前价格是否高于昨收，定义字体颜色
+                     if(item[1].forward < item[1].lastPrice)
+                         fontColor = 'Green'
+                     else if(item[1].forward > item[1].lastPrice)
+                         fontColor = 'Red'
+                     else if(item[1].forward == item[1].lastPrice)
+                         fontColor = 'White'
+                     var newRow=$('<tr id="'+itemId+'" style="background-color:#050505">' +
+                        '<td class="table-td" id="'+itemId+'item"> <a href="../quotes/TQuotes/' + item[0] + '\" style="text-decoration: none; color: inherit;" >'+ item[1].name + '</a>' +'</td>' +
+                        '<td class="table-td" id="'+itemId+'contract">'+ item[0] +'</td>' +
+                        '<td class="table-td" id="'+itemId+'forward" style="color: '+ fontColor + ';">'+ item[1].forward +'</td>' +
+                        '<td class="table-td" id="'+itemId+'pricingAsk" style="color: '+ fontColor + ';">'+ item[1].pricingAsk +'</td>' +
+                        '<td class="table-td" id="'+itemId+'pricingBid" style="color: '+ fontColor + ';">'+ item[1].pricingBid +'</td>').hide().fadeIn(1000);
+                     $('#optionTable').append(newRow);
+                });
+                $('body').mLoading("hide");
+             };
+
+             function refreshQuoteData() {
+                 var url = '/quotes/updateQuotes/'
+                 $.ajax({
+                     type: 'POST',
+                     data:{
+                     },
+                     dataType: 'json',
+                     url: url,
+                     success: updateData,
+                     error : errorInfo,
+                     //采用异步
+                     async: true
+                 });
+             }
+
+            var updateData = function(data){
+                //更新数据
+                console.log(data);
+                $.each(data, function(i, item) {
+                    itemId = item[0].substr(0, item[0].indexOf('.'));
+                    if(item[1].forward < item[1].lastPrice)
+                         fontColor = 'Green'
+                     else if(item[1].forward > item[1].lastPrice)
+                         fontColor = 'Red'
+                     else if(item[1].forward == item[1].lastPrice)
+                         fontColor = 'White'
+                    changeFont(itemId+'forward', item[1].forward, fontColor);
+                    changeFont(itemId+'pricingAsk', item[1].pricingAsk, fontColor);
+                    changeFont(itemId+'pricingBid', item[1].pricingBid, fontColor);
+                });
+            };
+
+            // 更改内容渐变字体,#####需要判断修改的数值是否有变化#####
+            function changeFont(id, text, fontColor) {
+                //如果字段值有变化，触发修改动作
+                if($("#"+id).text() != text){
+                    $("#"+id).animate({ opacity: '0'}, 500, function () {
+		                $(this).html(text).css("color",fontColor);
+	                }).animate({ opacity: '1'}, 500);
+                }
+            }
+            //错误信息处理界面
+            var errorInfo = function(msg){
+                //关闭进度条
+                $('body').mLoading("hide");
+            };
+        </script>
+    </body>
+</html>

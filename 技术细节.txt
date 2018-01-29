@@ -1,0 +1,2 @@
+django之所以引进CSRF是为了避免Cross Site Request Forgeries攻击
+Add the middleware'django.middleware.csrf.CsrfViewMiddleware' to your list ofmiddleware classes, MIDDLEWARE_CLASSES. (It should comebeforeCsrfResponseMiddleware if that is being used, and before anyview middleware that assume that CSRF attacks have been dealt with.)

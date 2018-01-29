@@ -1,0 +1,142 @@
+
+/* ******************************************************************************************
+****************************            页面主体        *************************************
+*******************************************************************************************/
+
+html, body{
+            width: 100%;
+            height: 100%;
+            position: relative;
+            padding: 0;
+            margin: 0;
+}
+
+body{
+    background: #333;
+}
+
+
+
+/* ******************************************************************************************
+************************            加tab页的div容器        *********************************
+*******************************************************************************************/
+
+.div_tab_container {
+    position: relative;
+    background: white;
+    padding: 3em;
+    border-radius: 10px;
+    height: 100%;
+}
+/* ===========
+   Tab Styling */
+.tab-group {
+    position: relative;
+    border: 1px solid #eee;
+    margin-top: 1rem;
+    border-radius: 0 0 10px 10px;
+    width: 45%;
+    height: 60%;
+    float: left;
+    margin-left: 0.6rem;
+}
+.tab-group section {
+    opacity: 0;
+    height: 0;
+    padding: 0 1em;
+    overflow: hidden;
+    transition: opacity 0.4s ease, height 0.4s ease;
+}
+.tab-group section.active {
+    opacity: 1;
+    /*根据父节点来设置高度*/
+    height: 100%;
+    overflow: visible;
+}
+.tab-nav {
+    list-style: none;
+    margin: -2.5em -1px 0 0;
+    padding: 0;
+    height: 2.5em;
+    overflow: hidden;
+}
+.tab-nav li {
+    display: inline;
+}
+.tab-nav li a {
+    top: 1px;
+    position: relative;
+    display: block;
+    float: left;
+    border-radius: 10px 10px 0 0;
+    background: #eee;
+    line-height: 2em;
+    padding: 0 1em;
+    text-decoration: none;
+    color: grey;
+    margin-top: .5em;
+    margin-right: 1px;
+    transition: background .2s ease, line-height .2s ease, margin .2s ease;
+}
+.tab-nav li.active a {
+    background: #6EB590;
+    color: white;
+    line-height: 2.5em;
+    margin-top: 0;
+}
+
+/* ******************************************************************************************
+*******************            装载highstock控件的div        *********************************
+*******************************************************************************************/
+.container_highstock {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    margin: 0 auto;
+}
+
+/* ******************************************************************************************
+****************************           消除格式类        ***************************************
+*******************************************************************************************/
+.clear{ clear:both}
+
+/* ******************************************************************************************
+****************************           表格样式类        ***************************************
+*******************************************************************************************/
+.hor-minimalist-b
+{
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 12px;
+	background: #fff;
+	margin: 45px;
+	width: 480px;
+	border-collapse: collapse;
+	text-align: left;
+}
+.hor-minimalist-b th
+{
+	font-size: 14px;
+	font-weight: normal;
+	color: #039;
+	padding: 10px 8px;
+	border-bottom: 2px solid #6678b1;
+}
+.hor-minimalist-b td
+{
+	border-bottom: 1px solid #ccc;
+	color: #669;
+	padding: 6px 8px;
+}
+.hor-minimalist-b tbody tr:hover td
+{
+	color: #009;
+}
+
+/* ******************************************************************************************
+****************************            下拉框        ***************************************
+*******************************************************************************************/
+
+
