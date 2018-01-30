@@ -57,3 +57,18 @@
 .flag .flag-btn{position:absolute;width:2.133333rem;height:.64rem;line-height:.64rem;background-color:#ee0a3b;text-align:center;color:#fff;font-weight:700;font-size:14px;bottom:.133333rem;right:.2rem;border-radius:.026667rem}[data-dpr="2"]
 .flag .flag-btn{font-size:28px}[data-dpr="3"]
 .flag .flag-btn{font-size:42px}
+
+
+.calender-body_left{
+    position: relative;
+    color: #4682B4;
+    float: left;
+    font-size: 20px
+
+}
+.calender-body_right{
+    position: absolute;
+    color: #4682B4;
+    right: 10px;
+    font-size: 20px
+}

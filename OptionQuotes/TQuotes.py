@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-import datetime, re, json
+import datetime, re, json, time
 from . import TYApi
 from django.http import JsonResponse
 # from WindPy import w
@@ -23,8 +23,20 @@ def GetTQuotesData(request, instrument):
     time_zone = 'Asia/Shanghai'
 
     # 定价参数
-    tau = 1  # 量
+    tau = 1/12  # 量
     r = 0.015  # 无风险利率
+
+    if (request.method == 'POST'):
+        try:
+            qixian = request.POST['qixian']
+            tau = int(qixian) / 12
+            selected_date = request.POST['dateselect']
+            if (selected_date!='当日'and selected_date!=''):
+                # selected_date = time.strptime('%Y-%m-%d', request.POST['dateselect'])
+                today = selected_date
+                yesterday = (selected_date + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
+        except Exception as e:
+            print("get request error, ret = %s" % e.args[0])
 
     # 初始化同余API
     tyApi = TYApi.TYApi()
