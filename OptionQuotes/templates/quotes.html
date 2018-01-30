@@ -30,7 +30,6 @@
                     showButtonPanel: true,
                     prevText: "<", // Display text for previous month link
 		            nextText: ">", // Display text for next month link
-                    autoSize: true,
                     closeText: "完成", // Display text for close link
                     currentText: "返回", // Display text for current month link
                     monthNames: ["1月","2月","3月","4月","5月","6月", "7月","8月","9月","10月","11月","12月"], // Names of months for drop-down and formatting
@@ -59,10 +58,10 @@
 
                 <form action="" class="calender-body_right" style="top: 1rem">
                     <label style="color: #5b80b2">平值期权</label>
-                    <select id="qixian">
+                    <select id="qixian" style="font-size:14px; margin-left: .1rem; height: 0.5rem; width: 1.8rem">
                         <option value="00">--期限--</option>
                     </select>
-                     日期 <input type="text" value="当日" style="text-align: center" name="dateselect" id="datepicker">
+                     日期 <input type="text" value="当日" style="float:right; margin-left: .1rem; height: 0.6rem; width: 1.8rem; text-align: center"  id="datepicker">
                 </form>
 
                 <table id="optionTable" class="table">
@@ -96,20 +95,30 @@
                 setInterval(refreshQuoteData,5000);
              });
 
-             $('#selectBox').selectator();
 
              function init() {
                  $("#qixian").empty();
                  selectInit($("#qixian"), 'qixian');
+                 $('#qixian').selectator({
+                     showAllOptionsOnFocus: true,
+                     searchFields: 'value text subtitle right',
+                     useSearch: false
+                 });
 
                  //绑定期限下拉框及日期
                  $("#qixian").change(function(){
+                     $('body').mLoading({
+                         text:"加载中",//加载文字，默认值：加载中...
+                     });
                      $('#optionTable tr:gt(0)').remove();
                      var qixian = $(this).children('option:selected').val();
                      var dateselect = $("#datepicker").val();
                      loadQuotesData(qixian, dateselect);
                  });
                  $("#datepicker").change(function(){
+                     $('body').mLoading({
+                         text:"加载中",//加载文字，默认值：加载中...
+                     });
                      $('#optionTable tr:gt(0)').remove();
                      var qixian = $("#qixian").children('option:selected').val();
                      var dateselect = $(this).val();

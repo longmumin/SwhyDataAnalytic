@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-import re, datetime, os, json, math, time
+import re, datetime, os, json, math
 import pandas as pd
 from django.http import JsonResponse
 # from WindPy import w
@@ -43,9 +43,8 @@ def GetQuotesDataFromTY(request):
             tau = int(request.POST['qixian'])/12
             selected_date = request.POST['dateselect']
             if(selected_date!='当日'and selected_date!=''):
-                #selected_date = time.strptime('%Y-%m-%d', request.POST['dateselect'])
                 today = selected_date
-                yesterday = (selected_date + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
+                yesterday = (datetime.date(*map(int, selected_date.split('-'))) + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
         except Exception as e:
             print("get request error, ret = %s" % e.args[0])
 

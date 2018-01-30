@@ -37,7 +37,7 @@
                     currentText: "返回", // Display text for current month link
                     monthNames: ["1月","2月","3月","4月","5月","6月", "7月","8月","9月","10月","11月","12月"], // Names of months for drop-down and formatting
                     dayNamesMin: ["日","一","二","三","四","五","六"], // Column headings for days starting at Sunday
-                    dateFormat: "yy-mm-dd",
+                    dateFormat: "yy-mm-dd"
                 });
             });
         </script>
@@ -59,21 +59,21 @@
                 </div>
 
                 <form action="" class="calender-body_left">
-                    <label style="color: #5b80b2">交易所</label>
-                    <select id="ExchangeSelect">
+                    <label style="color: #5b80b2; margin-left: .2rem"> 交易所</label>
+                    <select id="ExchangeSelect" style=" height: 0.6rem; width: 2rem; margin-right: .1rem">
                         <option value="00" id="id_exchange">--选择交易所--</option>
                     </select>
-                    <label style="color: #5b80b2">挂钩标的</label>
-                    <select id="ContractListSelect">
+                    <label style="color: #5b80b2"> 挂钩标的</label>
+                    <select id="ContractListSelect" style=" height: 0.6rem; width: 2rem; margin-right: .1rem">
                         <option value="00" id='id_contract'>--选择期货--</option>
                     </select>
                 </form>
                 <form action="" class="calender-body_right">
                     <label style="color: #5b80b2">期限</label>
-                    <select id="qixian" name="qixianSelect">
+                    <select id="qixian" style=" height: 0.6rem; width: 2rem; margin-right: .1rem" name="qixianSelect">
                         <option value="01">--期限--</option>
                     </select>
-                     日期 <input type="text" value="当日" style="text-align: center" name="dateselect" id="datepicker">
+                    日期 <input type="text" style=" border-radius: 4px;height: 0.5rem; width: 2rem; margin-right: .1rem;text-align: center"  value="当日" name="dateselect" id="datepicker">
                 </form>
 
 
@@ -122,30 +122,21 @@
 
              function init(instrument) {
                  //下拉框初始显示当前合约及所在交易所
-                 document.getElementById("id_contract").innerHTML="--"+instrument.substr(0, instrument.indexOf('.'))+"--";
-                 document.getElementById("id_exchange").innerHTML="--"+instrument.substr(-3, 3)+"--";
+                 document.getElementById("id_contract").innerHTML="- "+instrument.substr(0, instrument.indexOf('.'))+" -";
+                 document.getElementById("id_exchange").innerHTML="- "+instrument.substr(-3, 3)+" -";
 
                  //初始合约名称下拉框
                  $("#qixian").empty();
                  selectInit($("#ExchangeSelect"),'quoteexchanges');
-                 /*$('#ExchangeSelect').selectator({
-                     showAllOptionsOnFocus: true,
-                     searchFields: 'value text subtitle left'
-                 });*/
+
                  selectInit($("#qixian"),'qixian');
-                 /*$('#qixian').selectator({
-                     showAllOptionsOnFocus: true,
-                     searchFields: 'value text subtitle left'
-                 });*/
+
 
                  //绑定交易所下拉框
                  $("#ExchangeSelect").change(function(){
                      var exchanges = $(this).children('option:selected').text();
+                     $("#ContractListSelect option:not(:first)").remove();
                      selectInit($("#ContractListSelect"),'contractname'+ exchanges);
-                     /*$('#ContractListSelect').selectator({
-                         showAllOptionsOnFocus: true,
-                         searchFields: 'value text subtitle left'
-                     });*/
                  });
 
                  //绑定合约下拉框
@@ -156,6 +147,9 @@
 
                  //绑定期限下拉框及日期
                  $("#qixian").change(function(){
+                     $('body').mLoading({
+                         text:"加载T型报价",//加载文字，默认值：加载中...
+                     });
                      $('#optionTable tr:gt(1)').remove();
                      var qixian = $(this).children('option:selected').val();
                      var dateselect = $("#datepicker").val();
@@ -163,6 +157,9 @@
 
                  });
                  $("#datepicker").change(function(){
+                     $('body').mLoading({
+                         text:"加载T型报价",//加载文字，默认值：加载中...
+                     });
                      $('#optionTable tr:gt(1)').remove();
                      var qixian = $("#qixian").children('option:selected').val();
                      var dateselect = $(this).val();

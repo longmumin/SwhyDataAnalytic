@@ -63,12 +63,12 @@
     position: relative;
     color: #4682B4;
     float: left;
-    font-size: 20px
+    font-size: 15px
 
 }
 .calender-body_right{
     position: absolute;
     color: #4682B4;
     right: 10px;
-    font-size: 20px
+    font-size: 15px
 }

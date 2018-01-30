@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-import datetime, re, json, time
+import datetime, re, json
 from . import TYApi
 from django.http import JsonResponse
 # from WindPy import w
@@ -32,9 +32,8 @@ def GetTQuotesData(request, instrument):
             tau = int(qixian) / 12
             selected_date = request.POST['dateselect']
             if (selected_date!='当日'and selected_date!=''):
-                # selected_date = time.strptime('%Y-%m-%d', request.POST['dateselect'])
                 today = selected_date
-                yesterday = (selected_date + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
+                yesterday = (datetime.date(*map(int, selected_date.split('-'))) + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
         except Exception as e:
             print("get request error, ret = %s" % e.args[0])
 
