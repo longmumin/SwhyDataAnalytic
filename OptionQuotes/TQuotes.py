@@ -31,7 +31,7 @@ def GetTQuotesData(request, instrument):
             qixian = request.POST['qixian']
             tau = int(qixian) / 12
             selected_date = request.POST['dateselect']
-            if (selected_date != '当日'):
+            if (selected_date!='当日'and selected_date!=''):
                 # selected_date = time.strptime('%Y-%m-%d', request.POST['dateselect'])
                 today = selected_date
                 yesterday = (selected_date + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')

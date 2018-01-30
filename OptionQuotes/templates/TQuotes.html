@@ -112,7 +112,7 @@
 
                  var qixian = 1, dateselect = null;
                  //加载报价数据
-                 loadQuotesData(qixian, dateselect, instrument)
+                 loadQuotesData(qixian, dateselect, instrument);
 
                  //刷新页面，每隔10秒刷新一次数据
                  //setInterval(refreshQuoteData(instrument),5000);
@@ -128,12 +128,24 @@
                  //初始合约名称下拉框
                  $("#qixian").empty();
                  selectInit($("#ExchangeSelect"),'quoteexchanges');
+                 /*$('#ExchangeSelect').selectator({
+                     showAllOptionsOnFocus: true,
+                     searchFields: 'value text subtitle left'
+                 });*/
                  selectInit($("#qixian"),'qixian');
+                 /*$('#qixian').selectator({
+                     showAllOptionsOnFocus: true,
+                     searchFields: 'value text subtitle left'
+                 });*/
 
                  //绑定交易所下拉框
                  $("#ExchangeSelect").change(function(){
                      var exchanges = $(this).children('option:selected').text();
                      selectInit($("#ContractListSelect"),'contractname'+ exchanges);
+                     /*$('#ContractListSelect').selectator({
+                         showAllOptionsOnFocus: true,
+                         searchFields: 'value text subtitle left'
+                     });*/
                  });
 
                  //绑定合约下拉框
