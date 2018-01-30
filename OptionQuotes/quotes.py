@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-import re, datetime, os, json, math
+import re, datetime, os, json, math, time
 import pandas as pd
 from django.http import JsonResponse
 # from WindPy import w
@@ -21,11 +21,11 @@ def loadPage(request):
 
 def loadData(request):
     #获取同余数据
-    quoteData = GetQuotesDataFromTY()
+    quoteData = GetQuotesDataFromTY(request)
     return JsonResponse(quoteData, safe=False)
 
 
-def GetQuotesDataFromTY():
+def GetQuotesDataFromTY(request):
 
     quoteData = {}
 
@@ -35,8 +35,19 @@ def GetQuotesDataFromTY():
     time_zone = 'Asia/Shanghai'
 
     #定价参数
-    tau = 1   #期限
+    tau = 1/12 #期限
     r = 0.015     #无风险利率
+
+    if (request.method == 'POST'):
+        try:
+            tau = int(request.POST['qixian'])/12
+            selected_date = request.POST['dateselect']
+            if(selected_date!= '当日'):
+                #selected_date = time.strptime('%Y-%m-%d', request.POST['dateselect'])
+                today = selected_date
+                yesterday = (selected_date + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
+        except Exception as e:
+            print("get request error, ret = %s" % e.args[0])
 
     #初始化同余API
     tyApi = TYApi.TYApi()

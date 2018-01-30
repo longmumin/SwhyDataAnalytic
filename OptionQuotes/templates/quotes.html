@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!doctype html>
 <html lang="en">
     <head>
@@ -6,13 +7,38 @@
         <meta content="yes" name="apple-mobile-web-app-capable">
         <meta content="yes" name="apple-touch-fullscreen">
         <meta content="telephone=no,email=no" name="format-detection">
-        <script src="/static/js/flexible_css.debug.js"></script>
-        <script src="/static/js/flexible.debug.js"></script>
-        <script src="/static/js/jquery-3.2.1.min.js"></script>
-        <script src="/static/js/jquery.mloading.js"></script>
+        <script src="{% static 'js/jquery-3.2.1.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'js/public.js' %}" type="text/javascript"></script>
+
+        <script src="{% static 'js/flexible.debug.js' %}" type="text/javascript"></script>
+        <script src="{% static 'js/flexible_css.debug.js' %}" type="text/javascript"></script>
+        <script src="{% static 'js/ui_datepicker_jquery-ui.js' %}" type="text/javascript"></script>
+        <script src="{% static 'js/jquery.mloading.js' %}" type="text/javascript"></script>
+        <script src="{% static 'js/fm.selectator.jquery.js' %}" type="text/javascript"></script>
+
         <title>申万宏源FICC</title>
-        <link href="/static/css/quotes.css" rel="stylesheet" type="text/css">
-        <link href="/static/css/jquery.mloading.css" rel="stylesheet" type="text/css">
+        <link href="{% static 'css/quotes.css' %}" rel="stylesheet">
+        <link href="{% static 'css/jquery.mloading.css' %}" rel="stylesheet">
+        <link href="{% static 'css/jquery_datepicker.css' %}" rel="stylesheet">
+        <link href="{% static 'css/fm.selectator.jquery.css' %}" rel="stylesheet">
+
+        <script>
+            $(function() {
+                $( "#datepicker" ).datepicker({
+                    showOtherMonths: true,
+                    selectOtherMonths: true,
+                    showButtonPanel: true,
+                    prevText: "<", // Display text for previous month link
+		            nextText: ">", // Display text for next month link
+                    autoSize: true,
+                    closeText: "完成", // Display text for close link
+                    currentText: "返回", // Display text for current month link
+                    monthNames: ["1月","2月","3月","4月","5月","6月", "7月","8月","9月","10月","11月","12月"], // Names of months for drop-down and formatting
+                    dayNamesMin: ["日","一","二","三","四","五","六"], // Column headings for days starting at Sunday
+                    dateFormat: "yy-mm-dd"
+                });
+            });
+        </script>
 
         <style>
             html,body{
@@ -30,6 +56,14 @@
                     <h2><img src="/static/image/swhylogo.png" style="width:6rem; float:left;"></h2>
 {#                    <h2>申万宏源证券有限公司--期权报价</h2>#}
                 </div>
+
+                <form action="" class="calender-body_right" style="top: 1rem">
+                    <label style="color: #5b80b2">平值期权</label>
+                    <select id="qixian">
+                        <option value="00">--期限--</option>
+                    </select>
+                     日期 <input type="text" value="当日" style="text-align: center" name="dateselect" id="datepicker">
+                </form>
 
                 <table id="optionTable" class="table">
                     <tr id="tableTitle">
@@ -50,18 +84,46 @@
                  $('body').mLoading({
                     text:"申万宏源欢迎您，加载数据中",//加载文字，默认值：加载中...
                  });
+
+                 //初始化选择框
+                 init();
+
                  //加载报价数据
-                 loadQuotesData()
+                 var qixian = 1, dateselect = null;
+                 loadQuotesData(qixian, dateselect);
 
-                //刷新页面，每隔10秒刷新一次数据
+                //刷新页面，每隔5秒刷新一次数据
                 setInterval(refreshQuoteData,5000);
-            });
+             });
 
-             function loadQuotesData(){
-                 var url = '/quotes/loadQuotes/'
+             $('#selectBox').selectator();
+
+             function init() {
+                 $("#qixian").empty();
+                 selectInit($("#qixian"), 'qixian');
+
+                 //绑定期限下拉框及日期
+                 $("#qixian").change(function(){
+                     $('#optionTable tr:gt(0)').remove();
+                     var qixian = $(this).children('option:selected').val();
+                     var dateselect = $("#datepicker").val();
+                     loadQuotesData(qixian, dateselect);
+                 });
+                 $("#datepicker").change(function(){
+                     $('#optionTable tr:gt(0)').remove();
+                     var qixian = $("#qixian").children('option:selected').val();
+                     var dateselect = $(this).val();
+                     loadQuotesData(qixian, dateselect);
+                 });
+             }
+
+             function loadQuotesData(qixian, dateselect){
+                 var url = '/quotes/loadQuotes/';
                  $.ajax({
                      type: 'POST',
                      data:{
+                         "qixian":qixian,
+                         "dateselect":dateselect
                      },
                      dataType: 'json',
                      url: url,
@@ -96,10 +158,14 @@
              };
 
              function refreshQuoteData() {
-                 var url = '/quotes/updateQuotes/'
+                 var url = '/quotes/updateQuotes/';
+                 var qixian = $("#qixian").children('option:selected').val();
+                 var dateselect = $("#datepicker").val();
                  $.ajax({
                      type: 'POST',
                      data:{
+                         "qixian":qixian,
+                         "dateselect":dateselect
                      },
                      dataType: 'json',
                      url: url,
