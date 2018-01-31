@@ -308,15 +308,22 @@
             }
 
             //绑定选择框按钮
-            var startTime = moment().subtract(1,'days').format('YYYY-MM-DD')
-            var endTime = null, container = null;
-            var duration = ['1Y', '3Y', '5Y', '7Y', '10Y'];
+            var startTime = moment().subtract(1,'days').format('YYYY-MM-DD');
+            var endTime = null;
             $("#bondYTMTypeSelect").change(function() {
                 var bondType = $(this).children('option:selected').text();
+                var duration = ['1Y', '3Y', '5Y', '7Y', '10Y'], container = 'bondYTMTypeSelect';
                 generateYTMMatrix(bondType, duration, startTime, endTime, container);
             });
             $( "#bondYTMDurationSelect" ).change(function() {
+                //获取bondType数组
+                var bondType = [], container = 'bondYTMDurationSelect';
+                for (var i=0; i<codeDataBondType.length; ++i) {
+                    bondType.push(codeDataBondType[i].text);
+                }
+                var duration = $(this).children('option:selected').text();
 
+                generateYTMMatrix(bondType, duration, startTime, endTime, container);
             });
             /*
             //绑定生成矩阵按钮
@@ -506,7 +513,7 @@
                     "duration[]":duration,
                     "startTime":startTime,
                     "endTime":endTime,
-                    'containerName':containerName
+                    "containerName":containerName
                 },
                 dataType: 'json',
                 url: url,
@@ -519,6 +526,7 @@
 
         var loadMatrix = function(data) {
             data = eval('(' + data + ')');
+            console.log(data);
             //创建映射字典
             var bondType = {}, index = 0;
             $.each(data, function (i, item) {
@@ -549,7 +557,7 @@
             var thead = $("<thead> <tr> </tr> </thead>");
             thead.appendTo(table)
             //添加空格
-            var th = $("<th scope='col'></th>");
+            var th = $("<th scope='col'>跨品种矩阵</th>");
             th.appendTo(thead);
             for (var key in bondType) {
                 var th = $("<th scope='col'>" + key + "</th>");

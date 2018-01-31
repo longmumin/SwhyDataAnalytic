@@ -123,18 +123,26 @@ def getBondYTMMatrix(request):
             data[dur] = getBondYTMData(bond, dur, startTime, endTime)
         YTMData[bond] = data
     #YTMData = pd.DataFrame(YTMData)
+
+    '''
+    债券名称做主键，两个期限做内部主键
+    '''
     for k1, v1 in YTMData.items():
-        ytmData = {}
-        for k2, v2 in YTMData.items():
-            #去除相同债券和久期的YTM
-            if(len(dictMinus(v1, v2).values()) != 0):
-                ytmData[k2] = round((next(iter(dictMinus(v1, v2).values())))['bondytm'],4)
-                #quoteData[k1+'--'+k2] = round((next(iter(dictMinus(v1, v2).values())))['bondytm'],4)
-            else:
-                ytmData[k2] = '--'
-                #quoteData[k1+'--'+k2] = '--'
-        quoteData[k1] = ytmData
+        ytmData1 = {}
+        for k2, v2 in v1.items():
+            ytmData2 = {}
+            for k3, v3 in v1.items():
+                #去除相同债券和久期的YTM
+                if(len(dictMinus(v2, v3).values()) != 0):
+                    ytmData2[k3] = round((next(iter(dictMinus(v2, v3).values())))['bondytm'],4)
+                    #quoteData[k1+'--'+k2] = round((next(iter(dictMinus(v1, v2).values())))['bondytm'],4)
+                else:
+                    ytmData2[k3] = '--'
+                    #quoteData[k1+'--'+k2] = '--'
+            ytmData1[k2] = ytmData2
+        quoteData[k1] = ytmData1
     print(quoteData)
+
     return JsonResponse(json.dumps(quoteData, ensure_ascii=False, sort_keys=True), safe=False)
 
 
