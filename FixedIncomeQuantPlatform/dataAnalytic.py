@@ -118,8 +118,10 @@ def getBondYTMMatrix(request):
             print("get request error, ret = %s" % e.args[0])
 
     for bond in bondType:
+        data = {}
         for dur in duration:
-            YTMData[bond+'&'+dur] = getBondYTMData(bond, dur, startTime, endTime)
+            data[dur] = getBondYTMData(bond, dur, startTime, endTime)
+        YTMData[bond] = data
     #YTMData = pd.DataFrame(YTMData)
     for k1, v1 in YTMData.items():
         ytmData = {}
@@ -219,7 +221,7 @@ def getBondYTMData(bondType, duration, startTime, endTime):
         except Exception as e:
             print("select table failed, ret = %s" % e.args[0])
             cursor.close()
-    elif(startTime != ''):
+    elif(startTime != '' and endTime == ''):
         try:
             cursor.execute("select bondytm.bondytm, bondytm.timestamp"
                        " from bondytm, sys_code where sys_code.codetype = 'bondytmtype' "
@@ -229,7 +231,7 @@ def getBondYTMData(bondType, duration, startTime, endTime):
         except Exception as e:
             print("select table failed, ret = %s" % e.args[0])
             cursor.close()
-    elif (endTime != ''):
+    elif (startTime == '' and endTime != ''):
         try:
             cursor.execute("select bondytm.bondytm, bondytm.timestamp"
                            " from bondytm, sys_code where sys_code.codetype = 'bondytmtype' "

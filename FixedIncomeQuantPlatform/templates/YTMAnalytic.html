@@ -11,7 +11,7 @@
 <script src="{% static 'js/public.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/flexible.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/fm.selectator.jquery.js' %}" type="text/javascript"></script>
-
+<script src="{% static 'js/moment.js' %}" type="text/javascript"></script>
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -41,7 +41,7 @@
                  </div>
              </section>
          </div>
-         <div class="tab-group" id="YTMAnaltic" style="margin-top: 1.2rem; margin-left: 0.2rem; width: 90.5%; height: 100%">
+         <div class="tab-group" id="YTMAnaltic" style="margin-top: 1.2rem; margin-left: 0.2rem; width: 90.5%; height: 150%">
              <section id="YTMAnaltic_tab1" title="价差历史统计">
                  <!-- 债券选择框1 -->
                   <div  style="position:relative;">
@@ -128,16 +128,74 @@
                  <!-- 价差矩阵多选框 -->
                  <div style="position:relative; float:left; margin-top: 0.3rem; margin-left: 1rem">
                      <!-- 标题 -->
-                     <div style="float:left; margin-top: 0.15rem;">比价矩阵：</div>
+                     <div style="float:left; margin-top: 0.15rem;">债券选择：</div>
                      <!-- 债券类型多选框 -->
-                     <select id="bondYTMTypeMultiSelect" style="float:left; height: 0.5rem; width: 4rem; margin-left: .4rem" name="债券类型多选" multiple></select>
+                     <select id="bondYTMTypeSelect" style="float:left; height: 0.5rem; width: 4rem; margin-left: .4rem" name="债券类型多选" ></select>
+
+                     <div style="float:left; margin-top: 0.15rem; margin-left: 0.3rem;">期限选择：</div>
                      <!-- 久期多选框 -->
-                     <select id="bondYTMDurationMultiSelect" style="float:left; margin-left: .4rem; height: 0.5rem; width: 4rem" name="债券期限多选" multiple></select>
-                     <button id="generateDiffMatrix" type="button" style="height: 0.5rem; width: 1.5rem; margin-left: 0.4rem;">生成矩阵</button>
+                     <select id="bondYTMDurationSelect" style="float:left; margin-left: .4rem; height: 0.5rem; width: 4rem" name="债券期限多选" ></select>
+                     <!--<button id="generateDiffMatrix" type="button" style="height: 0.5rem; width: 1.5rem; margin-left: 0.4rem;">生成矩阵</button>-->
                      <!-- 清除float样式 -->
                      <div class="clear" ></div>
                      <!-- 价差矩阵 -->
-                     <div id="diffMatrixContainer" style="position:relative; float:right; margin-right: 1rem"></div>
+                     <div id="diffMatrixContainer" style="position:relative; float:left;">
+                         <!-- 期限矩阵初始化 -->
+                         <table id="durationMatrix" class="hor-minimalist-b">
+                            <thead>
+    	                        <tr>
+        	                        <th scope="col">跨期限矩阵</th>
+                                    <th scope="col">1Y</th>
+                                    <th scope="col">3Y</th>
+                                    <th scope="col">5Y</th>
+                                    <th scope="col">7Y</th>
+                                    <th scope="col">10Y</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+    	                        <tr>
+        	                        <th>1Y</th>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                </tr>
+                                <tr>
+        	                        <th>3Y</th>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                </tr>
+                                <tr>
+        	                        <th>5Y</th>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                </tr>
+                                <tr>
+        	                        <th>7Y</th>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                </tr>
+                                <tr>
+        	                        <th>10Y</th>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                </tr>
+                            </tbody>
+                         </table>
+                     </div>
                  </div>
 
              </section>
@@ -177,13 +235,13 @@
                 var duration = $("#durationSelect1").children('option:selected').text();
                 var bondType = $(this).children('option:selected').text();
                 var startTime = null, endTime = null;
-                loadYTMData(bondType,duration, startTime, endTime, 'YTM_tab1_container');
+                loadYTMData(bondType, duration, startTime, endTime, 'YTM_tab1_container');
             });
             $("#bondNameSelect2").change(function(){
                 var duration = $("#durationSelect2").children('option:selected').text();
                 var bondType = $(this).children('option:selected').text();
                 var startTime = null, endTime = null;
-                loadYTMData(bondType,duration, startTime, endTime, 'YTM_tab2_container');
+                loadYTMData(bondType, duration, startTime, endTime, 'YTM_tab2_container');
             });
 
             //绑定期限下拉框选择事件
@@ -215,18 +273,52 @@
             * 价差矩阵多选框初始化
             * */
             //债券类型
-            selectInit($("#bondYTMTypeMultiSelect"),'bondytmtype');
-            $('#bondYTMTypeMultiSelect').selectator({
-                showAllOptionsOnFocus: true,
-                searchFields: 'value text subtitle right'
-            });
-            //债券期限
-            selectInit($("#bondYTMDurationMultiSelect"),'bondytmduration');
-            $('#bondYTMDurationMultiSelect').selectator({
-                showAllOptionsOnFocus: true,
-                searchFields: 'value text subtitle right'
-            });
+            selectInit($("#bondYTMTypeSelect"),'bondytmtype');
 
+            //债券期限
+            selectInit($("#bondYTMDurationSelect"),'bondytmduration');
+
+            //获取债券类型和期限码值
+            var codeDataBondType = getCode('bondytmtype')
+            //初始化跨品种矩阵矩阵
+            var table = $("<table id='bondYTMMatrix' class='hor-minimalist-b'>");
+            table.appendTo($("#diffMatrixContainer"));
+            //生成表头
+            var thead = $("<thead> <tr> </tr> </thead>");
+            thead.appendTo(table)
+            //添加空格
+            var th = $("<th scope='col'>跨品种矩阵</th>");
+            th.appendTo(thead);
+            for (var i=0; i<codeDataBondType.length; ++i) {
+                var th = $("<th scope='col'>" + codeDataBondType[i].text + "</th>");
+                th.appendTo(thead);
+            }
+            //生成表体
+            var tbody = $("<tbody> <\tbody>");
+            tbody.appendTo(table);
+            for (var i=0; i<codeDataBondType.length; ++i) {
+                var tr = $("<tr> <\tr>");
+                tr.appendTo(tbody);
+                var th = $("<th>" + codeDataBondType[i].text + "</th>");
+                th.appendTo(tr);
+                for(var j=0; j<codeDataBondType.length; ++j) {
+                    var td = $("<td>--</td>");
+                    td.appendTo(tr);
+                }
+            }
+
+            //绑定选择框按钮
+            var startTime = moment().subtract(1,'days').format('YYYY-MM-DD')
+            var endTime = null, container = null;
+            var duration = ['1Y', '3Y', '5Y', '7Y', '10Y'];
+            $("#bondYTMTypeSelect").change(function() {
+                var bondType = $(this).children('option:selected').text();
+                generateYTMMatrix(bondType, duration, startTime, endTime, container);
+            });
+            $( "#bondYTMDurationSelect" ).change(function() {
+
+            });
+            /*
             //绑定生成矩阵按钮
             $( "#generateDiffMatrix" ).click(function() {
                 var bondType = $("#bondYTMTypeMultiSelect").children('option:selected').map(function() {
@@ -240,6 +332,7 @@
                 generateYTMMatrix(bondType, duration, startTime, endTime, container);
                 //console.log(typeof(bondType.join()), duration.join());
             });
+            */
 
         }
 
@@ -447,7 +540,7 @@
             });
 
             //清除原表格
-            $("#diffMatrix").remove();
+            $("#durationMatrix").remove();
             /*生成表格并把表格加入容器*/
             var table = $("<table id='diffMatrix' class='hor-minimalist-b'>");
             table.appendTo($("#diffMatrixContainer"));
@@ -478,104 +571,185 @@
             }
         };
 
-            //错误信息处理界面
-            var errorInfo = function (msg) {
-                console.log(msg);
-                //关闭进度条
-                //$('body').mLoading("hide");
-            };
+        /***** 生成矩阵函数 *****/
+        /*
+        function generateYTMMatrix(bondType,duration, startTime, endTime, containerName) {
+            var url = '/FixedIncome/YTMAnalytic/generateYTMMatrix';
+            $.ajax({
+                type: 'POST',
+                data:{
+                    "bondType[]":bondType,
+                    "duration[]":duration,
+                    "startTime":startTime,
+                    "endTime":endTime,
+                    'containerName':containerName
+                },
+                dataType: 'json',
+                url: url,
+                success: loadMatrix,
+                error: errorInfo,
+                //采用异步
+                async: true
+            });
+        }
 
-            function createCharts(data, bondType, containerName) {
-                //关闭UTC时间,设置title格式
-                Highcharts.setOptions({
-                    global: {useUTC: false},
-                    //去除左上角的字体
-                    lang: {
-                        rangeSelectorZoom: null
-                    },
-                    title: {
-                        align: 'left', x: 5, y: 20,
+        var loadMatrix = function(data) {
+            data = eval('(' + data + ')');
+            //创建映射字典
+            var bondType = {}, index = 0;
+            $.each(data, function (i, item) {
+                bondType[i] = index++;
+            });
+        */
+
+            /**
+             * 创建价差矩阵
+             * **/
+            /*
+            var diffMatrix = new Array();
+            $.each(data, function (k1, val1) {
+                //console.log(val1);
+                diffMatrix[bondType[k1]] = new Array();
+                $.each(val1, function (k2, val2) {
+                    //console.log(bondType[k1], bondType[k2]);
+                    diffMatrix[bondType[k1]][bondType[k2]] = val2;
+                });
+            });
+
+            //清除原表格
+            $("#diffMatrix").remove();
+            //生成表格并把表格加入容器
+            var table = $("<table id='diffMatrix' class='hor-minimalist-b'>");
+            table.appendTo($("#diffMatrixContainer"));
+
+            //生成表头
+            var thead = $("<thead> <tr> </tr> </thead>");
+            thead.appendTo(table)
+            //添加空格
+            var th = $("<th scope='col'></th>");
+            th.appendTo(thead);
+            for (var key in bondType) {
+                var th = $("<th scope='col'>" + key + "</th>");
+                th.appendTo(thead);
+            }
+
+            //生成表体
+            var tbody = $("<tbody> <\tbody>");
+            tbody.appendTo(table);
+            for (var key1 in bondType) {
+                var tr = $("<tr> <\tr>");
+                tr.appendTo(tbody);
+                var th = $("<th>" + key1 + "</th>");
+                th.appendTo(tr);
+                for (var key2 in bondType) {
+                    var td = $("<td>" + diffMatrix[bondType[key1]][bondType[key2]] + "</td>");
+                    td.appendTo(tr);
+                }
+            }
+        };
+        */
+
+        //错误信息处理界面
+        var errorInfo = function (msg) {
+            console.log(msg);
+            //关闭进度条
+            //$('body').mLoading("hide");
+        };
+
+        function createCharts(data, bondType, containerName) {
+            //关闭UTC时间,设置title格式
+            Highcharts.setOptions({
+                global: {
+                    useUTC: false,
+                    timezoneOffset: -8 * 60
+                },
+                //去除左上角的字体
+                lang: {
+                    rangeSelectorZoom: null
+                },
+                title: {
+                    align: 'left', x: 5, y: 20,
+                    style: {
+                        fontSize: '20px',
+                        color: '#304354',
+                        fontWeight: 'bold',
+                    }
+                }
+            });
+            // Create the chart
+            Highcharts.stockChart(containerName, {
+                title: {
+                    //设置标题
+                    text: bondType,
+                },
+                tooltip: {
+                    xDateFormat: '%Y-%m-%d',
+                    shared: true,
+                },
+                plotOptions: {
+                    series: {
+                        pointStart: Date.UTC(2012, 0, 1),
+                        pointInterval: 24 * 3600 * 1000
+                    }
+                },
+                xAxis: {
+                    type: 'datetime',
+                    labels: {
+                        rotation: -45,
                         style: {
-                            fontSize: '20px',
-                            color: '#304354',
-                            fontWeight: 'bold',
+                            fontSize: '8px',
+                            fontFamily: 'Verdana, sans-serif'
                         }
                     }
-                });
-                // Create the chart
-                Highcharts.stockChart(containerName, {
+                },
+                yAxis: {
                     title: {
-                        //设置标题
-                        text: bondType,
+                        text: '到期收益率'
+                    }
+                },
+                series: [{
+                    name: 'YTM',
+                    data: data,
+                    id: 'dataseries'
+                    // the event marker flags
+                }, {
+                    type: 'flags',
+                    data: [{}],
+                    onSeries: 'dataseries',
+                    shape: 'circlepin',
+                    width: 16
+                }],
+                rangeSelector: {
+                    buttonTheme: {
+                        display: 'none' // 不显示按钮
                     },
-                    tooltip: {
-                        xDateFormat: '%Y-%m-%d',
-                        shared: true,
-                    },
-                    plotOptions: {
-                        series: {
-                            pointStart: Date.UTC(2012, 0, 1),
-                            pointInterval: 24 * 3600 * 1000
-                        }
-                    },
-                    xAxis: {
-                        type: 'datetime',
-                        labels: {
-                            rotation: -45,
-                            style: {
-                                fontSize: '8px',
-                                fontFamily: 'Verdana, sans-serif'
-                            }
-                        }
-                    },
-                    yAxis: {
-                        title: {
-                            text: '到期收益率'
-                        }
-                    },
-                    series: [{
-                        name: 'YTM',
-                        data: data,
-                        id: 'dataseries'
-                        // the event marker flags
-                    }, {
-                        type: 'flags',
-                        data: [{}],
-                        onSeries: 'dataseries',
-                        shape: 'circlepin',
-                        width: 16
-                    }],
-                    rangeSelector: {
-                        buttonTheme: {
-                            display: 'none' // 不显示按钮
-                        },
-                        selected: 0,
-                        inputEnabled: true // 不显示日期输入框
-                    },
-                    //添加切换久期的按钮
-                    exporting: {
-                        buttons: {
-                            contextButton: {
-                                enabled: false,
-                                menuItems: [{
-                                    text: 'Download PDF',
-                                    onclick: function () {
-                                        this.exportChart({
-                                            type: 'application/pdf'
-                                        });
-                                    }
-                                }, {
+                    selected: 0,
+                    inputEnabled: true // 不显示日期输入框
+                },
+                //添加切换久期的按钮
+                exporting: {
+                    buttons: {
+                        contextButton: {
+                            enabled: false,
+                            menuItems: [{
+                                text: 'Download PDF',
+                                onclick: function () {
+                                    this.exportChart({
+                                        type: 'application/pdf'
+                                    });
+                                }
+                            }, {
                                     text: 'Print',
                                     onclick: function () {
                                         alert('Launch Print Table function')
                                     },
                                     separator: false
-                                }]
-                            }
+                            }]
                         }
                     }
-                });
-            }
+                }
+            });
+        }
 
     </script>
 

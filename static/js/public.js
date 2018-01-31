@@ -114,6 +114,38 @@ function selectInit(obj,codeType) {
     });
 };
 
+/*
+* 获取数据库键值的方法
+* 输入参数：codetype为sys_code中code类型的名称
+* 返回参数：
+* */
+function getCode(codeType) {
+    //初始下拉框
+    var url = '/publicMethod/getSYSCode';
+    var codeData = []
+    $.ajax({
+        type: 'POST',
+        data:{
+            "codeType":codeType,
+        },
+        dataType: 'json',
+        url: url,
+        success: function (data) {
+            data = JSON.parse(data);
+            for(var i=0;i<data.length;i++){
+                var code = {}
+                code['val'] = data[i].val;
+                code['text'] = data[i].text;
+                codeData.push(code);
+            }
+        },
+        error: errorInfo,
+        //是否采用异步，false表示同步
+        async: false
+    });
+    return codeData;
+};
+
 //错误信息处理界面
 var errorInfo = function(msg){
     console.log(msg);
