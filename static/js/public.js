@@ -169,3 +169,20 @@ function changeFont(id, text, fontColor) {
         }).animate({opacity: '1'}, 500);
     }
 };
+
+/*
+* 字典排序
+* 传入参数：
+* 1. 字典  {x:2,z:1,y:3}
+* 无返回值
+* 1. 字典  {x:2，y:3，z:1}
+* */
+function dictSort(dict) {
+    var sdic=Object.keys(dict).sort();
+    var newDict = {}
+    debugger;
+    for(ki in sdic){
+        newDict[sdic[ki]] = dict[sdic[ki]];
+    }
+    return newDict;
+}

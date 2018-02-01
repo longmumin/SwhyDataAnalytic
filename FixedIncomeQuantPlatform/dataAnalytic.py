@@ -117,16 +117,30 @@ def getBondYTMMatrix(request):
         except Exception as e:
             print("get request error, ret = %s" % e.args[0])
 
-    for bond in bondType:
-        data = {}
-        for dur in duration:
-            data[dur] = getBondYTMData(bond, dur, startTime, endTime)
-        YTMData[bond] = data
-    #YTMData = pd.DataFrame(YTMData)
-
     '''
     债券名称做主键，两个期限做内部主键
+    通过containerName选择 债券类型（bondType）和期限（duration）的矩阵形成方式
+    债券类型：bondYTMMatrix
+    期限：durationMatrix
     '''
+    # 生成债券期限矩阵
+    if (containerName == 'bondYTMMatrix'):
+        for bond in bondType:
+            data = {}
+            for dur in duration:
+                data[dur] = getBondYTMData(bond, dur, startTime, endTime)
+            YTMData[bond] = data
+        #YTMData = pd.DataFrame(YTMData)
+    # 生成债券期限矩阵
+    elif (containerName == 'durationMatrix'):
+        for dur in duration:
+            data = {}
+            for bond in bondType:
+                data[bond] = getBondYTMData(bond, dur, startTime, endTime)
+            YTMData[dur] = data
+        #YTMData = pd.DataFrame(YTMData)
+
+    bondYTMData = {}
     for k1, v1 in YTMData.items():
         ytmData1 = {}
         for k2, v2 in v1.items():
@@ -140,7 +154,11 @@ def getBondYTMMatrix(request):
                     ytmData2[k3] = '--'
                     #quoteData[k1+'--'+k2] = '--'
             ytmData1[k2] = ytmData2
-        quoteData[k1] = ytmData1
+        bondYTMData[k1] = ytmData1
+
+    quoteData['bondYTMData'] = bondYTMData
+    quoteData['containerName'] = containerName
+
     print(quoteData)
 
     return JsonResponse(json.dumps(quoteData, ensure_ascii=False, sort_keys=True), safe=False)

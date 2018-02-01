@@ -312,12 +312,12 @@
             var endTime = null;
             $("#bondYTMTypeSelect").change(function() {
                 var bondType = $(this).children('option:selected').text();
-                var duration = ['1Y', '3Y', '5Y', '7Y', '10Y'], container = 'bondYTMTypeSelect';
+                var duration = ['1Y', '3Y', '5Y', '7Y', '10Y'], container = 'bondYTMMatrix';
                 generateYTMMatrix(bondType, duration, startTime, endTime, container);
             });
             $( "#bondYTMDurationSelect" ).change(function() {
                 //获取bondType数组
-                var bondType = [], container = 'bondYTMDurationSelect';
+                var bondType = [], container = 'durationMatrix';
                 for (var i=0; i<codeDataBondType.length; ++i) {
                     bondType.push(codeDataBondType[i].text);
                 }
@@ -452,7 +452,7 @@
         }
 
          var loadAnalysis = function(data) {
-            console.log(data);
+            //console.log(data);
             //解析json数据
             data = JSON.parse(data) ;
             //取出分析指标
@@ -526,31 +526,38 @@
 
         var loadMatrix = function(data) {
             data = eval('(' + data + ')');
-            console.log(data);
-            //创建映射字典
+            //console.log(data);
+            //创建映射字典,债券类型和期限的bondType存储的内容不同，分别为类型和久期，例如'FR007'和'1Y'
             var bondType = {}, index = 0;
-            $.each(data, function (i, item) {
-                bondType[i] = index++;
+            $.each(data.bondYTMData, function (i, item) {
+                $.each(item, function (k, val) {
+                    bondType[k] = index++;
+                });
             });
-
+            //bondType排序
+            var bondType = dictSort(bondType);
 
             /**
              * 创建价差矩阵
              * **/
             var diffMatrix = new Array();
-            $.each(data, function (k1, val1) {
+            $.each(data.bondYTMData, function (i, item) {
                 //console.log(val1);
-                diffMatrix[bondType[k1]] = new Array();
-                $.each(val1, function (k2, val2) {
-                    //console.log(bondType[k1], bondType[k2]);
-                    diffMatrix[bondType[k1]][bondType[k2]] = val2;
+                $.each(item, function (k1, val1) {
+                    diffMatrix[bondType[k1]] = new Array();
+                    $.each(val1, function (k2, val2) {
+                        //console.log(bondType[k1], bondType[k2]);
+                        diffMatrix[bondType[k1]][bondType[k2]] = val2;
+                    });
                 });
             });
+            //console.log(diffMatrix, bondType);
 
             //清除原表格
-            $("#durationMatrix").remove();
+            var containerName = data.containerName
+            $("#" + containerName).remove();
             /*生成表格并把表格加入容器*/
-            var table = $("<table id='diffMatrix' class='hor-minimalist-b'>");
+            var table = $("<table id='" + containerName + "' class='hor-minimalist-b'>");
             table.appendTo($("#diffMatrixContainer"));
 
             //生成表头
