@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 import json
 import numpy as np
-import pandas as pd
+from scipy import stats
 
 def loadPage(request):
     return render(request, 'YTMAnalytic.html')
@@ -205,14 +205,17 @@ def getBondYTMAnalyicData(request):
     #偏离均值
     deviateMean = arrayData[-1] - mean
     #百分位数
+    percentile = stats.percentileofscore(arrayData, arrayData[-1])
 
     #标准差
     standardDeviation = np.std(arrayData)
     #偏离标准差
+    deviateStandardDeviation = arrayData[-1] - standardDeviation
 
     #最大值
-
+    max = np.max(arrayData)
     #最小值
+    min = np.min(arrayData)
 
     '''
     组装数据，保留4位小数
@@ -225,6 +228,10 @@ def getBondYTMAnalyicData(request):
     quoteData['median'] = round(median,4)
     quoteData['deviateMean'] = round(deviateMean,4)
     quoteData['standardDeviation'] = round(standardDeviation,4)
+    quoteData['percentile'] = round(percentile, 2)
+    quoteData['deviateStandardDeviation'] = round(deviateStandardDeviation, 4)
+    quoteData['max'] = round(max, 4)
+    quoteData['min'] = round(min, 4)
 
     print(quoteData)
 

@@ -78,49 +78,49 @@
                   <div style="position:relative; float:left;">
                       <!-- 最新价差数据展示 -->
                       <div style="position:relative; float:left; margin-top: 0.3rem; margin-left: .4rem">最新价差显示:</div>
-                      <div id="latestDiffPrice" style="position:relative; float:left; margin-top: 0.3rem; margin-left: .4rem">null</div>
-                      <div id="latestDiffDiff" style="position:relative; float:left; margin-top: 0.3rem; margin-left: .4rem">null</div>
-                      <div id="latestDiffPercent" style="position:relative; float:left; margin-top: 0.3rem; margin-left: .4rem">null</div>
+                      <div id="latestDiffPrice" style="position:relative; float:left; margin-top: 0.3rem; margin-left: .4rem">--</div>
+                      <div id="latestDiffDiff" style="position:relative; float:left; margin-top: 0.3rem; margin-left: .4rem">--</div>
+                      <div id="latestDiffPercent" style="position:relative; float:left; margin-top: 0.3rem; margin-left: .4rem">--</div>
                       <!-- 清除float样式 -->
                       <div class="clear" ></div>
 
                       <!-- 昨结价差数据展示 -->
                       <div style="position:relative; float:left; margin-top: 0.5rem; margin-left: .4rem">昨结价差显示:</div>
-                      <div id="lastDiffPrice" style="position:relative; float:left; margin-top: 0.5rem; margin-left: .4rem">null</div>
+                      <div id="lastDiffPrice" style="position:relative; float:left; margin-top: 0.5rem; margin-left: .4rem">--</div>
                       <div style="position:relative; float:left; margin-top: 0.5rem; margin-left: 2rem;">今结价差：</div>
-                      <div id="lastDiffPercent" style="position:relative; float:left; margin-top: 0.5rem; margin-left: .4rem">null</div>
+                      <div id="lastDiffPercent" style="position:relative; float:left; margin-top: 0.5rem; margin-left: .4rem">--</div>
                       <!-- 清除float样式 -->
                       <div class="clear" ></div>
 
                       <!-- 平均值，中位数展示 -->
                       <div style="position:relative; margin-top: 0.5rem; margin-left: 1rem; float:left;">平均值:</div>
-                      <div id="diffMean" style="position:relative; margin-top: 0.5rem; margin-left: .5rem; float:left;">null</div>
+                      <div id="diffMean" style="position:relative; margin-top: 0.5rem; margin-left: .5rem; float:left;">--</div>
                       <div style="position:relative; float:left; margin-top: 0.5rem; margin-left: 2.5rem;">中位数:</div>
-                      <div id="diffMedian" style="position:relative; margin-top: 0.5rem; margin-left: .5rem; float:left;">null</div>
+                      <div id="diffMedian" style="position:relative; margin-top: 0.5rem; margin-left: .5rem; float:left;">--</div>
                       <!-- 清除float样式 -->
                       <div class="clear" ></div>
 
                       <!-- 偏离平均值，百分位数展示 -->
                       <div style="position:relative; margin-top: 0.3rem; margin-left: 1rem; float:left;">偏离平均值:</div>
-                      <div id="diffDeviateMean" style="position:relative; margin-top: 0.3rem; margin-left: .5rem; float:left;">null</div>
+                      <div id="diffDeviateMean" style="position:relative; margin-top: 0.3rem; margin-left: .5rem; float:left;">--</div>
                       <div style="position:relative; float:left; margin-top: 0.3rem; margin-left: 2.05rem;">百分位数:</div>
-                      <div id="diffPercent" style="position:relative; margin-top: 0.3rem; margin-left: .5rem; float:left;">null</div>
+                      <div id="diffPercent" style="position:relative; margin-top: 0.3rem; margin-left: .5rem; float:left;">--</div>
                       <!-- 清除float样式 -->
                       <div class="clear" ></div>
 
                       <!-- 标准差，最大值展示 -->
                       <div style="position:relative; margin-top: 0.3rem; margin-left: 1rem; float:left;">标准差:</div>
-                      <div id="diffStandardDeviation" style="position:relative; margin-top: 0.3rem; margin-left: .5rem; float:left;">null</div>
+                      <div id="diffStandardDeviation" style="position:relative; margin-top: 0.3rem; margin-left: .5rem; float:left;">--</div>
                       <div style="position:relative; float:left; margin-top: 0.3rem; margin-left: 2.5rem;">最大值:</div>
-                      <div id="diffMax" style="position:relative; margin-top: 0.3rem; margin-left: .5rem; float:left;">null</div>
+                      <div id="diffMax" style="position:relative; margin-top: 0.3rem; margin-left: .5rem; float:left;">--</div>
                       <!-- 清除float样式 -->
                       <div class="clear" ></div>
 
                       <!-- 偏离标准差，最小值展示 -->
                       <div style="position:relative; margin-top: 0.3rem; margin-left: 1rem; float:left;">偏离标准差:</div>
-                      <div id="diffDeviateStandardDeviation" style="position:relative; margin-top: 0.3rem; margin-left: .5rem; float:left;">null</div>
+                      <div id="diffDeviateStandardDeviation" style="position:relative; margin-top: 0.3rem; margin-left: .5rem; float:left;">--</div>
                       <div style="position:relative; float:left; margin-top: 0.3rem; margin-left: 2.05rem;">最小值:</div>
-                      <div id="diffMin" style="position:relative; margin-top: 0.3rem; margin-left: .5rem; float:left;">null</div>
+                      <div id="diffMin" style="position:relative; margin-top: 0.3rem; margin-left: .5rem; float:left;">--</div>
                       <!-- 清除float样式 -->
                       <div class="clear" ></div>
                   </div>
@@ -461,9 +461,13 @@
             var latestDiff = data.latestDiff;
             var latestDiffDiff = data.latestDiffDiff;
             var latestDiffPercent = (data.latestDiffPercent*100).toFixed(2) + '%';
-            var standardDeviation = data.standardDeviation;
+            var diffStandardDeviation = data.standardDeviation;
             var lastDiff = data.lastDiff;
             var deviateMean = data.deviateMean;
+            var diffPercent = data.percentile;
+            var diffMax = data.max;
+            var diffDeviateStandardDeviation = data.deviateStandardDeviation;
+            var diffMin = data.min;
 
             //最新价差
             if(latestDiffDiff < 0){
@@ -491,15 +495,15 @@
 
             //偏离平均值，百分位数展示
             changeFont('diffDeviateMean', deviateMean, 'black');
-            //changeFont('diffPercent', mean, 'black');
+            changeFont('diffPercent', diffPercent+'%', 'black');
 
             //标准差，最大值展示
-            changeFont('diffStandardDeviation', standardDeviation, 'black');
-            //changeFont('diffMax', mean, 'black');
+            changeFont('diffStandardDeviation', diffStandardDeviation, 'black');
+            changeFont('diffMax', diffMax, 'black');
 
             //偏离标准差，最小值展示
-            //changeFont('diffDeviateStandardDeviation', mean, 'black');
-            //changeFont('diffMin', mean, 'black');
+            changeFont('diffDeviateStandardDeviation', diffDeviateStandardDeviation, 'black');
+            changeFont('diffMin', diffMin, 'black');
 
          };
 
