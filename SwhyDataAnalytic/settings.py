@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'OptionQuotes',
     'FixedIncomeQuantPlatform',
+    'testRestfulApi',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
