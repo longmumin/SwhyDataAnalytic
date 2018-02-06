@@ -62,12 +62,12 @@
 
                 <form action="" class="calender-body_left">
                     <label style="color: #5b80b2; margin-left: .6rem"> 交易所</label>
-                    <select id="ExchangeSelect" style="margin-top: 0.3rem; height: 0.6rem; width: 2rem; margin-right: .1rem">
+                    <select id="ExchangeSelect" style="margin-top: 0.6rem; height: 0.6rem; width: 2rem; margin-right: .1rem">
                         <option value="00" id="id_exchange">--选择交易所--</option>
                     </select>
-                    <div class="clear" ></div>
+
                     <label style="color: #5b80b2;margin-left: .3rem"> 挂钩标的</label>
-                    <select id="ContractListSelect" style="margin-top: 0.1rem; height: 0.6rem; width: 2rem; margin-right: .1rem">
+                    <select id="ContractListSelect" style="margin-top: 0.6rem; height: 0.6rem; width: 2rem; margin-right: .1rem">
                         <option value="00" id='id_contract'>--选择期货--</option>
                     </select>
                 </form>
@@ -76,7 +76,7 @@
                     <select id="qixian" style="margin-top: 0.6rem; height: 0.6rem; width: 2rem; margin-right: .1rem" name="qixianSelect">
                         <option value="01">--期限--</option>
                     </select>
-                    日期 <input type="text" style="margin-top: 0.6rem; border-radius: 4px;height: 0.5rem; width: 2rem; margin-right: .1rem;text-align: center"  value="当日" name="dateselect" id="datepicker">
+                    日期 <input type="text" style="margin-top: 0.6rem; border-radius: 4px;height: 0.6rem; width: 2rem; margin-right: .1rem; text-align: center"  value="当日" name="dateselect" id="datepicker">
                 </form>
 
 
@@ -98,6 +98,8 @@
 
             </div>>
         </div>>
+
+
         <script>
 
              $(function() {
@@ -117,7 +119,7 @@
                  //加载报价数据
                  loadQuotesData(qixian, dateselect, instrument);
 
-                 //刷新页面，每隔10秒刷新一次数据
+                 //刷新页面，每隔5秒刷新一次数据
                  //setInterval(refreshQuoteData(instrument),5000);
                  window.setInterval(refreshQuoteData,5000,instrument);
 
@@ -170,6 +172,7 @@
                  });
              }
 
+             /***** 数据获取函数 *****/
              function loadQuotesData(qixian, dateselect, instrument){
                  var url = '/quotes/TQuotes/loadTQuotes/' + instrument
                  $.ajax({
@@ -221,6 +224,7 @@
                 $('body').mLoading("hide");
              };
 
+             /***** 页面自动刷新函数 *****/
              function refreshQuoteData(instrument) {
                  var url = '/quotes/TQuotes/updateTQuotes/' + instrument;
                  var qixian = $("#qixian").children('option:selected').val();

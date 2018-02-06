@@ -14,14 +14,15 @@ def getSysCode(request):
     cursor = connection.cursor()
     # 查询数据
     try:
-        cursor.execute("select sys_code.code, sys_code.codename from sys_code where codetype = %s", [codeType])
+        cursor.execute("select sys_code.code, sys_code.codename, sys_code.sortorder from sys_code where codetype = %s", [codeType])
     except Exception as e:
         print("select table failed, ret = %s" % e.args[0])
         cursor.close()
 
     codeData = cursor.fetchall()
     cursor.close()
-    keys = ['val', 'text']
+    codeData = sorted(codeData, key=lambda s: s[2])
+    keys = ['val', 'text', 'sortorder']
     codeData = list2dict(keys, codeData)
     print(codeData)
     return JsonResponse(json.dumps(codeData, ensure_ascii=False, sort_keys=True), safe=False)
