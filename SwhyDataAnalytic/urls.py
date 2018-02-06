@@ -20,9 +20,12 @@ from . import publicMethod
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
+    #期权报价
     path('quotes/', include('OptionQuotes.urls')),
+    #债券量化
     path('FixedIncome/', include('FixedIncomeQuantPlatform.urls')),
+    #测试restful接口
+    path('Restful/', include('testRestfulApi.urls')),
 
     #公共方法
     path('publicMethod/getSYSCode', publicMethod.getSysCode, name='getSysCode'),

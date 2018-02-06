@@ -1,6 +1,11 @@
 from django.http import JsonResponse
 from django.db import connection
-import json
+import json, logging
+
+'''
+日志模块加载
+'''
+logger = logging.getLogger('SwhyDataAnalytic.Debug')
 
 def getSysCode(request):
     #获取request中的数据
@@ -8,7 +13,7 @@ def getSysCode(request):
         try:
             codeType = request.POST['codeType']
         except Exception as e:
-            print("get request error, ret = %s" % e.args[0])
+            logger.error("get request error, ret = %s" % e.args[0])
 
     # 建立数据库连接
     cursor = connection.cursor()
@@ -16,7 +21,7 @@ def getSysCode(request):
     try:
         cursor.execute("select sys_code.code, sys_code.codename, sys_code.sortorder from sys_code where codetype = %s", [codeType])
     except Exception as e:
-        print("select table failed, ret = %s" % e.args[0])
+        logger.error("select table failed, ret = %s" % e.args[0])
         cursor.close()
 
     codeData = cursor.fetchall()
@@ -24,7 +29,7 @@ def getSysCode(request):
     codeData = sorted(codeData, key=lambda s: s[2])
     keys = ['val', 'text', 'sortorder']
     codeData = list2dict(keys, codeData)
-    print(codeData)
+    #logger.info(codeData)
     return JsonResponse(json.dumps(codeData, ensure_ascii=False, sort_keys=True), safe=False)
 
 
