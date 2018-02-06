@@ -1,10 +1,19 @@
 from django.db import connection
 from django.http import JsonResponse
 from django.shortcuts import render
-import json
+import json, logging
 import numpy as np
 from scipy import stats
 
+
+'''
+日志模块加载
+'''
+logger = logging.getLogger('SwhyDataAnalytic.Debug')
+
+'''
+加载主页面
+'''
 def loadPage(request):
     return render(request, 'YTMAnalytic.html')
 
@@ -36,7 +45,7 @@ def loadData(request):
             containerName = request.POST['containerName']
             method = request.POST['method']
         except Exception as e:
-            print("get request error, ret = %s" % e.args[0])
+            logger.error("get request error, ret = %s" % e.args[0])
     #获取YTM数据
     quoteData['quoteData'] = getBondYTMData(bondType, duration, startTime, endTime)
     #存储债券名称
@@ -45,7 +54,7 @@ def loadData(request):
     quoteData['containerName'] = containerName
     #存储方法名
     quoteData['method'] = method
-    print(quoteData)
+    logger.info(quoteData)
     return JsonResponse(json.dumps(quoteData, ensure_ascii=False, sort_keys=True), safe=False)
 
 '''
@@ -75,7 +84,8 @@ def getBondYTMDiffCacl(request):
             containerName = request.POST['containerName']
             method = request.POST['method']
         except Exception as e:
-            print("get request error, ret = %s" % e.args[0])
+            logger.error("get request error, ret = %s" % e.args[0])
+
 
     #获取价差数据，价差可以换为除法。--------此处如果有多条数据可以用循环
     YTMData1 = getBondYTMData(bondType[0], duration[0], startTime, endTime)
@@ -89,7 +99,7 @@ def getBondYTMDiffCacl(request):
     quoteData['containerName'] = containerName
     # 存储方法名
     quoteData['method'] = method
-    print(quoteData)
+    logger.info(quoteData)
     return JsonResponse(json.dumps(quoteData, ensure_ascii=False, sort_keys=True), safe=False)
 
 '''
@@ -115,7 +125,7 @@ def getBondYTMMatrix(request):
             endTime = request.POST['endTime']
             containerName = request.POST['containerName']
         except Exception as e:
-            print("get request error, ret = %s" % e.args[0])
+            logger.error("get request error, ret = %s" % e.args[0])
 
     '''
     债券名称做主键，两个期限做内部主键
@@ -159,7 +169,7 @@ def getBondYTMMatrix(request):
     quoteData['bondYTMData'] = bondYTMData
     quoteData['containerName'] = containerName
 
-    print(quoteData)
+    logger.info(quoteData)
 
     return JsonResponse(json.dumps(quoteData, ensure_ascii=False, sort_keys=True), safe=False)
 
@@ -178,7 +188,7 @@ def getBondYTMAnalyicData(request):
         try:
             arrayData = request.POST.getlist('arrayData[]')
         except Exception as e:
-            print("get request error, ret = %s" % e.args[0])
+            logger.error("get request error, ret = %s" % e.args[0])
 
     #存储类型转换
     arrayData = np.array(arrayData)
@@ -233,7 +243,7 @@ def getBondYTMAnalyicData(request):
     quoteData['max'] = round(max, 4)
     quoteData['min'] = round(min, 4)
 
-    print(quoteData)
+    logger.info(quoteData)
 
     return JsonResponse(json.dumps(quoteData, ensure_ascii=False, sort_keys=True), safe=False)
 
@@ -252,7 +262,7 @@ def getBondYTMData(bondType, duration, startTime, endTime):
                        "and bondytm.bondytmtype = sys_code.code and sys_code.codename = %s "
                        "and bondytm.bondduration = %s ORDER BY bondytm.timestamp DESC", (bondType, duration))
         except Exception as e:
-            print("select table failed, ret = %s" % e.args[0])
+            logger.error("select table failed, ret = %s" % e.args[0])
             cursor.close()
     elif(startTime != '' and endTime == ''):
         try:
@@ -262,7 +272,7 @@ def getBondYTMData(bondType, duration, startTime, endTime):
                        "and bondytm.bondduration = %s and bondytm.timestamp >= %s "
                        "ORDER BY bondytm.timestamp DESC", (bondType, duration, startTime))
         except Exception as e:
-            print("select table failed, ret = %s" % e.args[0])
+            logger.error("select table failed, ret = %s" % e.args[0])
             cursor.close()
     elif (startTime == '' and endTime != ''):
         try:
@@ -272,7 +282,7 @@ def getBondYTMData(bondType, duration, startTime, endTime):
                            "and bondytm.bondduration = %s and bondytm.timestamp <= %s "
                             "ORDER BY bondytm.timestamp DESC", (bondType, duration, endTime))
         except Exception as e:
-            print("select table failed, ret = %s" % e.args[0])
+            logger.error("select table failed, ret = %s" % e.args[0])
             cursor.close()
     else:
         try:
@@ -282,7 +292,7 @@ def getBondYTMData(bondType, duration, startTime, endTime):
                            "and bondytm.bondduration = %s and bondytm.timestamp >= %s and "
                            "bondytm.timestamp <= %s ORDER BY bondytm.timestamp DESC", (bondType, duration, startTime, endTime))
         except Exception as e:
-            print("select table failed, ret = %s" % e.args[0])
+            logger.error("select table failed, ret = %s" % e.args[0])
             cursor.close()
 
 
