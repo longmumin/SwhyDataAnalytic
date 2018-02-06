@@ -1,10 +1,19 @@
 from django.db import connection
 from django.http import JsonResponse
 from django.shortcuts import render
-import json
+import json, logging
 import numpy as np
-import pandas as pd
+from scipy import stats
 
+
+'''
+日志模块加载
+'''
+logger = logging.getLogger('SwhyDataAnalytic.Debug')
+
+'''
+加载主页面
+'''
 def loadPage(request):
     return render(request, 'YTMAnalytic.html')
 
@@ -36,7 +45,7 @@ def loadData(request):
             containerName = request.POST['containerName']
             method = request.POST['method']
         except Exception as e:
-            print("get request error, ret = %s" % e.args[0])
+            logger.error("get request error, ret = %s" % e.args[0])
     #获取YTM数据
     quoteData['quoteData'] = getBondYTMData(bondType, duration, startTime, endTime)
     #存储债券名称
@@ -45,7 +54,7 @@ def loadData(request):
     quoteData['containerName'] = containerName
     #存储方法名
     quoteData['method'] = method
-    print(quoteData)
+    logger.info(quoteData)
     return JsonResponse(json.dumps(quoteData, ensure_ascii=False, sort_keys=True), safe=False)
 
 '''
@@ -75,7 +84,8 @@ def getBondYTMDiffCacl(request):
             containerName = request.POST['containerName']
             method = request.POST['method']
         except Exception as e:
-            print("get request error, ret = %s" % e.args[0])
+            logger.error("get request error, ret = %s" % e.args[0])
+
 
     #获取价差数据，价差可以换为除法。--------此处如果有多条数据可以用循环
     YTMData1 = getBondYTMData(bondType[0], duration[0], startTime, endTime)
@@ -89,7 +99,7 @@ def getBondYTMDiffCacl(request):
     quoteData['containerName'] = containerName
     # 存储方法名
     quoteData['method'] = method
-    print(quoteData)
+    logger.info(quoteData)
     return JsonResponse(json.dumps(quoteData, ensure_ascii=False, sort_keys=True), safe=False)
 
 '''
@@ -115,24 +125,52 @@ def getBondYTMMatrix(request):
             endTime = request.POST['endTime']
             containerName = request.POST['containerName']
         except Exception as e:
-            print("get request error, ret = %s" % e.args[0])
+            logger.error("get request error, ret = %s" % e.args[0])
 
-    for bond in bondType:
+    '''
+    债券名称做主键，两个期限做内部主键
+    通过containerName选择 债券类型（bondType）和期限（duration）的矩阵形成方式
+    债券类型：bondYTMMatrix
+    期限：durationMatrix
+    '''
+    # 生成债券期限矩阵
+    if (containerName == 'bondYTMMatrix'):
+        for bond in bondType:
+            data = {}
+            for dur in duration:
+                data[dur] = getBondYTMData(bond, dur, startTime, endTime)
+            YTMData[bond] = data
+        #YTMData = pd.DataFrame(YTMData)
+    # 生成债券期限矩阵
+    elif (containerName == 'durationMatrix'):
         for dur in duration:
-            YTMData[bond+'&'+dur] = getBondYTMData(bond, dur, startTime, endTime)
-    #YTMData = pd.DataFrame(YTMData)
+            data = {}
+            for bond in bondType:
+                data[bond] = getBondYTMData(bond, dur, startTime, endTime)
+            YTMData[dur] = data
+        #YTMData = pd.DataFrame(YTMData)
+
+    bondYTMData = {}
     for k1, v1 in YTMData.items():
-        ytmData = {}
-        for k2, v2 in YTMData.items():
-            #去除相同债券和久期的YTM
-            if(len(dictMinus(v1, v2).values()) != 0):
-                ytmData[k2] = round((next(iter(dictMinus(v1, v2).values())))['bondytm'],4)
-                #quoteData[k1+'--'+k2] = round((next(iter(dictMinus(v1, v2).values())))['bondytm'],4)
-            else:
-                ytmData[k2] = '--'
-                #quoteData[k1+'--'+k2] = '--'
-        quoteData[k1] = ytmData
-    print(quoteData)
+        ytmData1 = {}
+        for k2, v2 in v1.items():
+            ytmData2 = {}
+            for k3, v3 in v1.items():
+                #去除相同债券和久期的YTM
+                if(len(dictMinus(v2, v3).values()) != 0):
+                    ytmData2[k3] = round((next(iter(dictMinus(v2, v3).values())))['bondytm'],4)
+                    #quoteData[k1+'--'+k2] = round((next(iter(dictMinus(v1, v2).values())))['bondytm'],4)
+                else:
+                    ytmData2[k3] = '--'
+                    #quoteData[k1+'--'+k2] = '--'
+            ytmData1[k2] = ytmData2
+        bondYTMData[k1] = ytmData1
+
+    quoteData['bondYTMData'] = bondYTMData
+    quoteData['containerName'] = containerName
+
+    logger.info(quoteData)
+
     return JsonResponse(json.dumps(quoteData, ensure_ascii=False, sort_keys=True), safe=False)
 
 
@@ -150,7 +188,7 @@ def getBondYTMAnalyicData(request):
         try:
             arrayData = request.POST.getlist('arrayData[]')
         except Exception as e:
-            print("get request error, ret = %s" % e.args[0])
+            logger.error("get request error, ret = %s" % e.args[0])
 
     #存储类型转换
     arrayData = np.array(arrayData)
@@ -177,14 +215,17 @@ def getBondYTMAnalyicData(request):
     #偏离均值
     deviateMean = arrayData[-1] - mean
     #百分位数
+    percentile = stats.percentileofscore(arrayData, arrayData[-1])
 
     #标准差
     standardDeviation = np.std(arrayData)
     #偏离标准差
+    deviateStandardDeviation = arrayData[-1] - standardDeviation
 
     #最大值
-
+    max = np.max(arrayData)
     #最小值
+    min = np.min(arrayData)
 
     '''
     组装数据，保留4位小数
@@ -197,8 +238,12 @@ def getBondYTMAnalyicData(request):
     quoteData['median'] = round(median,4)
     quoteData['deviateMean'] = round(deviateMean,4)
     quoteData['standardDeviation'] = round(standardDeviation,4)
+    quoteData['percentile'] = round(percentile, 2)
+    quoteData['deviateStandardDeviation'] = round(deviateStandardDeviation, 4)
+    quoteData['max'] = round(max, 4)
+    quoteData['min'] = round(min, 4)
 
-    print(quoteData)
+    logger.info(quoteData)
 
     return JsonResponse(json.dumps(quoteData, ensure_ascii=False, sort_keys=True), safe=False)
 
@@ -217,9 +262,9 @@ def getBondYTMData(bondType, duration, startTime, endTime):
                        "and bondytm.bondytmtype = sys_code.code and sys_code.codename = %s "
                        "and bondytm.bondduration = %s ORDER BY bondytm.timestamp DESC", (bondType, duration))
         except Exception as e:
-            print("select table failed, ret = %s" % e.args[0])
+            logger.error("select table failed, ret = %s" % e.args[0])
             cursor.close()
-    elif(startTime != ''):
+    elif(startTime != '' and endTime == ''):
         try:
             cursor.execute("select bondytm.bondytm, bondytm.timestamp"
                        " from bondytm, sys_code where sys_code.codetype = 'bondytmtype' "
@@ -227,9 +272,9 @@ def getBondYTMData(bondType, duration, startTime, endTime):
                        "and bondytm.bondduration = %s and bondytm.timestamp >= %s "
                        "ORDER BY bondytm.timestamp DESC", (bondType, duration, startTime))
         except Exception as e:
-            print("select table failed, ret = %s" % e.args[0])
+            logger.error("select table failed, ret = %s" % e.args[0])
             cursor.close()
-    elif (endTime != ''):
+    elif (startTime == '' and endTime != ''):
         try:
             cursor.execute("select bondytm.bondytm, bondytm.timestamp"
                            " from bondytm, sys_code where sys_code.codetype = 'bondytmtype' "
@@ -237,7 +282,7 @@ def getBondYTMData(bondType, duration, startTime, endTime):
                            "and bondytm.bondduration = %s and bondytm.timestamp <= %s "
                             "ORDER BY bondytm.timestamp DESC", (bondType, duration, endTime))
         except Exception as e:
-            print("select table failed, ret = %s" % e.args[0])
+            logger.error("select table failed, ret = %s" % e.args[0])
             cursor.close()
     else:
         try:
@@ -247,7 +292,7 @@ def getBondYTMData(bondType, duration, startTime, endTime):
                            "and bondytm.bondduration = %s and bondytm.timestamp >= %s and "
                            "bondytm.timestamp <= %s ORDER BY bondytm.timestamp DESC", (bondType, duration, startTime, endTime))
         except Exception as e:
-            print("select table failed, ret = %s" % e.args[0])
+            logger.error("select table failed, ret = %s" % e.args[0])
             cursor.close()
 
 
