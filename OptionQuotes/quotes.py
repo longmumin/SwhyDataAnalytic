@@ -1,19 +1,30 @@
 from django.shortcuts import render
 
-import re, datetime, os, json, math
+import re, datetime, os, json, math, logging
 import pandas as pd
 from django.http import JsonResponse
 # from WindPy import w
 
 from . import TYApi
 
+'''
+日志模块加载
+'''
+logger = logging.getLogger('SwhyDataAnalytic.Debug')
+
+
 #读取期货合约
 baseDir = os.path.dirname(os.path.abspath(__name__))
 contractListFileDir = baseDir + '/files/BasicInfo/contractList.xlsx'
-print(baseDir)
+logger.info(baseDir)
 contractList = list(pd.read_excel(contractListFileDir)['contract'])
 contractName = list(pd.read_excel(contractListFileDir)['name'])
 contractList = dict(zip(contractList, contractName))
+
+
+'''
+加载主页面
+'''
 
 
 def loadPage(request):
@@ -24,6 +35,14 @@ def loadData(request):
     quoteData = GetQuotesDataFromTY(request)
     return JsonResponse(quoteData, safe=False)
 
+'''
+期货及平值期权价格
+传递参数:
+    1. qixian 期权期限
+    2. dateselect 价格日期
+返回参数：
+    1. quoteData 价格序列
+'''
 
 def GetQuotesDataFromTY(request):
 
@@ -43,10 +62,11 @@ def GetQuotesDataFromTY(request):
             tau = int(request.POST['qixian'])/12
             selected_date = request.POST['dateselect']
             if(selected_date!='当日'and selected_date!=''):
-                today = selected_date
-                yesterday = (datetime.date(*map(int, selected_date.split('-'))) + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
+                if(datetime.date(*map(int, selected_date.split('-'))) <= datetime.datetime.now().strftime('%Y-%m-%d')):#当选择日期超过当前日期时不跳转
+                    today = selected_date
+                    yesterday = (datetime.date(*map(int, selected_date.split('-'))) + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
         except Exception as e:
-            print("get request error, ret = %s" % e.args[0])
+            logger.error("get request error, ret = %s" % e.args[0])
 
     #初始化同余API
     tyApi = TYApi.TYApi()
@@ -90,7 +110,7 @@ def GetQuotesDataFromTY(request):
 
     #关闭wind接口
     # w.stop()
-    quoteData = [(k,quoteData[k]) for k in sorted(quoteData.keys())]
-    print(quoteData)
+    quoteData = [(k, quoteData[k]) for k in sorted(quoteData.keys())]
+    logger.info(quoteData)
 
     return quoteData

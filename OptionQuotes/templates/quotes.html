@@ -77,6 +77,7 @@
             </div>
         </div>
 
+
         <script>
              $(function() {
                  //进度条
@@ -101,7 +102,6 @@
                  selectInit($("#qixian"), 'qixian');
                  $('#qixian').selectator({
                      showAllOptionsOnFocus: true,
-                     searchFields: 'value text subtitle right',
                      useSearch: false
                  });
 
@@ -126,6 +126,7 @@
                  });
              }
 
+             /***** 价格获取函数 *****/
              function loadQuotesData(qixian, dateselect){
                  var url = '/quotes/loadQuotes/';
                  $.ajax({
@@ -166,6 +167,7 @@
                 $('body').mLoading("hide");
              };
 
+             /***** 页面自动刷新函数 *****/
              function refreshQuoteData() {
                  var url = '/quotes/updateQuotes/';
                  var qixian = $("#qixian").children('option:selected').val();

@@ -1,13 +1,31 @@
 from django.shortcuts import render
 
-import datetime, re, json
+import datetime, re, json, logging
 from . import TYApi
 from django.http import JsonResponse
 # from WindPy import w
 
+'''
+日志模块加载
+'''
+logger = logging.getLogger('SwhyDataAnalytic.Debug')
 
+'''
+加载主页面
+'''
 def loadPage(request, instrument):
     return render(request, 'TQuotes.html')
+
+
+'''
+传递参数:
+    1. instrument 期货品种
+    2. qixian 期权到期期限
+    3. dateselect 价格日期
+返回参数：
+    1. quoteData 行情序列
+'''
+
 
 def loadData(request, instrument):
     #获取同余数据
@@ -35,7 +53,7 @@ def GetTQuotesData(request, instrument):
                 today = selected_date
                 yesterday = (datetime.date(*map(int, selected_date.split('-'))) + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
         except Exception as e:
-            print("get request error, ret = %s" % e.args[0])
+            logger.error("get request error, ret = %s" % e.args[0])
 
     # 初始化同余API
     tyApi = TYApi.TYApi()
@@ -60,7 +78,7 @@ def GetTQuotesData(request, instrument):
     contractData = {}
 
     forwardList = getForwardList(forward)
-    print(forwardList)
+    logger.info(forwardList)
 
     for price in forwardList:
         TQuoteData = {}
