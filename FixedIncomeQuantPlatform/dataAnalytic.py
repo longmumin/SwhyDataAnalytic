@@ -349,7 +349,7 @@ def getBondYTMData(bondType, duration, startTime, endTime):
     #类型转换
     keys = ['bondytm', 'timestamp']
     dictData = list2dict(keys, listData)
-    # dictData = [(k, dictData[k]) for k in sorted(dictData.keys())]
+    dictData = [(k, dictData[k]) for k in sorted(dictData.keys())]
     return dictData
 
 
