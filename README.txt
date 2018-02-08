@@ -19,4 +19,8 @@ screen -r
 压缩上一版本
 tar -zcvf /usr/local/SwhyDataAnalytic.tar.gz /usr/local/SwhyDataAnalytic
 
+Restful接口开发完，发布操作
+makemigrations [appname] 
+migrate
+
 
