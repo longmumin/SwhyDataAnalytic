@@ -1,15 +1,11 @@
 # -*- coding:utf-8 -*-
-from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import generics
 
 from .models import Task
 from .serializers import TaskSerializer
 
-
-# 第一种方式：APIView
 class TaskList(APIView):
     def get(self, request, format=None):
         tasks = Task.objects.all()

@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 from django.db import connection
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -5,11 +6,18 @@ import json, logging
 import numpy as np
 from scipy import stats
 
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from .models import loadDataModel
+from .serializers import loadDataSerializer
 
 '''
 日志模块加载
 '''
 logger = logging.getLogger('SwhyDataAnalytic.Debug')
+
 
 '''
 加载主页面
@@ -32,6 +40,45 @@ def loadPage(request):
     2. bondType 价差title
     3. containerName 容器名称
     4. method 是否是价差函数方法名
+'''
+class loadData(APIView):
+
+    def get(self, request, format=None):
+        modelObject = loadDataModel.objects.all()
+        serializer = loadDataSerializer(modelObject, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        try:
+            bondType = request.data['bondType']
+            duration = request.data['duration']
+            startTime = request.data['startTime']
+            endTime = request.data['endTime']
+            containerName = request.data['containerName']
+            method = request.data['method']
+        except Exception as e:
+            logger.error("get request error, ret = %s" % e.args[0])
+        quoteData = {}
+
+        # 获取YTM数据
+        quoteData['quoteData'] = getBondYTMData(bondType, duration, startTime, endTime)
+        # 存储债券名称
+        quoteData['bondType'] = bondType
+        # 存储container的名字
+        quoteData['containerName'] = containerName
+        # 存储方法名
+        quoteData['method'] = method
+        logger.info(quoteData)
+
+        serializer = loadDataSerializer(data=quoteData)
+        #serializedData = {'data': serializer.data}
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 '''
 def loadData(request):
     quoteData = {}
@@ -56,6 +103,7 @@ def loadData(request):
     quoteData['method'] = method
     logger.info(quoteData)
     return JsonResponse(json.dumps(quoteData, ensure_ascii=False, sort_keys=True), safe=False)
+'''
 
 '''
 价差分析

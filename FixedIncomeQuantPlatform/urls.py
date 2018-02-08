@@ -26,8 +26,8 @@ urlpatterns = [
     #导入数据
     path('YTMAnalytic/insertDataToBondYTM', dao.insertDataToBondYTM, name='insertDataToBondYTM'),
     #页面初始化数据
-    path('YTMAnalytic/loadData', dataAnalytic.loadData, name='loadData'),
-    #时序数据分析
+    path('YTMAnalytic/loadData', dataAnalytic.loadData.as_view(), name='loadData'),
+    #时序数据分析mi
     path('YTMAnalytic/getBondYTMAnalyicData', dataAnalytic.getBondYTMAnalyicData, name='getBondYTMAnalyicData'),
     #获得价差
     path('YTMAnalytic/getBondYTMDiffCacl', dataAnalytic.getBondYTMDiffCacl, name='getBondYTMDiffCacl'),
