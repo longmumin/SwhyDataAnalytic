@@ -60,11 +60,11 @@ def GetQuotesDataFromTY(request):
     if (request.method == 'POST'):
         try:
             tau = int(request.POST['qixian'])/12
-            selected_date = request.POST['dateselect']
-            if(selected_date!='当日'and selected_date!=''):
-                if(datetime.date(*map(int, selected_date.split('-'))) <= datetime.datetime.now().strftime('%Y-%m-%d')):#当选择日期超过当前日期时不跳转
-                    today = selected_date
-                    yesterday = (datetime.date(*map(int, selected_date.split('-'))) + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
+            # selected_date = request.POST['dateselect']
+            # if(selected_date!='当日'and selected_date!=''):
+            #     if(datetime.date(*map(int, selected_date.split('-'))) <= datetime.datetime.now().strftime('%Y-%m-%d')):#当选择日期超过当前日期时不跳转
+            #         today = selected_date
+            #         yesterday = (datetime.date(*map(int, selected_date.split('-'))) + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
         except Exception as e:
             logger.error("get request error, ret = %s" % e.args[0])
 
@@ -85,16 +85,22 @@ def GetQuotesDataFromTY(request):
         # forward = w.wsq(contract, "rt_last").Data[0][0]
 
         #获取波动率曲线
-        volSpread = tyApi.TYMdload('VOL_BLACK_ATM_' + re.sub(r'([\d]+)', '', contract))
+        volCurve = tyApi.TYMdload(yesterday, model_name = ('VOL_BLACK_ATM_' + re.sub(r'([\d]+)', '', contract)))
         #获得波动率
-        vol = tyApi.TYVolSurfaceImpliedVolGet(forward, forward, today, volSpread)
+        vol = tyApi.TYVolSurfaceImpliedVolGet(forward, forward, today, volCurve)
 
-        pricingAsk = float(tyApi.TYPricing(forward, forward, vol - 0.03, tau, r, 'call'))
+        #获取spread曲线
+        volSpreadCurve = tyApi.TYMdload(yesterday, model_name = ('VOL_BLACK_ATM_SPREAD_' + re.sub(r'([\d]+)', '', contract)))
+        # 获得sprea
+        spread = tyApi.TYVolSurfaceImpliedVolGet(forward, forward, today, volSpreadCurve)
+        #print(contract, volCurve, volSpreadCurve, vol, float(spread/2))
+
+        pricingAsk = float(tyApi.TYPricing(forward, forward, vol + float(spread/2), tau, r, 'call'))
         # print(pricingAsk)
         #出错处理
         if(math.isnan(pricingAsk)):
             pricingAsk = float(0)
-        pricingBid = float(tyApi.TYPricing(forward, forward, vol + 0.03, tau, r, 'call'))
+        pricingBid = float(tyApi.TYPricing(forward, forward, vol - 0.03, tau, r, 'call'))
         # 出错处理
         if (math.isnan(pricingBid)):
             pricingBid = float(0)
