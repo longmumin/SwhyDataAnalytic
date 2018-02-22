@@ -28,9 +28,9 @@ urlpatterns = [
     #页面初始化数据
     path('YTMAnalytic/loadData', dataAnalytic.loadData.as_view(), name='loadData'),
     #时序数据分析mi
-    path('YTMAnalytic/getBondYTMAnalyicData', dataAnalytic.getBondYTMAnalyicData, name='getBondYTMAnalyicData'),
+    path('YTMAnalytic/getBondYTMAnalyicData', dataAnalytic.getBondYTMAnalyicData.as_view(), name='getBondYTMAnalyicData'),
     #获得价差
     path('YTMAnalytic/getBondYTMDiffCacl', dataAnalytic.getBondYTMDiffCacl.as_view(), name='getBondYTMDiffCacl'),
     #获得比价矩阵
-    path('YTMAnalytic/generateYTMMatrix', dataAnalytic.getBondYTMMatrix, name='getBondYTMMatrix'),
+    path('YTMAnalytic/generateYTMMatrix', dataAnalytic.getBondYTMMatrix.as_view(), name='getBondYTMMatrix'),
 ]
