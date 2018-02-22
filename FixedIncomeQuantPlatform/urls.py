@@ -30,7 +30,7 @@ urlpatterns = [
     #时序数据分析mi
     path('YTMAnalytic/getBondYTMAnalyicData', dataAnalytic.getBondYTMAnalyicData, name='getBondYTMAnalyicData'),
     #获得价差
-    path('YTMAnalytic/getBondYTMDiffCacl', dataAnalytic.getBondYTMDiffCacl, name='getBondYTMDiffCacl'),
+    path('YTMAnalytic/getBondYTMDiffCacl', dataAnalytic.getBondYTMDiffCacl.as_view(), name='getBondYTMDiffCacl'),
     #获得比价矩阵
     path('YTMAnalytic/generateYTMMatrix', dataAnalytic.getBondYTMMatrix, name='getBondYTMMatrix'),
 ]

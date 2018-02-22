@@ -27,7 +27,7 @@ def loadPage(request):
 
 
 '''
-价差分析
+数据加载
 传递参数:
     1. bondType 债券名称
     2. duration 债券久期
@@ -71,13 +71,12 @@ class loadData(APIView):
         logger.info(quoteData)
 
         serializer = loadDataSerializer(data=quoteData)
-        #serializedData = {'data': serializer.data}
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            #json_dumps_params为json.dumps的参数
+            return JsonResponse(serializer.data, json_dumps_params={"ensure_ascii":False, "sort_keys":True}, safe=False, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+            return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 '''
 def loadData(request):
@@ -105,6 +104,7 @@ def loadData(request):
     return JsonResponse(json.dumps(quoteData, ensure_ascii=False, sort_keys=True), safe=False)
 '''
 
+
 '''
 价差分析
 传递参数:
@@ -119,6 +119,50 @@ def loadData(request):
     2. bondType 价差title
     3. containerName 容器名称
     4. method 是否是价差函数方法名
+'''
+class getBondYTMDiffCacl(APIView):
+
+    def get(self, request, format=None):
+        modelObject = loadDataModel.objects.all()
+        serializer = loadDataSerializer(modelObject, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        quoteData = {}
+        # 抽取request中数据
+        try:
+            bondType = request.data['bondType']
+            duration = request.data['duration']
+            startTime = request.data['startTime']
+            endTime = request.data['endTime']
+            containerName = request.data['containerName']
+            method = request.data['method']
+        except Exception as e:
+            logger.error("get request error, ret = %s" % e.args[0])
+
+        # 获取价差数据，价差可以换为除法。--------此处如果有多条数据可以用循环
+        YTMData1 = getBondYTMData(bondType[0], duration[0], startTime, endTime)
+        YTMData2 = getBondYTMData(bondType[1], duration[1], startTime, endTime)
+        diffData = dictMinus(YTMData1, YTMData2)
+        # 获取YTM数据
+        quoteData['quoteData'] = diffData
+        # 存储债券名称
+        quoteData['bondType'] = '价差--' + bondType[0] + '和' + bondType[1]
+        # 存储container的名字
+        quoteData['containerName'] = containerName
+        # 存储方法名
+        quoteData['method'] = method
+        logger.info(quoteData)
+
+        serializer = loadDataSerializer(data=quoteData)
+        # serializedData = {'data': serializer.data}
+        if serializer.is_valid():
+            serializer.save()
+            #json_dumps_params为json.dumps的参数
+            return JsonResponse(serializer.data, json_dumps_params={"ensure_ascii": False, "sort_keys": True},safe=False, status=status.HTTP_201_CREATED)
+        else:
+            return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 '''
 def getBondYTMDiffCacl(request):
     quoteData = {}
@@ -149,6 +193,7 @@ def getBondYTMDiffCacl(request):
     quoteData['method'] = method
     logger.info(quoteData)
     return JsonResponse(json.dumps(quoteData, ensure_ascii=False, sort_keys=True), safe=False)
+'''
 
 '''
 价差分析
@@ -349,7 +394,6 @@ def getBondYTMData(bondType, duration, startTime, endTime):
     #类型转换
     keys = ['bondytm', 'timestamp']
     dictData = list2dict(keys, listData)
-    dictData = [(k, dictData[k]) for k in sorted(dictData.keys())]
     return dictData
 
 
