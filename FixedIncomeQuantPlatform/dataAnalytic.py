@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import loadDataModel
-from .serializers import loadDataSerializer
+from .serializers import loadDataSerializer, bondYTMAnalyicDataSerializer
 
 '''
 日志模块加载
@@ -357,7 +357,7 @@ class getBondYTMAnalyicData(APIView):
     def post(self, request, format=None):
         quoteData = {}
         try:
-            arrayData = request.data['arrayData']
+            arrayData = request.data.getlist('arrayData[]')
         except Exception as e:
             logger.error("get request error, ret = %s" % e.args[0])
 
@@ -415,7 +415,7 @@ class getBondYTMAnalyicData(APIView):
         quoteData['min'] = round(min, 4)
         logger.info(quoteData)
 
-        serializer = loadDataSerializer(data=quoteData)
+        serializer = bondYTMAnalyicDataSerializer(data=quoteData)
         # serializedData = {'data': serializer.data}
         if serializer.is_valid():
             serializer.save()
@@ -563,8 +563,7 @@ def dictMinus(dict1, dict2):
     for k, v in dict2.items():
         if k in dict1.keys():
             data = {}
-            data['bondytm'] = (float(dict1[k]['bondytm']) - float(v['bondytm']))
+            data['bondytm'] = str((float(dict1[k]['bondytm']) - float(v['bondytm'])))
             data['timestamp'] = k
             diffDict[k] = data
-
     return diffDict

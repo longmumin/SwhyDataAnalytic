@@ -23,4 +23,8 @@ Restful接口开发完，发布操作
 makemigrations [appname] 
 migrate
 
+重置migrations
+migrate –-fake XXX
+makemigrations XXX
+
 
