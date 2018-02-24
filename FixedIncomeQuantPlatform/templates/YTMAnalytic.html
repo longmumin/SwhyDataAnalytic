@@ -454,8 +454,8 @@
 
          var loadAnalysis = function(data) {
             console.log(data);
-            //解析json数据
-            data = JSON.parse(data) ;
+            //获取json数据
+            data = data.quoteData;
             //取出分析指标
             var mean = data.mean;
             var median = data.median;
@@ -530,11 +530,11 @@
         }
 
         var loadMatrix = function(data) {
-            data = eval('(' + data + ')');
-            //console.log(data);
+            console.log(data);
+            //data = eval('(' + data + ')');
             //创建映射字典,债券类型和期限的bondType存储的内容不同，分别为类型和久期，例如'FR007'和'1Y'
             var bondType = {}, index = 0;
-            $.each(data.bondYTMData, function (i, item) {
+            $.each(data.quoteData, function (i, item) {
                 $.each(item, function (k, val) {
                     bondType[k] = index++;
                 });
@@ -546,7 +546,7 @@
              * 创建价差矩阵
              * **/
             var diffMatrix = new Array();
-            $.each(data.bondYTMData, function (i, item) {
+            $.each(data.quoteData, function (i, item) {
                 //console.log(val1);
                 $.each(item, function (k1, val1) {
                     diffMatrix[bondType[k1]] = new Array();

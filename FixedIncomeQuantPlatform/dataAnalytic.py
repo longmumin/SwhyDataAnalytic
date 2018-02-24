@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import loadDataModel
-from .serializers import loadDataSerializer, bondYTMAnalyicDataSerializer
+from .serializers import loadDataSerializer, bondYTMAnalyicDataSerializer, bondYTMMatrixSerializer
 
 '''
 日志模块加载
@@ -143,7 +143,7 @@ class getBondYTMDiffCacl(APIView):
         # 获取价差数据，价差可以换为除法。--------此处如果有多条数据可以用循环
         YTMData1 = getBondYTMData(bondType[0], duration[0], startTime, endTime)
         YTMData2 = getBondYTMData(bondType[1], duration[1], startTime, endTime)
-        diffData = dictMinus(YTMData1, YTMData2)
+        diffData = dictMinusCacl(YTMData1, YTMData2)
         # 获取YTM数据
         quoteData['quoteData'] = diffData
         # 存储债券名称
@@ -217,8 +217,8 @@ class getBondYTMMatrix(APIView):
         quoteData = {}
         YTMData = {}
         try:
-            bondType = request.data['bondType']
-            duration = request.data['duration']
+            bondType = request.data.getlist('bondType[]')
+            duration = request.data.getlist('duration[]')
             startTime = request.data['startTime']
             endTime = request.data['endTime']
             containerName = request.data['containerName']
@@ -255,8 +255,8 @@ class getBondYTMMatrix(APIView):
                 ytmData2 = {}
                 for k3, v3 in v1.items():
                     # 去除相同债券和久期的YTM
-                    if (len(dictMinus(v2, v3).values()) != 0):
-                        ytmData2[k3] = round((next(iter(dictMinus(v2, v3).values())))['bondytm'], 4)
+                    if (len(dictMinusMatrix(v2, v3).values()) != 0):
+                        ytmData2[k3] = round((next(iter(dictMinusMatrix(v2, v3).values())))['bondytm'], 4)
                         # quoteData[k1+'--'+k2] = round((next(iter(dictMinus(v1, v2).values())))['bondytm'],4)
                     else:
                         ytmData2[k3] = '--'
@@ -264,11 +264,11 @@ class getBondYTMMatrix(APIView):
                 ytmData1[k2] = ytmData2
             bondYTMData[k1] = ytmData1
 
-        quoteData['bondYTMData'] = bondYTMData
+        quoteData['quoteData'] = bondYTMData
         quoteData['containerName'] = containerName
         logger.info(quoteData)
 
-        serializer = loadDataSerializer(data=quoteData)
+        serializer = bondYTMMatrixSerializer(data=quoteData)
         # serializedData = {'data': serializer.data}
         if serializer.is_valid():
             serializer.save()
@@ -355,6 +355,7 @@ class getBondYTMAnalyicData(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
+        analysisData = {}
         quoteData = {}
         try:
             arrayData = request.data.getlist('arrayData[]')
@@ -401,18 +402,19 @@ class getBondYTMAnalyicData(APIView):
         '''
         组装数据，保留4位小数
        '''
-        quoteData['latestDiff'] = round(latestDiff, 4)
-        quoteData['latestDiffDiff'] = round(latestDiffDiff, 4)
-        quoteData['latestDiffPercent'] = round(latestDiffPercent, 4)
-        quoteData['lastDiff'] = round(lastDiff, 4)
-        quoteData['mean'] = round(mean, 4)
-        quoteData['median'] = round(median, 4)
-        quoteData['deviateMean'] = round(deviateMean, 4)
-        quoteData['standardDeviation'] = round(standardDeviation, 4)
-        quoteData['percentile'] = round(percentile, 2)
-        quoteData['deviateStandardDeviation'] = round(deviateStandardDeviation, 4)
-        quoteData['max'] = round(max, 4)
-        quoteData['min'] = round(min, 4)
+        analysisData['latestDiff'] = round(latestDiff, 4)
+        analysisData['latestDiffDiff'] = round(latestDiffDiff, 4)
+        analysisData['latestDiffPercent'] = round(latestDiffPercent, 4)
+        analysisData['lastDiff'] = round(lastDiff, 4)
+        analysisData['mean'] = round(mean, 4)
+        analysisData['median'] = round(median, 4)
+        analysisData['deviateMean'] = round(deviateMean, 4)
+        analysisData['standardDeviation'] = round(standardDeviation, 4)
+        analysisData['percentile'] = round(percentile, 2)
+        analysisData['deviateStandardDeviation'] = round(deviateStandardDeviation, 4)
+        analysisData['max'] = round(max, 4)
+        analysisData['min'] = round(min, 4)
+        quoteData['quoteData'] = analysisData
         logger.info(quoteData)
 
         serializer = bondYTMAnalyicDataSerializer(data=quoteData)
@@ -558,12 +560,22 @@ def list2dict(keys, values):
         dictData[str(value[1])] = row
     return dictData
 
-def dictMinus(dict1, dict2):
+def dictMinusCacl(dict1, dict2):
     diffDict = {}
     for k, v in dict2.items():
         if k in dict1.keys():
             data = {}
             data['bondytm'] = str((float(dict1[k]['bondytm']) - float(v['bondytm'])))
+            data['timestamp'] = k
+            diffDict[k] = data
+    return diffDict
+
+def dictMinusMatrix(dict1, dict2):
+    diffDict = {}
+    for k, v in dict2.items():
+        if k in dict1.keys():
+            data = {}
+            data['bondytm'] = float(dict1[k]['bondytm']) - float(v['bondytm'])
             data['timestamp'] = k
             diffDict[k] = data
     return diffDict

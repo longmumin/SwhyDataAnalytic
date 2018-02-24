@@ -13,7 +13,14 @@ class bondYTMAnalyicDataSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = loadDataModel
-        fields = ('quoteData')
+        fields = ('quoteData',)
+
+class bondYTMMatrixSerializer(serializers.ModelSerializer):
+    quoteData = serializers.JSONField()
+
+    class Meta:
+        model = loadDataModel
+        fields = ('containerName', 'quoteData')
 
 # class diffDataSerializer(serializers.Serializer):
 #     diffData = serializers.JSONField()
