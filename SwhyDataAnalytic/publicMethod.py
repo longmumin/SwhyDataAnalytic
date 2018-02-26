@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.db import connection
-import json, logging
+import json, logging, tushare, datetime
 
 '''
 日志模块加载
@@ -43,3 +43,13 @@ def list2dict(keys, values):
         #时间戳作为keys
         dictData.append(row)
     return dictData
+
+#输入为string类型
+def getLastTradeDate(date):
+    # 判断节假日
+    while (tushare.is_holiday(date)):
+        # 类型转换
+        date = datetime.datetime.strptime(date, '%Y-%m-%d')
+        date = date + datetime.timedelta(days=-1)
+        date = date.strftime('%Y-%m-%d')
+    return date

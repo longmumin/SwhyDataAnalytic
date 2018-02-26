@@ -12,6 +12,7 @@ from rest_framework.views import APIView
 
 from .models import loadDataModel
 from .serializers import loadDataSerializer, bondYTMAnalyicDataSerializer, bondYTMMatrixSerializer
+from SwhyDataAnalytic.publicMethod import getLastTradeDate
 
 '''
 日志模块加载
@@ -225,12 +226,8 @@ class getBondYTMMatrix(APIView):
         except Exception as e:
             logger.error("get request error, ret = %s" % e.args[0])
 
-        #判断节假日
-        while(tushare.is_holiday(startTime)):
-            #类型转换
-            startTime = datetime.datetime.strptime(startTime,'%Y-%m-%d')
-            startTime = startTime + datetime.timedelta(days = -1)
-            startTime = startTime.strftime('%Y-%m-%d')
+        #获取上一个交易日
+        startTime = getLastTradeDate(startTime)
         endTime = datetime.datetime.strptime(startTime,'%Y-%m-%d') + datetime.timedelta(days = 1)
         endTime = endTime.strftime('%Y-%m-%d')
 
