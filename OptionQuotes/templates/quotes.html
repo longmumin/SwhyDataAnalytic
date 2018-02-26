@@ -51,26 +51,29 @@
     <!-- Item Header Template -->
         <div class="html_content">
             <div class="item-section" data-repeat="sections">
-                <div class="item-section_header">
-                    <h2><img src="/static/image/swhylogo.png" style="width:6rem; float:left;"></h2>
-{#                    <h2>申万宏源证券有限公司--期权报价</h2>#}
+                <div class="item-section_header" style="float:left;">
+                    <h2><img src="/static/image/swhylogo.png" style="width:3rem; float:left; max-width: 100%"></h2>
                 </div>
 
-                <form action="" class="calender-body_right" style="top: 1rem">
-                    <label style="color: #5b80b2">平值期权</label>
-                    <select id="qixian" style="font-size:14px; margin-left: .1rem; height: 0.5rem; width: 1.8rem">
-                        <option value="00">--期限--</option>
+                <div class="item-section_header" style="margin:0 auto; width:500px; height:100px; margin-top: .2rem;">
+                    <h2 style="color: #FFEFDB; font-size: 25px">平值期权报价</h2>
+                    <h2 style="color: #FFEFDB; margin-bottom: .5rem; font-size: 22px">（系统测试中，报价仅为展示用）</h2>
+                </div>
+
+                <div class="calender-body_right" style="top: .8rem; ">
+                    <label style="color: #FFEFDB">期限：</label>
+                    <select id="qixian" style="font-size:5px; height: 0.5rem; width: 1.5rem">
+                        <option value="00" >--选择期限--</option>
                     </select>
-                     日期 <input type="text" value="当日" style="float:right; margin-left: .1rem; height: 0.6rem; width: 1.8rem; text-align: center"  id="datepicker">
-                </form>
+                </div>
 
                 <table id="optionTable" class="table">
                     <tr id="tableTitle">
                         <th class="table-th">品种</th>
                         <th class="table-th">标的</th>
                         <th class="table-th">标的价格</th>
-                        <th class="table-th">买价</th>
                         <th class="table-th">卖价</th>
+                        <th class="table-th">买价</th>
                     </tr>
                 </table>
 
@@ -93,7 +96,7 @@
                  loadQuotesData(qixian, dateselect);
 
                 //刷新页面，每隔5秒刷新一次数据
-                setInterval(refreshQuoteData,5000);
+                setInterval(refreshQuoteData,10000);
              });
 
 
@@ -146,7 +149,7 @@
 
              var loadData = function(data){
                 //更新数据
-                console.log(data);
+                //console.log(data);
                 $.each(data, function(i, item){
                      itemId = item[0].substr(0, item[0].indexOf('.'));
                      //判断当前价格是否高于昨收，定义字体颜色
@@ -189,7 +192,7 @@
 
             var updateData = function(data){
                 //更新数据
-                console.log(data);
+                //console.log(data);
                 $.each(data, function(i, item) {
                     itemId = item[0].substr(0, item[0].indexOf('.'));
                     if(item[1].forward < item[1].lastPrice)

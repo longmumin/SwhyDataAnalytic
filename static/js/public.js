@@ -180,7 +180,6 @@ function changeFont(id, text, fontColor) {
 function dictSort(dict) {
     var sdic=Object.keys(dict).sort();
     var newDict = {}
-    debugger;
     for(ki in sdic){
         newDict[sdic[ki]] = dict[sdic[ki]];
     }

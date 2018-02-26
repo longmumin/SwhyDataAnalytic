@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 from django.db import connection
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -5,11 +6,18 @@ import json, logging
 import numpy as np
 from scipy import stats
 
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from .models import loadDataModel
+from .serializers import loadDataSerializer, bondYTMAnalyicDataSerializer, bondYTMMatrixSerializer
 
 '''
 日志模块加载
 '''
 logger = logging.getLogger('SwhyDataAnalytic.Debug')
+
 
 '''
 加载主页面
@@ -19,7 +27,7 @@ def loadPage(request):
 
 
 '''
-价差分析
+数据加载
 传递参数:
     1. bondType 债券名称
     2. duration 债券久期
@@ -32,6 +40,44 @@ def loadPage(request):
     2. bondType 价差title
     3. containerName 容器名称
     4. method 是否是价差函数方法名
+'''
+class loadData(APIView):
+
+    def get(self, request, format=None):
+        modelObject = loadDataModel.objects.all()
+        serializer = loadDataSerializer(modelObject, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        try:
+            bondType = request.data['bondType']
+            duration = request.data['duration']
+            startTime = request.data['startTime']
+            endTime = request.data['endTime']
+            containerName = request.data['containerName']
+            method = request.data['method']
+        except Exception as e:
+            logger.error("get request error, ret = %s" % e.args[0])
+        quoteData = {}
+
+        # 获取YTM数据
+        quoteData['quoteData'] = getBondYTMData(bondType, duration, startTime, endTime)
+        # 存储债券名称
+        quoteData['bondType'] = bondType
+        # 存储container的名字
+        quoteData['containerName'] = containerName
+        # 存储方法名
+        quoteData['method'] = method
+        logger.info(quoteData)
+
+        serializer = loadDataSerializer(data=quoteData)
+        if serializer.is_valid():
+            serializer.save()
+            #json_dumps_params为json.dumps的参数
+            return JsonResponse(serializer.data, json_dumps_params={"ensure_ascii":False, "sort_keys":True}, safe=False, status=status.HTTP_201_CREATED)
+        else:
+            return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 '''
 def loadData(request):
     quoteData = {}
@@ -56,6 +102,8 @@ def loadData(request):
     quoteData['method'] = method
     logger.info(quoteData)
     return JsonResponse(json.dumps(quoteData, ensure_ascii=False, sort_keys=True), safe=False)
+'''
+
 
 '''
 价差分析
@@ -71,6 +119,50 @@ def loadData(request):
     2. bondType 价差title
     3. containerName 容器名称
     4. method 是否是价差函数方法名
+'''
+class getBondYTMDiffCacl(APIView):
+
+    def get(self, request, format=None):
+        modelObject = loadDataModel.objects.all()
+        serializer = loadDataSerializer(modelObject, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        quoteData = {}
+        # 抽取request中数据
+        try:
+            bondType = request.data.getlist('bondType[]')
+            duration = request.data.getlist('duration[]')
+            startTime = request.data['startTime']
+            endTime = request.data['endTime']
+            containerName = request.data['containerName']
+            method = request.data['method']
+        except Exception as e:
+            logger.error("get request error, ret = %s" % e.args[0])
+
+        # 获取价差数据，价差可以换为除法。--------此处如果有多条数据可以用循环
+        YTMData1 = getBondYTMData(bondType[0], duration[0], startTime, endTime)
+        YTMData2 = getBondYTMData(bondType[1], duration[1], startTime, endTime)
+        diffData = dictMinusCacl(YTMData1, YTMData2)
+        # 获取YTM数据
+        quoteData['quoteData'] = diffData
+        # 存储债券名称
+        quoteData['bondType'] = '价差--' + bondType[0] + '和' + bondType[1]
+        # 存储container的名字
+        quoteData['containerName'] = containerName
+        # 存储方法名
+        quoteData['method'] = method
+        logger.info(quoteData)
+
+        serializer = loadDataSerializer(data=quoteData)
+        # serializedData = {'data': serializer.data}
+        if serializer.is_valid():
+            serializer.save()
+            #json_dumps_params为json.dumps的参数
+            return JsonResponse(serializer.data, json_dumps_params={"ensure_ascii": False, "sort_keys": True},safe=False, status=status.HTTP_201_CREATED)
+        else:
+            return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 '''
 def getBondYTMDiffCacl(request):
     quoteData = {}
@@ -101,6 +193,7 @@ def getBondYTMDiffCacl(request):
     quoteData['method'] = method
     logger.info(quoteData)
     return JsonResponse(json.dumps(quoteData, ensure_ascii=False, sort_keys=True), safe=False)
+'''
 
 '''
 价差分析
@@ -112,6 +205,78 @@ def getBondYTMDiffCacl(request):
     5. containerName 容器名称
 返回参数：
     1. quoteData 价差序列
+'''
+class getBondYTMMatrix(APIView):
+
+    def get(self, request, format=None):
+        modelObject = loadDataModel.objects.all()
+        serializer = loadDataSerializer(modelObject, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        quoteData = {}
+        YTMData = {}
+        try:
+            bondType = request.data.getlist('bondType[]')
+            duration = request.data.getlist('duration[]')
+            startTime = request.data['startTime']
+            endTime = request.data['endTime']
+            containerName = request.data['containerName']
+        except Exception as e:
+            logger.error("get request error, ret = %s" % e.args[0])
+
+        '''
+        债券名称做主键，两个期限做内部主键
+        通过containerName选择 债券类型（bondType）和期限（duration）的矩阵形成方式
+        债券类型：bondYTMMatrix
+        期限：durationMatrix
+       '''
+        # 生成债券期限矩阵
+        if (containerName == 'bondYTMMatrix'):
+            for bond in bondType:
+                data = {}
+                for dur in duration:
+                    data[dur] = getBondYTMData(bond, dur, startTime, endTime)
+                YTMData[bond] = data
+            # YTMData = pd.DataFrame(YTMData)
+            # 生成债券期限矩阵
+        elif (containerName == 'durationMatrix'):
+            for dur in duration:
+                data = {}
+                for bond in bondType:
+                    data[bond] = getBondYTMData(bond, dur, startTime, endTime)
+                YTMData[dur] = data
+            # YTMData = pd.DataFrame(YTMData)
+
+        bondYTMData = {}
+        for k1, v1 in YTMData.items():
+            ytmData1 = {}
+            for k2, v2 in v1.items():
+                ytmData2 = {}
+                for k3, v3 in v1.items():
+                    # 去除相同债券和久期的YTM
+                    if (len(dictMinusMatrix(v2, v3).values()) != 0):
+                        ytmData2[k3] = round((next(iter(dictMinusMatrix(v2, v3).values())))['bondytm'], 4)
+                        # quoteData[k1+'--'+k2] = round((next(iter(dictMinus(v1, v2).values())))['bondytm'],4)
+                    else:
+                        ytmData2[k3] = '--'
+                        # quoteData[k1+'--'+k2] = '--'
+                ytmData1[k2] = ytmData2
+            bondYTMData[k1] = ytmData1
+
+        quoteData['quoteData'] = bondYTMData
+        quoteData['containerName'] = containerName
+        logger.info(quoteData)
+
+        serializer = bondYTMMatrixSerializer(data=quoteData)
+        # serializedData = {'data': serializer.data}
+        if serializer.is_valid():
+            serializer.save()
+            #json_dumps_params为json.dumps的参数
+            return JsonResponse(serializer.data, json_dumps_params={"ensure_ascii": False, "sort_keys": True},safe=False, status=status.HTTP_201_CREATED)
+        else:
+            return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 '''
 def getBondYTMMatrix(request):
     quoteData = {}
@@ -127,12 +292,11 @@ def getBondYTMMatrix(request):
         except Exception as e:
             logger.error("get request error, ret = %s" % e.args[0])
 
-    '''
     债券名称做主键，两个期限做内部主键
     通过containerName选择 债券类型（bondType）和期限（duration）的矩阵形成方式
     债券类型：bondYTMMatrix
     期限：durationMatrix
-    '''
+
     # 生成债券期限矩阵
     if (containerName == 'bondYTMMatrix'):
         for bond in bondType:
@@ -172,6 +336,8 @@ def getBondYTMMatrix(request):
     logger.info(quoteData)
 
     return JsonResponse(json.dumps(quoteData, ensure_ascii=False, sort_keys=True), safe=False)
+'''
+
 
 
 '''
@@ -180,6 +346,86 @@ def getBondYTMMatrix(request):
     1. arrayData价格序列数组
 返回参数：
     1. 
+'''
+class getBondYTMAnalyicData(APIView):
+
+    def get(self, request, format=None):
+        modelObject = loadDataModel.objects.all()
+        serializer = loadDataSerializer(modelObject, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        analysisData = {}
+        quoteData = {}
+        try:
+            arrayData = request.data.getlist('arrayData[]')
+        except Exception as e:
+            logger.error("get request error, ret = %s" % e.args[0])
+
+        # 存储类型转换
+        arrayData = np.array(arrayData)
+        arrayData = arrayData.astype(np.float)
+        arrayData = [data for data in arrayData if str(data) != 'nan']
+
+        '''
+        获取各种数据指标
+       '''
+        # 最新价差
+        latestDiff = arrayData[-1]
+        # 昨结价差
+        lastDiff = arrayData[-2]
+        # 最新价差分析变化量，幅度
+        latestDiffDiff = latestDiff - lastDiff
+        if (latestDiffDiff > 0):
+            latestDiffPercent = abs(latestDiffDiff / lastDiff)
+        else:
+            latestDiffPercent = (latestDiffDiff / lastDiff) if lastDiff > 0 else (0 - latestDiffDiff / lastDiff)
+        # 平均值
+        mean = np.mean(arrayData)
+        # 中位数
+        median = np.median(arrayData)
+        # 偏离均值
+        deviateMean = arrayData[-1] - mean
+        # 百分位数
+        percentile = stats.percentileofscore(arrayData, arrayData[-1])
+
+        # 标准差
+        standardDeviation = np.std(arrayData)
+        # 偏离标准差
+        deviateStandardDeviation = arrayData[-1] - standardDeviation
+
+        # 最大值
+        max = np.max(arrayData)
+        # 最小值
+        min = np.min(arrayData)
+
+        '''
+        组装数据，保留4位小数
+       '''
+        analysisData['latestDiff'] = round(latestDiff, 4)
+        analysisData['latestDiffDiff'] = round(latestDiffDiff, 4)
+        analysisData['latestDiffPercent'] = round(latestDiffPercent, 4)
+        analysisData['lastDiff'] = round(lastDiff, 4)
+        analysisData['mean'] = round(mean, 4)
+        analysisData['median'] = round(median, 4)
+        analysisData['deviateMean'] = round(deviateMean, 4)
+        analysisData['standardDeviation'] = round(standardDeviation, 4)
+        analysisData['percentile'] = round(percentile, 2)
+        analysisData['deviateStandardDeviation'] = round(deviateStandardDeviation, 4)
+        analysisData['max'] = round(max, 4)
+        analysisData['min'] = round(min, 4)
+        quoteData['quoteData'] = analysisData
+        logger.info(quoteData)
+
+        serializer = bondYTMAnalyicDataSerializer(data=quoteData)
+        # serializedData = {'data': serializer.data}
+        if serializer.is_valid():
+            serializer.save()
+            #json_dumps_params为json.dumps的参数
+            return JsonResponse(serializer.data, json_dumps_params={"ensure_ascii": False, "sort_keys": True},safe=False, status=status.HTTP_201_CREATED)
+        else:
+            return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 '''
 def getBondYTMAnalyicData(request):
     quoteData = {}
@@ -195,9 +441,9 @@ def getBondYTMAnalyicData(request):
     arrayData = arrayData.astype(np.float)
     arrayData = [data for data in arrayData if str(data) != 'nan']
 
-    '''
+    
     获取各种数据指标
-    '''
+    
     #最新价差
     latestDiff = arrayData[-1]
     #昨结价差
@@ -227,9 +473,8 @@ def getBondYTMAnalyicData(request):
     #最小值
     min = np.min(arrayData)
 
-    '''
     组装数据，保留4位小数
-    '''
+    
     quoteData['latestDiff'] = round(latestDiff,4)
     quoteData['latestDiffDiff'] = round(latestDiffDiff,4)
     quoteData['latestDiffPercent'] = round(latestDiffPercent,4)
@@ -246,7 +491,7 @@ def getBondYTMAnalyicData(request):
     logger.info(quoteData)
 
     return JsonResponse(json.dumps(quoteData, ensure_ascii=False, sort_keys=True), safe=False)
-
+'''
 
 def getBondYTMData(bondType, duration, startTime, endTime):
     #建立数据库连接
@@ -301,7 +546,6 @@ def getBondYTMData(bondType, duration, startTime, endTime):
     #类型转换
     keys = ['bondytm', 'timestamp']
     dictData = list2dict(keys, listData)
-    # dictData = [(k, dictData[k]) for k in sorted(dictData.keys())]
     return dictData
 
 
@@ -316,13 +560,22 @@ def list2dict(keys, values):
         dictData[str(value[1])] = row
     return dictData
 
-def dictMinus(dict1, dict2):
+def dictMinusCacl(dict1, dict2):
     diffDict = {}
     for k, v in dict2.items():
         if k in dict1.keys():
             data = {}
-            data['bondytm'] = (float(dict1[k]['bondytm']) - float(v['bondytm']))
+            data['bondytm'] = str((float(dict1[k]['bondytm']) - float(v['bondytm'])))
             data['timestamp'] = k
             diffDict[k] = data
+    return diffDict
 
+def dictMinusMatrix(dict1, dict2):
+    diffDict = {}
+    for k, v in dict2.items():
+        if k in dict1.keys():
+            data = {}
+            data['bondytm'] = float(dict1[k]['bondytm']) - float(v['bondytm'])
+            data['timestamp'] = k
+            diffDict[k] = data
     return diffDict
