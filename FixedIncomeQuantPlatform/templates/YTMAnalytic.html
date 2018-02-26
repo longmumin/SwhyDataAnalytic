@@ -12,6 +12,8 @@
 <script src="{% static 'js/flexible.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/fm.selectator.jquery.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/moment.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/bootstrap.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/popper.js' %}" type="text/javascript"></script>
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -21,26 +23,13 @@
     <link href="{% static 'css/flexible.css' %}" rel="stylesheet">
     <link href="{% static 'css/public.css' %}" rel="stylesheet">
     <link href="{% static 'css/fm.selectator.jquery.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
 
 </head>
 
 <body>
 
      <div class="div_tab_container">
-         <div class="tab-group" id="YTM" style="margin-top: 0.2rem; margin-left: 0.2rem">
-             <section id="YTM_tab1" title="债券走势图1">
-                 <div id="YTM_tab1_container" class="container_highstock"></div>
-             </section>
-             <section id="YTM_tab2" title="债券走势图2">
-                 <div id="YTM_tab2_container" class="container_highstock"></div>
-             </section>
-         </div>
-         <div class="tab-group" id="YTMSpread" style="margin-top: 0.2rem; margin-left: 0.2rem">
-             <section id="YTMSpread_tab2" title="债券价差图">
-                 <div id="YTMSpread_tab2_container" class="container_highstock">
-                 </div>
-             </section>
-         </div>
          <div class="tab-group" id="YTMAnaltic" style="margin-top: 1.2rem; margin-left: 0.2rem; width: 90.5%; height: 150%">
              <section id="YTMAnaltic_tab1" title="价差历史统计">
                  <!-- 债券选择框1 -->
@@ -198,6 +187,20 @@
                      </div>
                  </div>
 
+             </section>
+         </div>
+         <div class="tab-group" id="YTM" style="margin-top: 0.2rem; margin-left: 0.2rem">
+             <section id="YTM_tab1" title="债券走势图1">
+                 <div id="YTM_tab1_container" class="container_highstock"></div>
+             </section>
+             <section id="YTM_tab2" title="债券走势图2">
+                 <div id="YTM_tab2_container" class="container_highstock"></div>
+             </section>
+         </div>
+         <div class="tab-group" id="YTMSpread" style="margin-top: 0.2rem; margin-left: 0.2rem">
+             <section id="YTMSpread_tab2" title="债券价差图">
+                 <div id="YTMSpread_tab2_container" class="container_highstock">
+                 </div>
              </section>
          </div>
      </div>
