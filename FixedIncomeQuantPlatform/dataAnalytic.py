@@ -2,7 +2,7 @@
 from django.db import connection
 from django.http import JsonResponse
 from django.shortcuts import render
-import json, logging
+import logging, tushare, datetime
 import numpy as np
 from scipy import stats
 
@@ -224,6 +224,15 @@ class getBondYTMMatrix(APIView):
             containerName = request.data['containerName']
         except Exception as e:
             logger.error("get request error, ret = %s" % e.args[0])
+
+        #判断节假日
+        while(tushare.is_holiday(startTime)):
+            #类型转换
+            startTime = datetime.datetime.strptime(startTime,'%Y-%m-%d')
+            startTime = startTime + datetime.timedelta(days = -1)
+            startTime = startTime.strftime('%Y-%m-%d')
+        endTime = datetime.datetime.strptime(startTime,'%Y-%m-%d') + datetime.timedelta(days = 1)
+        endTime = endTime.strftime('%Y-%m-%d')
 
         '''
         债券名称做主键，两个期限做内部主键
