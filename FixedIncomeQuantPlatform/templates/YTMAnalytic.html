@@ -305,12 +305,12 @@
             var endTime = null;
             $("#bondYTMTypeSelect").change(function() {
                 var bondType = $(this).children('option:selected').text();
-                var duration = ['1Y', '3Y', '5Y', '7Y', '10Y'], container = 'bondYTMMatrix';
+                var duration = ['1Y', '3Y', '5Y', '7Y', '10Y'], container = 'durationMatrix';
                 generateYTMMatrix(bondType, duration, startTime, endTime, container);
             });
             $( "#bondYTMDurationSelect" ).change(function() {
                 //获取bondType数组
-                var bondType = [], container = 'durationMatrix';
+                var bondType = [], container = 'bondYTMMatrix';
                 for (var i=0; i<codeDataBondType.length; ++i) {
                     bondType.push(codeDataBondType[i].text);
                 }

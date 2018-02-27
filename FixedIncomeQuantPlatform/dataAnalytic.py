@@ -238,7 +238,7 @@ class getBondYTMMatrix(APIView):
         期限：durationMatrix
        '''
         # 生成债券期限矩阵
-        if (containerName == 'bondYTMMatrix'):
+        if (containerName == 'durationMatrix'):
             for bond in bondType:
                 data = {}
                 for dur in duration:
@@ -246,7 +246,7 @@ class getBondYTMMatrix(APIView):
                 YTMData[bond] = data
             # YTMData = pd.DataFrame(YTMData)
             # 生成债券期限矩阵
-        elif (containerName == 'durationMatrix'):
+        elif (containerName == 'bondYTMMatrix'):
             for dur in duration:
                 data = {}
                 for bond in bondType:
