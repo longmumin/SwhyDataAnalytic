@@ -262,7 +262,7 @@ class getBondYTMMatrix(APIView):
                 for k3, v3 in v1.items():
                     # 去除相同债券和久期的YTM
                     if (len(dictMinusMatrix(v2, v3).values()) != 0):
-                        ytmData2[k3] = round((next(iter(dictMinusMatrix(v2, v3).values())))['bondytm'], 4)
+                        ytmData2[k3] = round(((next(iter(dictMinusMatrix(v2, v3).values())))['bondytm'])*100, 2)
                         # quoteData[k1+'--'+k2] = round((next(iter(dictMinus(v1, v2).values())))['bondytm'],4)
                     else:
                         ytmData2[k3] = '--'

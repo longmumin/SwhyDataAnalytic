@@ -28,9 +28,8 @@
 </head>
 
 <body>
-
      <div class="div_tab_container">
-         <div class="tab-group" id="YTMAnaltic" style="margin-top: 1.2rem; margin-left: 0.2rem; width: 90.5%; height: 150%">
+         <div class="tab-group" id="YTMAnaltic" style="margin-top: 0.5rem; margin-left: 0.2rem; width: 90.5%; height: 150%">
              <section id="YTMAnaltic_tab1" title="价差历史统计">
                  <!-- 债券选择框1 -->
                   <div  style="position:relative;">
@@ -186,10 +185,10 @@
                          </table>
                      </div>
                  </div>
-
              </section>
          </div>
-         <div class="tab-group" id="YTM" style="margin-top: 0.2rem; margin-left: 0.2rem">
+
+         <div class="tab-group" id="YTM" style="margin-top: 1rem; margin-left: 0.2rem">
              <section id="YTM_tab1" title="债券走势图1">
                  <div id="YTM_tab1_container" class="container_highstock"></div>
              </section>
@@ -197,16 +196,17 @@
                  <div id="YTM_tab2_container" class="container_highstock"></div>
              </section>
          </div>
-         <div class="tab-group" id="YTMSpread" style="margin-top: 0.2rem; margin-left: 0.2rem">
+
+         <div class="tab-group" id="YTMSpread" style="margin-top: 1rem; margin-left: 0.2rem">
              <section id="YTMSpread_tab2" title="债券价差图">
                  <div id="YTMSpread_tab2_container" class="container_highstock">
                  </div>
              </section>
          </div>
+
      </div>
 
     <script type="text/javascript">
-
         $(function() {
             //进度条
             /*
@@ -218,21 +218,17 @@
             init();
             var duration = "1Y", startTime = null, endTime = null;
             loadYTMData("中债农发行债",duration, startTime, endTime, 'YTM_tab1_container');
-
         });
-
         function init()
         {
             //加载标签栏
             $('.tab-group').tabify();
-
             //初始债券类型下拉框
             selectInit($("#bondNameSelect1"),'bondytmtype');
             selectInit($("#bondNameSelect2"),'bondytmtype');
             //初始期限下拉框
             selectInit($("#durationSelect1"),'bondytmduration');
             selectInit($("#durationSelect2"),'bondytmduration');
-
             //绑定债券类型下拉框选择事件
             $("#bondNameSelect1").change(function(){
                 var duration = $("#durationSelect1").children('option:selected').text();
@@ -246,7 +242,6 @@
                 var startTime = null, endTime = null;
                 loadYTMData(bondType, duration, startTime, endTime, 'YTM_tab2_container');
             });
-
             //绑定期限下拉框选择事件
             $("#durationSelect1").change(function(){
                 var duration = $(this).children('option:selected').text();
@@ -260,7 +255,6 @@
                 var startTime = null, endTime = null;
                 loadYTMData(bondType,duration, startTime, endTime, 'YTM_tab2_container');
             });
-
             //绑定价差分析按钮
             $( "#diffCacl" ).click(function() {
                 var bondType = [], duration = [];
@@ -271,16 +265,13 @@
                 var startTime = null, endTime = null;
                 getBondYTMDiffCacl(bondType,duration, startTime, endTime, 'YTMSpread_tab2_container');
             });
-
             /*
             * 价差矩阵多选框初始化
             * */
             //债券类型
             selectInit($("#bondYTMTypeSelect"),'bondytmtype');
-
             //债券期限
             selectInit($("#bondYTMDurationSelect"),'bondytmduration');
-
             //获取债券类型和期限码值
             var codeDataBondType = getCode('bondytmtype')
             //初始化跨品种矩阵矩阵
@@ -309,7 +300,6 @@
                     td.appendTo(tr);
                 }
             }
-
             //绑定选择框按钮
             var startTime = moment().subtract(1,'days').format('YYYY-MM-DD');
             var endTime = null;
@@ -325,7 +315,6 @@
                     bondType.push(codeDataBondType[i].text);
                 }
                 var duration = $(this).children('option:selected').text();
-
                 generateYTMMatrix(bondType, duration, startTime, endTime, container);
             });
             /*
@@ -343,9 +332,7 @@
                 //console.log(typeof(bondType.join()), duration.join());
             });
             */
-
         }
-
         /***** 债券走势图 *****/
         /*****
          * bondtype 债券名称，例如“中债农发行债”
@@ -378,7 +365,6 @@
                 async: true
             });
         }
-
         /***** 价差分析函数 *****/
         function getBondYTMDiffCacl(bondType,duration, startTime, endTime, containerName, method) {
             var url = '/FixedIncome/YTMAnalytic/getBondYTMDiffCacl';
@@ -402,7 +388,6 @@
                 async: true
             });
         }
-
         var loadData = function(data) {
             var seriesData = [];
             var arrayData = [];
@@ -426,7 +411,6 @@
             /*******  创建图形  ******/
             createCharts(seriesData, bondType, containerName);
             //$('body').mLoading("hide");
-
             /*******  加载数据分析数据  ******/
             //销毁变量，释放空间
             delete seriesData;
@@ -434,10 +418,8 @@
             if(method == 'loadDiff'){
                 loadAnalysisData(arrayData);
             }
-
             //console.log(data);
         };
-
         /***** 数据分析函数 *****/
         function loadAnalysisData(arrayData) {
             var url = '/FixedIncome/YTMAnalytic/getBondYTMAnalyicData';
@@ -454,7 +436,6 @@
                 async: true
             });
         }
-
          var loadAnalysis = function(data) {
             console.log(data);
             //获取json数据
@@ -472,7 +453,6 @@
             var diffMax = data.max;
             var diffDeviateStandardDeviation = data.deviateStandardDeviation;
             var diffMin = data.min;
-
             //最新价差
             if(latestDiffDiff < 0){
                changeFont('latestDiffPrice', latestDiff, 'green');
@@ -489,28 +469,21 @@
                changeFont('latestDiffDiff', latestDiffDiff, 'red');
                changeFont('latestDiffPercent', latestDiffPercent, 'red');
             }
-
             //昨日价差
             changeFont('lastDiffPrice', lastDiff, 'black');
-
             //平均值，中位数展示
             changeFont('diffMean', mean, 'black');
             changeFont('diffMedian', median, 'black');
-
             //偏离平均值，百分位数展示
             changeFont('diffDeviateMean', deviateMean, 'black');
             changeFont('diffPercent', diffPercent+'%', 'black');
-
             //标准差，最大值展示
             changeFont('diffStandardDeviation', diffStandardDeviation, 'black');
             changeFont('diffMax', diffMax, 'black');
-
             //偏离标准差，最小值展示
             changeFont('diffDeviateStandardDeviation', diffDeviateStandardDeviation, 'black');
             changeFont('diffMin', diffMin, 'black');
-
          };
-
         /***** 生成矩阵函数 *****/
         function generateYTMMatrix(bondType,duration, startTime, endTime, containerName) {
             var url = '/FixedIncome/YTMAnalytic/generateYTMMatrix';
@@ -531,7 +504,6 @@
                 async: true
             });
         }
-
         var loadMatrix = function(data) {
             console.log(data);
             //data = eval('(' + data + ')');
@@ -544,7 +516,6 @@
             });
             //bondType排序
             var bondType = dictSort(bondType);
-
             /**
              * 创建价差矩阵
              * **/
@@ -560,14 +531,12 @@
                 });
             });
             //console.log(diffMatrix, bondType);
-
             //清除原表格
             var containerName = data.containerName
             $("#" + containerName).remove();
             /*生成表格并把表格加入容器*/
             var table = $("<table id='" + containerName + "' class='hor-minimalist-b'>");
             table.appendTo($("#diffMatrixContainer"));
-
             //生成表头
             var thead = $("<thead> <tr> </tr> </thead>");
             thead.appendTo(table)
@@ -578,7 +547,6 @@
                 var th = $("<th scope='col'>" + key + "</th>");
                 th.appendTo(thead);
             }
-
             //生成表体
             var tbody = $("<tbody> <\tbody>");
             tbody.appendTo(table);
@@ -593,7 +561,6 @@
                 }
             }
         };
-
         /***** 生成矩阵函数 *****/
         /*
         function generateYTMMatrix(bondType,duration, startTime, endTime, containerName) {
@@ -615,7 +582,6 @@
                 async: true
             });
         }
-
         var loadMatrix = function(data) {
             data = eval('(' + data + ')');
             //创建映射字典
@@ -624,7 +590,6 @@
                 bondType[i] = index++;
             });
         */
-
             /**
              * 创建价差矩阵
              * **/
@@ -638,13 +603,11 @@
                     diffMatrix[bondType[k1]][bondType[k2]] = val2;
                 });
             });
-
             //清除原表格
             $("#diffMatrix").remove();
             //生成表格并把表格加入容器
             var table = $("<table id='diffMatrix' class='hor-minimalist-b'>");
             table.appendTo($("#diffMatrixContainer"));
-
             //生成表头
             var thead = $("<thead> <tr> </tr> </thead>");
             thead.appendTo(table)
@@ -655,7 +618,6 @@
                 var th = $("<th scope='col'>" + key + "</th>");
                 th.appendTo(thead);
             }
-
             //生成表体
             var tbody = $("<tbody> <\tbody>");
             tbody.appendTo(table);
@@ -671,14 +633,12 @@
             }
         };
         */
-
         //错误信息处理界面
         var errorInfo = function (msg) {
             console.log(msg);
             //关闭进度条
             //$('body').mLoading("hide");
         };
-
         function createCharts(data, bondType, containerName) {
             //关闭UTC时间,设置title格式
             Highcharts.setOptions({
@@ -773,7 +733,6 @@
                 }
             });
         }
-
     </script>
 
 
