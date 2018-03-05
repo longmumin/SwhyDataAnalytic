@@ -221,6 +221,9 @@ def insertDataToFutureInfo(request):
 
 
 def insertDataToFutureDatabase(request):
+    #获取当前时间
+    timeNow = datetime.now().strftime('%Y-%m-%d')
+
     # 建立数据库连接
     cursor = connection.cursor()
 
@@ -239,20 +242,38 @@ def insertDataToFutureDatabase(request):
 
     w.start()
 
-    windData1 = w.wsd("CU1803.SHF",
+    #获取交易日
+    windDate = w.tdays("2017-01-01", "2018-03-04", "")
+    timeList = [time.strftime('%Y-%m-%d') for time in windDate.Times]
+    fields = ['OPEN', 'HIGH', 'LOW', 'CLOSE', 'SETTLE', 'VOLUME', 'OI', 'AMT', 'CHG', 'CHG_SETTLEMENT', 'OI_CHG', 'PRE_SETTLE', 'DEALNUM']
+    df = pd.DataFrame(index=timeList, columns=fields)
+
+    for contract in contractList:
+        print(contract)
+
+        windData1 = w.wsd(contract,
                       "open,high,low,close,settle,volume,"
                       "oi,amt,chg,chg_settlement,oi_chg,pre_settle,dealnum,",
-                      "2017-01-30", "2018-02-28", "")
-    print(windData1)
+                      "2017-01-01", "2018-03-04", "")
+        #print(windData1)
+        #print(len(windData1.Data), len(windData1.Data[0]), len(windData1.Times))
 
-    timeList = [time.strftime('%Y-%m-%d') for time in windData1.Times]
-    print(len(windData1.Data), len(windData1.Data[0]), len(windData1.Times))
-    df = pd.DataFrame(index=timeList, columns=windData1.Fields)
-    for i in range(0, len(windData1.Data)-1):
-        df[windData1.Fields[i]] = windData1.Data[i]
+        for i in range(0, len(windData1.Data)-1):
+            df[windData1.Fields[i]] = windData1.Data[i]
 
-    print(df.fillna(''))
 
+        for i in range(0, len(df.index)):
+            #print(df.index[i])
+
+            cursor.execute(
+                "INSERT INTO fut_mkt_quot_day(contractid, timestamp, open, high, low, close, settle, volume,"
+                "oi, amt, chg, chg_settlement, oi_chg, pre_settle, dealnum, upd_time)"
+                " VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                (contract, df.index[i], df.iloc[i, 0], df.iloc[i, 1], df.iloc[i, 2], df.iloc[i, 3], df.iloc[i, 4], df.iloc[i, 5],
+                    df.iloc[i, 6], df.iloc[i, 7], df.iloc[i, 8], df.iloc[i, 9], df.iloc[i, 10], df.iloc[i, 11], df.iloc[i, 12], timeNow))
+
+    cursor.close()
     w.stop()
 
     return render(request, 'dao.html')
+
