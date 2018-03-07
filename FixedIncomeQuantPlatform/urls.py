@@ -24,11 +24,11 @@ urlpatterns = [
     path('YTMAnalytic/', dataAnalytic.loadPage, name='loadYTMAnalytic'),
 
     #导入债券到期数据
-    path('YTMAnalytic/insertDataToBondYTM', dao.insertDataToBondYTM, name='insertDataToBondYTM'),
+    #path('YTMAnalytic/insertDataToBondYTM', dao.insertDataToBondYTM, name='insertDataToBondYTM'),
     #导入期货合约数据
-    path('YTMAnalytic/insertDataToFutureInfo', dao.insertDataToFutureInfo, name='insertDataToFutureInfo'),
+    #path('YTMAnalytic/insertDataToFutureInfo', dao.insertDataToFutureInfo, name='insertDataToFutureInfo'),
     #导入期货行情数据
-    path('YTMAnalytic/insertDataToFutureDatabase', dao.insertDataToFutureDatabase, name='insertDataToFutureDatabase'),
+    #path('YTMAnalytic/insertDataToFutureDatabase', dao.insertDataToFutureDatabase, name='insertDataToFutureDatabase'),
 
     #页面初始化数据
     path('YTMAnalytic/loadData', dataAnalytic.loadData.as_view(), name='loadData'),

@@ -69,6 +69,8 @@
                       <div id="latestDiffPrice" style="position:relative; float:left; margin-top: 0.3rem; margin-left: .4rem">--</div>
                       <div id="latestDiffDiff" style="position:relative; float:left; margin-top: 0.3rem; margin-left: .4rem">--</div>
                       <div id="latestDiffPercent" style="position:relative; float:left; margin-top: 0.3rem; margin-left: .4rem">--</div>
+                      <!-- 序列分析按键 -->
+                      <button id="getSeries" type="button" style="position:relative; height: 0.5rem; width: 1.5rem; float:left; margin-top: 0.3rem; margin-left: 1rem">获取序列</button>
                       <!-- 清除float样式 -->
                       <div class="clear" ></div>
 
@@ -256,7 +258,7 @@
                 loadYTMData(bondType,duration, startTime, endTime, 'YTM_tab2_container');
             });
             //绑定价差分析按钮
-            $( "#diffCacl" ).click(function() {
+            $("#diffCacl").click(function() {
                 var bondType = [], duration = [];
                 bondType[0] = $("#bondNameSelect1").children('option:selected').text();
                 bondType[1] = $("#bondNameSelect2").children('option:selected').text();
@@ -265,6 +267,22 @@
                 var startTime = null, endTime = null;
                 getBondYTMDiffCacl(bondType,duration, startTime, endTime, 'YTMSpread_tab2_container');
             });
+
+            //绑定序列分析按钮
+            $("#getSeries").click(function() {
+                var bondType = [], duration = [];
+                bondType[0] = $("#bondNameSelect1").children('option:selected').text();
+                bondType[1] = $("#bondNameSelect2").children('option:selected').text();
+                duration[0] = $("#durationSelect1").children('option:selected').text();
+                duration[1] = $("#durationSelect2").children('option:selected').text();
+                var startTime = TimeInt2Local($('#YTM_tab2_container').highcharts().xAxis[0].getExtremes().min);
+                var endTime = TimeInt2Local($('#YTM_tab2_container').highcharts().xAxis[0].getExtremes().max);
+                console.log(TimeInt2Local($('#YTM_tab2_container').highcharts().rangeSelector.minInput.HCTime));
+                debugger;
+                //var startTime = null, endTime = null;  这里的container没用，只为了保持接口的非空
+                getBondDataSeries(bondType, duration, startTime, endTime, 'YTMSpread_tab2_container');
+            });
+
             /*
             * 价差矩阵多选框初始化
             * */
@@ -359,13 +377,13 @@
                 },
                 dataType: 'json',
                 url: url,
-                success: loadData,
+                success: loadDataGraph,
                 error: errorInfo,
                 //采用异步
                 async: true
             });
         }
-        /***** 价差分析函数 *****/
+        /***** 价差分析 生成图形 函数 *****/
         function getBondYTMDiffCacl(bondType,duration, startTime, endTime, containerName, method) {
             var url = '/FixedIncome/YTMAnalytic/getBondYTMDiffCacl';
             //给method赋默认参数
@@ -382,15 +400,15 @@
                 },
                 dataType: 'json',
                 url: url,
-                success: loadData,
+                success: loadDataGraph,
                 error: errorInfo,
                 //采用异步
                 async: true
             });
         }
-        var loadData = function(data) {
+        var loadDataGraph = function(data) {
             var seriesData = [];
-            var arrayData = [];
+            //var arrayData = [];
             //解析json数据
             console.log(data);
             //data = eval('('+data+')');
@@ -404,22 +422,84 @@
                     str2UTC(item.timestamp),
                     parseFloat(item.bondytm)
                 ]);
+                /*
                 arrayData.push([
                     parseFloat(item.bondytm)
                 ]);
+                */
             });
             /*******  创建图形  ******/
             createCharts(seriesData, bondType, containerName);
             //$('body').mLoading("hide");
             /*******  加载数据分析数据  ******/
+            /*
             //销毁变量，释放空间
             delete seriesData;
             //如果是价差分析，加载数据分析函数
             if(method == 'loadDiff'){
                 loadAnalysisData(arrayData);
             }
-            //console.log(data);
+            */
         };
+
+        /***** 价差分析 序列分析 函数 *****/
+        function getBondDataSeries(bondType, duration, startTime, endTime, containerName, method) {
+            var url = '/FixedIncome/YTMAnalytic/getBondYTMDiffCacl';
+            //给method赋默认参数
+            method = method ? method : 'loadDiff';
+            $.ajax({
+                type: 'POST',
+                data:{
+                    "bondType[]":bondType,
+                    "duration[]":duration,
+                    "startTime":startTime,
+                    "endTime":endTime,
+                    'containerName':containerName,
+                    'method':method
+                },
+                dataType: 'json',
+                url: url,
+                success: loadDataSeries,
+                error: errorInfo,
+                //采用异步
+                async: true
+            });
+        }
+        var loadDataSeries = function(data) {
+            //var seriesData = [];
+            var arrayData = [];
+            //解析json数据
+            console.log(data);
+            //data = eval('('+data+')');
+            //取出债券名称
+            var bondType = data.bondType;
+            var containerName = data.containerName;
+            var method = data.method;
+            //加载数据
+            $.each(data.quoteData, function (i, item) {
+                /*
+                seriesData.push([
+                    str2UTC(item.timestamp),
+                    parseFloat(item.bondytm)
+                ]);
+                */
+                arrayData.push([
+                    parseFloat(item.bondytm)
+                ]);
+
+            });
+            /*******  创建图形  ******/
+            //createCharts(seriesData, bondType, containerName);
+            //$('body').mLoading("hide");
+            /*******  加载数据分析数据  ******/
+            //销毁变量，释放空间
+            //delete seriesData;
+            //如果是价差分析，加载数据分析函数
+            if(method == 'loadDiff'){
+                loadAnalysisData(arrayData);
+            }
+        };
+
         /***** 数据分析函数 *****/
         function loadAnalysisData(arrayData) {
             var url = '/FixedIncome/YTMAnalytic/getBondYTMAnalyicData';
@@ -732,6 +812,30 @@
                     }
                 }
             });
+        }
+
+        function TimeInt2Local(ts){
+            //var tl=new Date(parseInt(ts)).toLocaleDateString().replace(/\//g,"-");
+            var tl=new Date(parseInt(ts)).Format("yyyy-MM-dd hh:mm:ss.S")
+            return tl;
+        }
+
+        Date.prototype.Format = function (fmt) { //author: meizz
+            var o = {
+                "M+": this.getMonth() + 1, //月份
+                "d+": this.getDate(), //日
+                "h+": this.getHours(), //小时
+                "m+": this.getMinutes(), //分
+                "s+": this.getSeconds(), //秒
+                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                "S": this.getMilliseconds() //毫秒
+            };
+            if (/(y+)/.test(fmt))
+                fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt))
+                    fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
         }
     </script>
 
