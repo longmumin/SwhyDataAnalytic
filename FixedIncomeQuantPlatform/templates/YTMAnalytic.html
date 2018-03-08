@@ -275,10 +275,8 @@
                 bondType[1] = $("#bondNameSelect2").children('option:selected').text();
                 duration[0] = $("#durationSelect1").children('option:selected').text();
                 duration[1] = $("#durationSelect2").children('option:selected').text();
-                var startTime = TimeInt2Local($('#YTM_tab2_container').highcharts().xAxis[0].getExtremes().min);
-                var endTime = TimeInt2Local($('#YTM_tab2_container').highcharts().xAxis[0].getExtremes().max);
-                console.log(TimeInt2Local($('#YTM_tab2_container').highcharts().rangeSelector.minInput.HCTime));
-                debugger;
+                var startTime = TimeInt2Local($('#YTMSpread_tab2_container').highcharts().xAxis[0].getExtremes().userMin);
+                var endTime = TimeInt2Local($('#YTMSpread_tab2_container').highcharts().xAxis[0].getExtremes().userMax);
                 //var startTime = null, endTime = null;  这里的container没用，只为了保持接口的非空
                 getBondDataSeries(bondType, duration, startTime, endTime, 'YTMSpread_tab2_container');
             });
@@ -518,6 +516,7 @@
         }
          var loadAnalysis = function(data) {
             console.log(data);
+            debugger;
             //获取json数据
             data = data.quoteData;
             //取出分析指标

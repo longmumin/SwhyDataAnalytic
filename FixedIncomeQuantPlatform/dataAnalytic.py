@@ -236,7 +236,7 @@ class getBondYTMMatrix(APIView):
         通过containerName选择债券类型（bondType）和期限（duration）的矩阵形成方式
         债券类型：bondYTMMatrix
         期限：durationMatrix
-       '''
+        '''
         # 生成债券期限矩阵
         if (containerName == 'durationMatrix'):
             for bond in bondType:
@@ -420,6 +420,9 @@ class getBondYTMAnalyicData(APIView):
         analysisData['deviateStandardDeviation'] = round(deviateStandardDeviation, 4)
         analysisData['max'] = round(max, 4)
         analysisData['min'] = round(min, 4)
+        #获取最新波动率
+        analysisData['vol'] = round((getVolDay(arrayData))[-1], 4)
+
         quoteData['quoteData'] = analysisData
         logger.info(quoteData)
 
@@ -585,3 +588,10 @@ def dictMinusMatrix(dict1, dict2):
             data['timestamp'] = k
             diffDict[k] = data
     return diffDict
+
+#实际上就是求除法
+def getVolDay(arrayData):
+    volData = []
+    for i in range(0, len(arrayData)-2):
+        volData.append(arrayData[i+1]/arrayData[i])
+    return volData
