@@ -23,24 +23,8 @@
         <link href="{% static 'css/jquery.mloading.css' %}" rel="stylesheet" type="text/css">
         <link href="{% static 'css/jquery_datepicker.css' %}" rel="stylesheet">
         <link href="{% static 'css/fm.selectator.jquery.css' %}" rel="stylesheet">
+{#        <link href="{% static 'css/bootstrap.flatly.css' %}" rel="stylesheet">#}
 
-        <script>
-            $(function() {
-                $( "#datepicker" ).datepicker({
-                    showOtherMonths: true,
-                    selectOtherMonths: true,
-                    showButtonPanel: true,
-                    autoSize: true,
-                    prevText: "<", // Display text for previous month link
-		            nextText: ">", // Display text for next month link
-                    closeText: "完成", // Display text for close link
-                    currentText: "返回", // Display text for current month link
-                    monthNames: ["1月","2月","3月","4月","5月","6月", "7月","8月","9月","10月","11月","12月"], // Names of months for drop-down and formatting
-                    dayNamesMin: ["日","一","二","三","四","五","六"], // Column headings for days starting at Sunday
-                    dateFormat: "yy-mm-dd"
-                });
-            });
-        </script>
 
         <style>
             html,body{
@@ -52,31 +36,81 @@
 
     <body>
 
+{#    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">#}
+{#        <a class="navbar-brand"><img src="/static/image/swhylogo.png" style="width:100%; float:left;"></a>#}
+{#        <h2 class="navbar-brand" style="font-size: 20px">申万宏源证券有限公司--期权报价</h2>#}
+{#        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">#}
+{#            <span class="navbar-toggler-icon"></span>#}
+{#        </button>#}
+{##}
+{#        <div class="collapse navbar-collapse" id="navbarColor01">#}
+{##}
+{#                    <label style="color: #5b80b2; margin-left: .6rem"> 交易所</label>#}
+{#                    <select id="ExchangeSelect" class="custom-select">#}
+{#                        <option value="00" id="id_exchange">--选择交易所--</option>#}
+{#                    </select>#}
+{##}
+{#                    <label style="color: #5b80b2;margin-left: .3rem"> 挂钩标的</label>#}
+{#                    <select id="ContractListSelect" class="custom-select">#}
+{#                        <option value="00" id='id_contract'>--选择期货--</option>#}
+{#                    </select>#}
+{##}
+{##}
+{#                    <label style="color: #5b80b2">期限</label>#}
+{#                    <select id="qixian" class="custom-select" name="qixianSelect">#}
+{#                        <option value="01">--期限--</option>#}
+{#                    </select>#}
+{##}
+{#        </div>#}
+{#    </nav>#}
+{##}
+{#        <div class="html_content">#}
+{#            <div class="item-section" data-repeat="sections">#}
+{##}
+{#                <table id="optionTable" class="table table-hover">#}
+{#                    <tr id="tableTitle">#}
+{#                        <th class="table-th" colspan="2" style = "background-color: red">看涨</th>#}
+{#                        <th class="table-th" id = 'instrument' style = "background-color: black">forward</th>#}
+{#                        <th class="table-th" colspan="2" style = "background-color: #008B00">看跌</th>#}
+{#                    </tr>#}
+{##}
+{#                    <tr id="tableTitle">#}
+{#                        <th class="table-th">买价</th>#}
+{#                        <th class="table-th">卖价</th>#}
+{#                        <th class="table-th">行权价</th>#}
+{#                        <th class="table-th">买价</th>#}
+{#                        <th class="table-th">卖价</th>#}
+{#                    </tr>#}
+{#                </table>#}
+
+{#            </div>>#}
+{#        </div>>#}
+
         <div class="html_content">
             <div class="item-section" data-repeat="sections">
                 <div class="item-section_header">
-                    <h2><img src="/static/image/swhylogo.png" style="width:6rem; float:left;"></h2>
-{#                     <h2>申万宏源证券有限公司--期权报价</h2> #}
+                    <h2><img src="/static/image/swhylogo.png" style="width:25%; float:left;"></h2>
+                     <h2>申万宏源证券有限公司--期权报价</h2>
                 </div>
 
 
-                <form action="" class="calender-body_left">
+                <div class="calender-body_left">
                     <label style="color: #5b80b2; margin-left: .6rem"> 交易所</label>
                     <select id="ExchangeSelect" style="margin-top: 0.6rem; height: 0.6rem; width: 2rem; margin-right: .1rem">
                         <option value="00" id="id_exchange">--选择交易所--</option>
                     </select>
 
                     <label style="color: #5b80b2;margin-left: .3rem"> 挂钩标的</label>
-                    <select id="ContractListSelect" style="margin-top: 0.6rem; height: 0.6rem; width: 2rem; margin-right: .1rem">
+                    <select id="ContractListSelect" style="margin-top: 0.6rem; height: 0.6rem; width: 2.5rem; margin-right: .1rem">
                         <option value="00" id='id_contract'>--选择期货--</option>
                     </select>
-                </form>
-                <form action="" class="calender-body_right">
+                </div>
+                <div action="" class="calender-body_right" style="font-size: 20px">
                     <label style="color: #5b80b2">期限</label>
                     <select id="qixian" style="margin-top: 0.6rem; height: 0.6rem; width: 2rem; margin-right: .1rem" name="qixianSelect">
                         <option value="01">--期限--</option>
                     </select>
-                </form>
+                </div>
 
 
                 <table id="optionTable" class="table">
@@ -105,7 +139,7 @@
 
                  //进度条
                  $('body').mLoading({
-                    text:"加载T型报价",//加载文字，默认值：加载中...
+                    text:"加载T型报价"//加载文字，默认值：加载中...
                  });
 
                  //获取合约号
@@ -114,9 +148,9 @@
                  //初始化选择框
                  init(instrument);
 
-                 var qixian = 1, dateselect = null;
+                 var qixian = 1;
                  //加载报价数据
-                 loadQuotesData(qixian, dateselect, instrument);
+                 loadQuotesData(qixian, instrument);
 
                  //刷新页面，每隔5秒刷新一次数据
                  //setInterval(refreshQuoteData(instrument),5000);
@@ -145,8 +179,8 @@
 
                  //绑定合约下拉框
                  $("#ContractListSelect").change(function jump(){
-                     var contractname = $(this).children('option:selected').text();
-                     window.location.pathname='/quotes/TQuotes/' + contractname;
+                     var contractName = $(this).children('option:selected').text();
+                     window.location.pathname='/quotes/TQuotes/' + contractName;
                  });
 
                  //绑定期限下拉框及日期
@@ -156,29 +190,20 @@
                      });
                      $('#optionTable tr:gt(1)').remove();
                      var qixian = $(this).children('option:selected').val();
-                     var dateselect = $("#datepicker").val();
-                     loadQuotesData(qixian, dateselect, instrument);
 
-                 });
-                 $("#datepicker").change(function(){
-                     $('body').mLoading({
-                         text:"加载T型报价",//加载文字，默认值：加载中...
-                     });
-                     $('#optionTable tr:gt(1)').remove();
-                     var qixian = $("#qixian").children('option:selected').val();
-                     var dateselect = $(this).val();
-                     loadQuotesData(qixian, dateselect, instrument);
+                     loadQuotesData(qixian, instrument);
+
                  });
              }
 
              /***** 数据获取函数 *****/
-             function loadQuotesData(qixian, dateselect, instrument){
-                 var url = '/quotes/TQuotes/loadTQuotes/' + instrument
+             function loadQuotesData(qixian, instrument){
+                 var url = '/quotes/TQuotes/loadTQuotes/' + instrument;
                  $.ajax({
                      type: 'POST',
                      data:{
                          "qixian":qixian,
-                         "dateselect":dateselect
+                         "instrument":instrument
                      },
                      dataType: 'json',
                      url: url,
@@ -191,32 +216,35 @@
 
              var loadData = function(data){
                 //更新数据
-                console.log(data.TQuoteData);
+                console.log(data.quoteData);
                 //获取合约号
-                var instrument = window.location.pathname.substr(window.location.pathname.lastIndexOf('/')+1, window.location.pathname.length)
+                var instrument = window.location.pathname.substr(window.location.pathname.lastIndexOf('/')+1, window.location.pathname.length);
                 itemId = instrument.substr(0, instrument.indexOf('.'));
 
                 //根据现价和昨收价，给报价上色
-                if(data.forward > data.lastPrice) {
-                    var callColor = 'red';
-                    var putColor = '#008B00'
-                }
-                else if(data.forward < data.lastPrice){
-                    var callColor = '#008B00';
-                    var putColor = 'red'
-                }
-                else if(data.forward == data.lastPrice){
-                    var callColor = 'white';
-                    var putColor = 'white'
-                }
+                 forward = parseFloat(data.forward)
+                 lastPrice = parseFloat(data.lastPrice)
+                 if(forward > lastPrice) {
+                     var callColor = 'red';
+                     var putColor = '#008B00'
+                 }
+                 else if(forward < lastPrice){
+                     var callColor = '#008B00';
+                     var putColor = 'red'
+                 }
+                 else if(forward == lastPrice){
+                     var callColor = 'white';
+                     var putColor = 'white'
+                 }
 
-                $.each(data.TQuoteData, function(i, item){
+
+                $.each(data.quoteData, function(i, item){
                      var newRow = $('<tr id="'+itemId+'" style="background-color:#050505">' +
-                         '<td class="table-td" id="'+itemId+'pricingCallAsk"  style="color:' + callColor + '">' + item[1].pricingCallAsk + '</td>' +
-                         '<td class="table-td" id="'+itemId+'pricingCallBid" style="color:' + callColor + '">' + item[1].pricingCallBid + '</td>' +
-                         '<td class="table-td" style="background-color: #2B2B2B" id="'+itemId+'item">' + item[0] + '</td>' +
-                         '<td class="table-td" id="'+itemId+'pricingPutAsk" style="color:' + putColor + '">' + item[1].pricingPutAsk + '</td>' +
-                         '<td class="table-td" id="'+itemId+'pricingPutBid" style="color:' + putColor + '">' + item[1].pricingPutBid + '</td>').hide().fadeIn(1000);
+                         '<td class="table-td" id="'+itemId+'pricingCallAsk"  style="color:' + callColor + '">' + item.pricingCallAsk + '</td>' +
+                         '<td class="table-td" id="'+itemId+'pricingCallBid" style="color:' + callColor + '">' + item.pricingCallBid + '</td>' +
+                         '<td class="table-td" style="background-color: #2B2B2B" id="'+itemId+'item">' + parseFloat(i) + '</td>' +
+                         '<td class="table-td" id="'+itemId+'pricingPutAsk" style="color:' + putColor + '">' + item.pricingPutAsk + '</td>' +
+                         '<td class="table-td" id="'+itemId+'pricingPutBid" style="color:' + putColor + '">' + item.pricingPutBid + '</td>').hide().fadeIn(1000);
                      $('#optionTable').append(newRow);
                 });
                 changeFont('instrument', data.forward, 'White');
@@ -227,12 +255,13 @@
              function refreshQuoteData(instrument) {
                  var url = '/quotes/TQuotes/updateTQuotes/' + instrument;
                  var qixian = $("#qixian").children('option:selected').val();
-                 var dateselect = $("#datepicker").val();
+
                  $.ajax({
                      type: 'POST',
                      data:{
                          "qixian":qixian,
-                         "dateselect":dateselect
+
+                         "instrument":instrument
                      },
                      dataType: 'json',
                      url: url,
