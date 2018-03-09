@@ -91,7 +91,6 @@ def loadData(request):
 期货及平值期权价格
 传递参数:
     1. qixian 期权期限
-    2. dateselect 价格日期
 返回参数：
     1. quoteData 价格序列
 '''

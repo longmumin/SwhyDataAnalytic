@@ -28,7 +28,6 @@ def loadPage(request, instrument):
 传递参数:
     1. instrument 期货品种
     2. qixian 期权到期期限
-    3. dateselect 价格日期
 返回参数：
     1. quoteData 行情序列
 '''
