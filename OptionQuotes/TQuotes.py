@@ -1,9 +1,16 @@
 from django.shortcuts import render
-
 import datetime, re, json, logging
 from . import TYApi
 from django.http import JsonResponse
 # from WindPy import w
+
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from .models import loadDataModel
+from .serializers import loadTDataSerializer
+
 
 '''
 日志模块加载
@@ -21,19 +28,59 @@ def loadPage(request, instrument):
 传递参数:
     1. instrument 期货品种
     2. qixian 期权到期期限
-    3. dateselect 价格日期
 返回参数：
     1. quoteData 行情序列
 '''
 
 
-def loadData(request, instrument):
-    #获取同余数据
-    quoteData = GetTQuotesData(request, instrument)
-    return JsonResponse(quoteData, safe=False)
+class loadTData(APIView):
+
+    def get(self, request, format=None):
+        modelObject = loadDataModel.objects.all()
+        serializer = loadTDataSerializer(modelObject, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+
+        try:
+            qixian = int(request.data['qixian'])
+            instrument = request.data['instrument']
+
+        except Exception as e:
+            logger.error("get request error, ret = %s" % e.args[0])
+
+        # 获取同余数据
+        quoteData = GetTQuotesData(qixian, instrument)
+        serializer = loadTDataSerializer(data=quoteData)
 
 
-def GetTQuotesData(request, instrument):
+        if serializer.is_valid():
+            # serializer.save()
+            # json_dumps_params为json.dumps的参数
+            return JsonResponse(serializer.data, json_dumps_params={"ensure_ascii": False, "sort_keys": True},
+                                safe=False, status=status.HTTP_201_CREATED)
+        else:
+            return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+'''
+def loadTData(request, instrument):
+            #获取同余数据
+    if (request.method == 'POST'):
+        try:
+            qixian = request.POST['qixian']
+#            selected_date = request.POST['dateselect']
+            instrument = request.POST['instrument']
+        except Exception as e:
+            logger.error("get request error, ret = %s" % e.args[0])
+
+        quoteData = GetTQuotesData(qixian, instrument)
+        logger.info(quoteData)
+        return JsonResponse(quoteData, safe=False)
+'''
+
+def GetTQuotesData(qixian, instrument):
 
     # 获得当前时间
     today = datetime.datetime.now().strftime('%Y-%m-%d')
@@ -44,14 +91,12 @@ def GetTQuotesData(request, instrument):
     tau = 1/12  # 量
     r = 0.015  # 无风险利率
 
-    if (request.method == 'POST'):
+    if (qixian != 1):
         try:
-            qixian = request.POST['qixian']
             tau = int(qixian) / 12
-            selected_date = request.POST['dateselect']
-            if (selected_date!='当日'and selected_date!=''):
-                today = selected_date
-                yesterday = (datetime.date(*map(int, selected_date.split('-'))) + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
+#            if (selected_date!='当日'and selected_date!=''):
+#                today = selected_date
+#                yesterday = (datetime.date(*map(int, selected_date.split('-'))) + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
         except Exception as e:
             logger.error("get request error, ret = %s" % e.args[0])
 
@@ -86,26 +131,30 @@ def GetTQuotesData(request, instrument):
         pricingCallBid = tyApi.TYPricing(forward, price, vol + 0.03, tau, r, 'call')
         pricingPutAsk = tyApi.TYPricing(forward, price, vol - 0.03, tau, r, 'put')
         pricingPutBid = tyApi.TYPricing(forward, price, vol + 0.03, tau, r, 'put')
-        TQuoteData['pricingCallAsk'] = round(pricingCallAsk,2)
-        TQuoteData['pricingCallBid'] = round(pricingCallBid,2)
-        TQuoteData['pricingPutAsk'] = round(pricingPutAsk,2)
-        TQuoteData['pricingPutBid'] = round(pricingPutBid,2)
+        TQuoteData['pricingCallAsk'] = str(round(pricingCallAsk, 2))
+        TQuoteData['pricingCallBid'] = str(round(pricingCallBid, 2))
+        TQuoteData['pricingPutAsk'] = str(round(pricingPutAsk, 2))
+        TQuoteData['pricingPutBid'] = str(round(pricingPutBid, 2))
+        price = str(price)
         contractData[price] = TQuoteData
 
     #对行权价排序
     contractData = [(k, contractData[k]) for k in sorted(contractData.keys())]
-    TData['TQuoteData'] = contractData
+    TData['quoteData'] = contractData
     #获取限价和昨收价
     forward = tyApi.TYMktQuoteGet(today, instrument, time_zone)
     lastPrice = tyApi.TYMktQuoteGet(yesterday, instrument, time_zone, 'close', 'settle')
-    TData['forward'] = round(forward, 2)
-    TData['lastPrice'] = round(lastPrice, 2)
+    TData['forward'] = str(round(forward, 2))
+    TData['lastPrice'] = str(round(lastPrice, 2))
 
     return TData
+
 
 '''
 x<500 变动范围5, 500<x<2000 变动范围10, 2000<x<6000 变动范围50, 6000<x 变动范围100
 '''
+
+
 def getForwardList(forward):
     forwardList = []
     for i in range(0, 6):

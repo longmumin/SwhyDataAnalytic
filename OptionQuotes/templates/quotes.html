@@ -19,25 +19,8 @@
         <title>申万宏源FICC</title>
         <link href="{% static 'css/quotes.css' %}" rel="stylesheet">
         <link href="{% static 'css/jquery.mloading.css' %}" rel="stylesheet">
-        <link href="{% static 'css/jquery_datepicker.css' %}" rel="stylesheet">
         <link href="{% static 'css/fm.selectator.jquery.css' %}" rel="stylesheet">
 
-        <script>
-            $(function() {
-                $( "#datepicker" ).datepicker({
-                    showOtherMonths: true,
-                    selectOtherMonths: true,
-                    showButtonPanel: true,
-                    prevText: "<", // Display text for previous month link
-		            nextText: ">", // Display text for next month link
-                    closeText: "完成", // Display text for close link
-                    currentText: "返回", // Display text for current month link
-                    monthNames: ["1月","2月","3月","4月","5月","6月", "7月","8月","9月","10月","11月","12月"], // Names of months for drop-down and formatting
-                    dayNamesMin: ["日","一","二","三","四","五","六"], // Column headings for days starting at Sunday
-                    dateFormat: "yy-mm-dd"
-                });
-            });
-        </script>
 
         <style>
             html,body{
@@ -52,10 +35,10 @@
         <div class="html_content">
             <div class="item-section" data-repeat="sections">
                 <div class="item-section_header" style="float:left;">
-                    <h2><img src="/static/image/swhylogo.png" style="width:3rem; float:left; max-width: 100%"></h2>
+                    <h2><img src="/static/image/swhylogo.png" style="width: 6rem; float:left; max-width: 100%"></h2>
                 </div>
 
-                <div class="item-section_header" style="margin:0 auto; width:500px; height:100px; margin-top: .2rem;">
+                <div class="item-section_header" style="margin:auto; width:500px; height:100px; margin-top: .2rem;">
                     <h2 style="color: #FFEFDB; font-size: 25px">平值期权报价</h2>
                     <h2 style="color: #FFEFDB; margin-bottom: .5rem; font-size: 22px">（系统测试中，报价仅为展示用）</h2>
                 </div>
@@ -93,7 +76,7 @@
 
                  //加载报价数据
                  var qixian = 1, dateselect = null;
-                 loadQuotesData(qixian, dateselect);
+                 loadQuotesData(qixian);
 
                 //刷新页面，每隔5秒刷新一次数据
                 setInterval(refreshQuoteData,10000);
@@ -115,28 +98,18 @@
                      });
                      $('#optionTable tr:gt(0)').remove();
                      var qixian = $(this).children('option:selected').val();
-                     var dateselect = $("#datepicker").val();
-                     loadQuotesData(qixian, dateselect);
-                 });
-                 $("#datepicker").change(function(){
-                     $('body').mLoading({
-                         text:"加载中",//加载文字，默认值：加载中...
-                     });
-                     $('#optionTable tr:gt(0)').remove();
-                     var qixian = $("#qixian").children('option:selected').val();
-                     var dateselect = $(this).val();
-                     loadQuotesData(qixian, dateselect);
+                     {#var dateselect = $("#datepicker").val();#}
+                     loadQuotesData(qixian);
                  });
              }
 
              /***** 价格获取函数 *****/
-             function loadQuotesData(qixian, dateselect){
+             function loadQuotesData(qixian){
                  var url = '/quotes/loadQuotes/';
                  $.ajax({
                      type: 'POST',
                      data:{
                          "qixian":qixian,
-                         "dateselect":dateselect
                      },
                      dataType: 'json',
                      url: url,
@@ -148,26 +121,28 @@
              }
 
              var loadData = function(data){
-                //更新数据
-                //console.log(data);
-                $.each(data, function(i, item){
+                 //更新数据
+                 console.log(data);
+                 $.each(data.quoteData, function(i, item){
                      itemId = item[0].substr(0, item[0].indexOf('.'));
                      //判断当前价格是否高于昨收，定义字体颜色
-                     if(item[1].forward < item[1].lastPrice)
-                         fontColor = 'Green'
-                     else if(item[1].forward > item[1].lastPrice)
-                         fontColor = 'Red'
-                     else if(item[1].forward == item[1].lastPrice)
-                         fontColor = 'White'
+                     forward = parseFloat(item[1].forward);
+                     lastPrice = parseFloat(item[1].lastPrice);
+                     if(forward < lastPrice)
+                         fontColor = 'Green';
+                     else if(forward > lastPrice)
+                         fontColor = 'Red';
+                     else if(forward === lastPrice)
+                         fontColor = 'White';
                      var newRow=$('<tr id="'+itemId+'" style="background-color:#050505">' +
-                        '<td class="table-td" id="'+itemId+'item"> <a href="../quotes/TQuotes/' + item[0] + '\" style="text-decoration: none; color: inherit;" >'+ item[1].name + '</a>' +'</td>' +
-                        '<td class="table-td" id="'+itemId+'contract">'+ item[0] +'</td>' +
-                        '<td class="table-td" id="'+itemId+'forward" style="color: '+ fontColor + ';">'+ item[1].forward +'</td>' +
-                        '<td class="table-td" id="'+itemId+'pricingAsk" style="color: '+ fontColor + ';">'+ item[1].pricingAsk +'</td>' +
-                        '<td class="table-td" id="'+itemId+'pricingBid" style="color: '+ fontColor + ';">'+ item[1].pricingBid +'</td>').hide().fadeIn(1000);
+                         '<td class="table-td" id="'+itemId+'item"> <a href="../quotes/TQuotes/' + item[0] + '\" style="text-decoration: none; color: inherit;" >'+ item[1].name + '</a>' +'</td>' +
+                         '<td class="table-td" id="'+itemId+'contract">'+ item[0] +'</td>' +
+                         '<td class="table-td" id="'+itemId+'forward" style="color: '+ fontColor + ';">'+ item[1].forward +'</td>' +
+                         '<td class="table-td" id="'+itemId+'pricingAsk" style="color: '+ fontColor + ';">'+ item[1].pricingAsk +'</td>' +
+                         '<td class="table-td" id="'+itemId+'pricingBid" style="color: '+ fontColor + ';">'+ item[1].pricingBid +'</td>').hide().fadeIn(1000);
                      $('#optionTable').append(newRow);
-                });
-                $('body').mLoading("hide");
+                 });
+                 $('body').mLoading("hide");
              };
 
              /***** 页面自动刷新函数 *****/
@@ -179,7 +154,7 @@
                      type: 'POST',
                      data:{
                          "qixian":qixian,
-                         "dateselect":dateselect
+
                      },
                      dataType: 'json',
                      url: url,
@@ -192,8 +167,8 @@
 
             var updateData = function(data){
                 //更新数据
-                //console.log(data);
-                $.each(data, function(i, item) {
+                console.log(data);
+                $.each(data.quoteData, function(i, item) {
                     itemId = item[0].substr(0, item[0].indexOf('.'));
                     if(item[1].forward < item[1].lastPrice)
                          fontColor = 'Green'
@@ -220,6 +195,7 @@
             var errorInfo = function(msg){
                 //关闭进度条
                 $('body').mLoading("hide");
+
             };
         </script>
     </body>

@@ -15,19 +15,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from . import get_data, quotes, TQuotes
+from . import get_data, quotes, TQuotes, OptionAnalytic
 from django.conf.urls import url
 
 urlpatterns = [
     #主报价页面
     path('', quotes.loadPage, name='quotes'),
     #主报价POST
-    path('updateQuotes/', quotes.loadData, name='updateQuotes'),
-    path('loadQuotes/', quotes.loadData, name='loadQuotes'),
+    path('updateQuotes/', quotes.loadData.as_view(), name='updateQuotes'),
+    path('loadQuotes/', quotes.loadData.as_view(), name='loadQuotes'),
     #T型报价页面
     path('TQuotes/<str:instrument>', TQuotes.loadPage, name='TQuotes'),
     #T型报价 POST
-    path('TQuotes/loadTQuotes/<str:instrument>', TQuotes.loadData, name='loadTQuotes'),
-    path('TQuotes/updateTQuotes/<str:instrument>', TQuotes.loadData, name='loadTQuotes'),
+    path('TQuotes/loadTQuotes/<str:instrument>', TQuotes.loadTData.as_view(), name='loadTQuotes'),
+    path('TQuotes/updateTQuotes/<str:instrument>', TQuotes.loadTData.as_view(), name='updateTQuotes'),
+    #情景分析页面
+    path('OptionAnalytic/', OptionAnalytic.loadPage, name='OptionAnalytic'),
+    #获得情景分析数据
+    path('OptionAnalytic/loadOptions/', OptionAnalytic.loadData, name='loadOptions'),
 
 ]
