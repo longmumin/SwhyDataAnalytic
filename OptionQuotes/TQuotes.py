@@ -52,10 +52,11 @@ class loadTData(APIView):
         # 获取同余数据
         quoteData = GetTQuotesData(qixian, instrument)
         serializer = loadTDataSerializer(data=quoteData)
+        logger.info(quoteData)
 
 
         if serializer.is_valid():
-            # serializer.save()
+            serializer.save()
             # json_dumps_params为json.dumps的参数
             return JsonResponse(serializer.data, json_dumps_params={"ensure_ascii": False, "sort_keys": True},
                                 safe=False, status=status.HTTP_201_CREATED)
@@ -139,7 +140,7 @@ def GetTQuotesData(qixian, instrument):
         contractData[price] = TQuoteData
 
     #对行权价排序
-    contractData = [(k, contractData[k]) for k in sorted(contractData.keys())]
+    #contractData = [(k, contractData[k]) for k in sorted(contractData.keys())]
     TData['quoteData'] = contractData
     #获取限价和昨收价
     forward = tyApi.TYMktQuoteGet(today, instrument, time_zone)

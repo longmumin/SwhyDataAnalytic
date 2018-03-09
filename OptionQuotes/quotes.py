@@ -60,7 +60,7 @@ class loadData(APIView):
 
         serializer = loadDataSerializer(data=quoteData)
         if serializer.is_valid():
-        #    serializer.save()
+            serializer.save()
         #  json_dumps_params为json.dumps的参数
             return JsonResponse(serializer.data, json_dumps_params={"ensure_ascii": False, "sort_keys": True},
                                 safe=False, status=status.HTTP_201_CREATED)
@@ -167,7 +167,7 @@ def GetQuotesDataFromTY(qixian) -> object:
 
     #关闭wind接口
     # w.stop()
-    quoteData = [(k, quoteData[k]) for k in sorted(quoteData.keys())]
+    #quoteData = [(k, quoteData[k]) for k in sorted(quoteData.keys())]
 
     logger.info(quoteData)
 

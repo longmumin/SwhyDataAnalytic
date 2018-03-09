@@ -10,11 +10,11 @@ class loadDataModel(models.Model):
     startTime = models.DateField('开始时间', null=True)
     endTime = models.DateField('结束时间', null=True)
     containerName = models.CharField('容器名', max_length=50)
-    forward = models.CharField ('期货目标价格', max_length=20)
-    lastPrice = models.CharField ('上日收盘价', max_length=20)
+    forward = models.CharField('期货目标价格', max_length=20)
+    lastPrice = models.CharField('上日收盘价', max_length=20)
 
     quoteData = models.TextField('期货序列数据', default='--')
-    TQuoteData = models.TextField ('期货T型报价序列数据', default='--')
+    TQuoteData = models.TextField('期货T型报价序列数据', default='--')
 
     def __unicode__(self):
         return self.title

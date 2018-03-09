@@ -124,10 +124,10 @@
                  //更新数据
                  console.log(data);
                  $.each(data.quoteData, function(i, item){
-                     itemId = item[0].substr(0, item[0].indexOf('.'));
+                     itemId = i.substr(0, i.indexOf('.'));
                      //判断当前价格是否高于昨收，定义字体颜色
-                     forward = parseFloat(item[1].forward);
-                     lastPrice = parseFloat(item[1].lastPrice);
+                     forward = parseFloat(item.forward);
+                     lastPrice = parseFloat(item.lastPrice);
                      if(forward < lastPrice)
                          fontColor = 'Green';
                      else if(forward > lastPrice)
@@ -135,11 +135,11 @@
                      else if(forward === lastPrice)
                          fontColor = 'White';
                      var newRow=$('<tr id="'+itemId+'" style="background-color:#050505">' +
-                         '<td class="table-td" id="'+itemId+'item"> <a href="../quotes/TQuotes/' + item[0] + '\" style="text-decoration: none; color: inherit;" >'+ item[1].name + '</a>' +'</td>' +
-                         '<td class="table-td" id="'+itemId+'contract">'+ item[0] +'</td>' +
-                         '<td class="table-td" id="'+itemId+'forward" style="color: '+ fontColor + ';">'+ item[1].forward +'</td>' +
-                         '<td class="table-td" id="'+itemId+'pricingAsk" style="color: '+ fontColor + ';">'+ item[1].pricingAsk +'</td>' +
-                         '<td class="table-td" id="'+itemId+'pricingBid" style="color: '+ fontColor + ';">'+ item[1].pricingBid +'</td>').hide().fadeIn(1000);
+                         '<td class="table-td" id="'+itemId+'item"> <a href="../quotes/TQuotes/' + i + '\" style="text-decoration: none; color: inherit;" >'+ item.name + '</a>' +'</td>' +
+                         '<td class="table-td" id="'+itemId+'contract">'+ i +'</td>' +
+                         '<td class="table-td" id="'+itemId+'forward" style="color: '+ fontColor + ';">'+ forward +'</td>' +
+                         '<td class="table-td" id="'+itemId+'pricingAsk" style="color: '+ fontColor + ';">'+ item.pricingAsk +'</td>' +
+                         '<td class="table-td" id="'+itemId+'pricingBid" style="color: '+ fontColor + ';">'+ item.pricingBid +'</td>').hide().fadeIn(1000);
                      $('#optionTable').append(newRow);
                  });
                  $('body').mLoading("hide");

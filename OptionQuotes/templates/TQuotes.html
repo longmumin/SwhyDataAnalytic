@@ -237,13 +237,14 @@
                      var putColor = 'white'
                  }
 
+
                 $.each(data.quoteData, function(i, item){
                      var newRow = $('<tr id="'+itemId+'" style="background-color:#050505">' +
-                         '<td class="table-td" id="'+itemId+'pricingCallAsk"  style="color:' + callColor + '">' + item[1].pricingCallAsk + '</td>' +
-                         '<td class="table-td" id="'+itemId+'pricingCallBid" style="color:' + callColor + '">' + item[1].pricingCallBid + '</td>' +
-                         '<td class="table-td" style="background-color: #2B2B2B" id="'+itemId+'item">' + item[0] + '</td>' +
-                         '<td class="table-td" id="'+itemId+'pricingPutAsk" style="color:' + putColor + '">' + item[1].pricingPutAsk + '</td>' +
-                         '<td class="table-td" id="'+itemId+'pricingPutBid" style="color:' + putColor + '">' + item[1].pricingPutBid + '</td>').hide().fadeIn(1000);
+                         '<td class="table-td" id="'+itemId+'pricingCallAsk"  style="color:' + callColor + '">' + item.pricingCallAsk + '</td>' +
+                         '<td class="table-td" id="'+itemId+'pricingCallBid" style="color:' + callColor + '">' + item.pricingCallBid + '</td>' +
+                         '<td class="table-td" style="background-color: #2B2B2B" id="'+itemId+'item">' + parseFloat(i) + '</td>' +
+                         '<td class="table-td" id="'+itemId+'pricingPutAsk" style="color:' + putColor + '">' + item.pricingPutAsk + '</td>' +
+                         '<td class="table-td" id="'+itemId+'pricingPutBid" style="color:' + putColor + '">' + item.pricingPutBid + '</td>').hide().fadeIn(1000);
                      $('#optionTable').append(newRow);
                 });
                 changeFont('instrument', data.forward, 'White');
