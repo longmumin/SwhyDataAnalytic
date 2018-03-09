@@ -25,23 +25,6 @@
         <link href="{% static 'css/fm.selectator.jquery.css' %}" rel="stylesheet">
 {#        <link href="{% static 'css/bootstrap.flatly.css' %}" rel="stylesheet">#}
 
-{#        <script>#}
-{#            $(function() {#}
-{#                $( "#datepicker" ).datepicker({#}
-{#                    showOtherMonths: true,#}
-{#                    selectOtherMonths: true,#}
-{#                    showButtonPanel: true,#}
-{#                    autoSize: true,#}
-{#                    prevText: "<", // Display text for previous month link#}
-{#		            nextText: ">", // Display text for next month link#}
-{#                    closeText: "完成", // Display text for close link#}
-{#                    currentText: "返回", // Display text for current month link#}
-{#                    monthNames: ["1月","2月","3月","4月","5月","6月", "7月","8月","9月","10月","11月","12月"], // Names of months for drop-down and formatting#}
-{#                    dayNamesMin: ["日","一","二","三","四","五","六"], // Column headings for days starting at Sunday#}
-{#                    dateFormat: "yy-mm-dd"#}
-{#                });#}
-{#            });#}
-{#        </script>#}
 
         <style>
             html,body{
@@ -111,14 +94,14 @@
                 </div>
 
 
-                <div class="calender-body_left" style="font-size: 20px">
+                <div class="calender-body_left">
                     <label style="color: #5b80b2; margin-left: .6rem"> 交易所</label>
                     <select id="ExchangeSelect" style="margin-top: 0.6rem; height: 0.6rem; width: 2rem; margin-right: .1rem">
                         <option value="00" id="id_exchange">--选择交易所--</option>
                     </select>
 
                     <label style="color: #5b80b2;margin-left: .3rem"> 挂钩标的</label>
-                    <select id="ContractListSelect" style="margin-top: 0.6rem; height: 0.6rem; width: 2rem; margin-right: .1rem">
+                    <select id="ContractListSelect" style="margin-top: 0.6rem; height: 0.6rem; width: 2.5rem; margin-right: .1rem">
                         <option value="00" id='id_contract'>--选择期货--</option>
                     </select>
                 </div>
@@ -211,17 +194,6 @@
                      loadQuotesData(qixian, instrument);
 
                  });
-                 /*
-                 $("#datepicker").change(function(){
-                     $('body').mLoading({
-                         text:"加载T型报价",//加载文字，默认值：加载中...
-                     });
-                     $('#optionTable tr:gt(1)').remove();
-                     var qixian = $("#qixian").children('option:selected').val();
-                     var dateselect = $(this).val();
-                     loadQuotesData(qixian, instrument);
-                 });
-                 */
              }
 
              /***** 数据获取函数 *****/

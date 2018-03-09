@@ -35,7 +35,6 @@ def loadPage(request, instrument):
 
 
 class loadTData(APIView):
-    a = 1
 
     def get(self, request, format=None):
         modelObject = loadDataModel.objects.all()
@@ -45,7 +44,6 @@ class loadTData(APIView):
     def post(self, request, *args, **kwargs):
 
         try:
-            b = request
             qixian = int(request.data['qixian'])
             instrument = request.data['instrument']
 
@@ -134,10 +132,10 @@ def GetTQuotesData(qixian, instrument):
         pricingCallBid = tyApi.TYPricing(forward, price, vol + 0.03, tau, r, 'call')
         pricingPutAsk = tyApi.TYPricing(forward, price, vol - 0.03, tau, r, 'put')
         pricingPutBid = tyApi.TYPricing(forward, price, vol + 0.03, tau, r, 'put')
-        TQuoteData['pricingCallAsk'] = str(round(pricingCallAsk,2))
-        TQuoteData['pricingCallBid'] = str(round(pricingCallBid,2))
-        TQuoteData['pricingPutAsk'] = str(round(pricingPutAsk,2))
-        TQuoteData['pricingPutBid'] = str(round(pricingPutBid,2))
+        TQuoteData['pricingCallAsk'] = str(round(pricingCallAsk, 2))
+        TQuoteData['pricingCallBid'] = str(round(pricingCallBid, 2))
+        TQuoteData['pricingPutAsk'] = str(round(pricingPutAsk, 2))
+        TQuoteData['pricingPutBid'] = str(round(pricingPutBid, 2))
         price = str(price)
         contractData[price] = TQuoteData
 

@@ -22,22 +22,6 @@
         <link href="{% static 'css/jquery_datepicker.css' %}" rel="stylesheet">
         <link href="{% static 'css/fm.selectator.jquery.css' %}" rel="stylesheet">
 
-        <script>
-            $(function() {
-                $( "#datepicker" ).datepicker({
-                    showOtherMonths: true,
-                    selectOtherMonths: true,
-                    showButtonPanel: true,
-                    prevText: "<", // Display text for previous month link
-		            nextText: ">", // Display text for next month link
-                    closeText: "完成", // Display text for close link
-                    currentText: "返回", // Display text for current month link
-                    monthNames: ["1月","2月","3月","4月","5月","6月", "7月","8月","9月","10月","11月","12月"], // Names of months for drop-down and formatting
-                    dayNamesMin: ["日","一","二","三","四","五","六"], // Column headings for days starting at Sunday
-                    dateFormat: "yy-mm-dd"
-                });
-            });
-        </script>
 
         <style>
             html,body{
@@ -115,16 +99,7 @@
                      });
                      $('#optionTable tr:gt(0)').remove();
                      var qixian = $(this).children('option:selected').val();
-                     var dateselect = $("#datepicker").val();
-                     loadQuotesData(qixian);
-                 });
-                 $("#datepicker").change(function(){
-                     $('body').mLoading({
-                         text:"加载中",//加载文字，默认值：加载中...
-                     });
-                     $('#optionTable tr:gt(0)').remove();
-                     var qixian = $("#qixian").children('option:selected').val();
-                     var dateselect = $(this).val();
+                     {#var dateselect = $("#datepicker").val();#}
                      loadQuotesData(qixian);
                  });
              }
@@ -220,9 +195,7 @@
             //错误信息处理界面
             var errorInfo = function(msg){
                 //关闭进度条
-                $('body').mLoading({
-                         text:"sorry",//加载文字，默认值：加载中...
-                     });
+                $('body').mLoading("hide");
 
             };
         </script>

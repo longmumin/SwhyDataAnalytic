@@ -46,7 +46,6 @@ class loadData(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        x = request
         try:
             qixian = int(request.data['qixian'])
 #            selected_date = request.data['dateselect']
@@ -61,16 +60,12 @@ class loadData(APIView):
 
         serializer = loadDataSerializer(data=quoteData)
         if serializer.is_valid():
-            # serializer.save()
-            c = serializer.data
-            d = serializer.initial_data
-            # b = quoteData.quoteData
-#        #  json_dumps_params为json.dumps的参数
+        #    serializer.save()
+        #  json_dumps_params为json.dumps的参数
             return JsonResponse(serializer.data, json_dumps_params={"ensure_ascii": False, "sort_keys": True},
                                 safe=False, status=status.HTTP_201_CREATED)
         else:
             return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#        return JsonResponse(serializer.data, json_dumps_params={"ensure_ascii": False, "sort_keys": False}, safe=False, status=status.HTTP_201_CREATED)
 
 
 '''
@@ -146,12 +141,18 @@ def GetQuotesDataFromTY(qixian) -> object:
         #获得波动率
         vol = tyApi.TYVolSurfaceImpliedVolGet(forward, forward, today, volSpread)
 
-        pricingAsk = float(tyApi.TYPricing(forward, forward, vol - 0.03, tau, r, 'call'))
+        # 获取spread曲线
+        volSpreadCurve = tyApi.TYMdload(yesterday, model_name=('VOL_BLACK_ATM_SPREAD_' + re.sub(r'([\d]+)', '', contract)))
+        # 获得sprea
+        spread = tyApi.TYVolSurfaceImpliedVolGet(forward, forward, today, volSpreadCurve)
+        # print(contract, volCurve, volSpreadCurve, vol, float(spread/2))
+
+        pricingAsk = float(tyApi.TYPricing(forward, forward, vol + float(spread / 2), tau, r, 'call'))
         # print(pricingAsk)
-        #出错处理
-        if(math.isnan(pricingAsk)):
+        # 出错处理
+        if (math.isnan(pricingAsk)):
             pricingAsk = float(0)
-        pricingBid = float(tyApi.TYPricing(forward, forward, vol + 0.03, tau, r, 'call'))
+        pricingBid = float(tyApi.TYPricing (forward, forward, vol - 0.03, tau, r, 'call'))
         # 出错处理
         if (math.isnan(pricingBid)):
             pricingBid = float(0)
