@@ -2,7 +2,7 @@
 from django.db import connection
 from django.http import JsonResponse
 from django.shortcuts import render
-import json, logging
+import logging, tushare, datetime
 import numpy as np
 from scipy import stats
 
@@ -12,6 +12,7 @@ from rest_framework.views import APIView
 
 from .models import loadDataModel
 from .serializers import loadDataSerializer, bondYTMAnalyicDataSerializer, bondYTMMatrixSerializer
+from SwhyDataAnalytic.publicMethod import getLastTradeDate
 
 '''
 日志模块加载
@@ -225,14 +226,19 @@ class getBondYTMMatrix(APIView):
         except Exception as e:
             logger.error("get request error, ret = %s" % e.args[0])
 
+        #获取上一个交易日
+        startTime = getLastTradeDate(startTime)
+        endTime = datetime.datetime.strptime(startTime,'%Y-%m-%d') + datetime.timedelta(days = 1)
+        endTime = endTime.strftime('%Y-%m-%d')
+
         '''
         债券名称做主键，两个期限做内部主键
-        通过containerName选择 债券类型（bondType）和期限（duration）的矩阵形成方式
+        通过containerName选择债券类型（bondType）和期限（duration）的矩阵形成方式
         债券类型：bondYTMMatrix
         期限：durationMatrix
-       '''
+        '''
         # 生成债券期限矩阵
-        if (containerName == 'bondYTMMatrix'):
+        if (containerName == 'durationMatrix'):
             for bond in bondType:
                 data = {}
                 for dur in duration:
@@ -240,7 +246,7 @@ class getBondYTMMatrix(APIView):
                 YTMData[bond] = data
             # YTMData = pd.DataFrame(YTMData)
             # 生成债券期限矩阵
-        elif (containerName == 'durationMatrix'):
+        elif (containerName == 'bondYTMMatrix'):
             for dur in duration:
                 data = {}
                 for bond in bondType:
@@ -256,7 +262,7 @@ class getBondYTMMatrix(APIView):
                 for k3, v3 in v1.items():
                     # 去除相同债券和久期的YTM
                     if (len(dictMinusMatrix(v2, v3).values()) != 0):
-                        ytmData2[k3] = round((next(iter(dictMinusMatrix(v2, v3).values())))['bondytm'], 4)
+                        ytmData2[k3] = round(((next(iter(dictMinusMatrix(v2, v3).values())))['bondytm'])*100, 2)
                         # quoteData[k1+'--'+k2] = round((next(iter(dictMinus(v1, v2).values())))['bondytm'],4)
                     else:
                         ytmData2[k3] = '--'
@@ -401,7 +407,7 @@ class getBondYTMAnalyicData(APIView):
 
         '''
         组装数据，保留4位小数
-       '''
+        '''
         analysisData['latestDiff'] = round(latestDiff, 4)
         analysisData['latestDiffDiff'] = round(latestDiffDiff, 4)
         analysisData['latestDiffPercent'] = round(latestDiffPercent, 4)
@@ -414,6 +420,9 @@ class getBondYTMAnalyicData(APIView):
         analysisData['deviateStandardDeviation'] = round(deviateStandardDeviation, 4)
         analysisData['max'] = round(max, 4)
         analysisData['min'] = round(min, 4)
+        #获取最新波动率
+        analysisData['vol'] = round((getVolDay(arrayData))[-1], 4)
+
         quoteData['quoteData'] = analysisData
         logger.info(quoteData)
 
@@ -579,3 +588,10 @@ def dictMinusMatrix(dict1, dict2):
             data['timestamp'] = k
             diffDict[k] = data
     return diffDict
+
+#实际上就是求除法
+def getVolDay(arrayData):
+    volData = []
+    for i in range(0, len(arrayData)-2):
+        volData.append(arrayData[i+1]/arrayData[i])
+    return volData
