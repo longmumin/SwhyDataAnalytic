@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import publicMethod
-
+from userAuth import auth
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,7 +26,11 @@ urlpatterns = [
     path('FixedIncome/', include('FixedIncomeQuantPlatform.urls')),
     #测试restful接口
     path('Restful/', include('testRestfulApi.urls')),
+    #权限管理
+    path('userAuth/', include('userAuth.urls')),
 
     #公共方法
     path('publicMethod/getSYSCode', publicMethod.getSysCode, name='getSysCode'),
+
+
 ]

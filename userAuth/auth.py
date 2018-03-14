@@ -7,10 +7,14 @@
 '''
 
 from django.contrib.auth import login, logout, authenticate
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, Group
 import logging
+
+logger = logging.getLogger('SwhyDataAnalytic.Debug')
+
+def loadAuthPage(request):
+    return render(request, 'login.html')
 
 
 #创建用户
@@ -39,7 +43,8 @@ def userLogin(request):
     if user is not None:
         login(request, user)
     else:
-        logging.error("用户名或者密码错误！")
+        logger.error("用户名或者密码错误！")
+
 #退出
 def userLogout(request):
     logout(request)
@@ -93,5 +98,5 @@ def addPermission2User(request):
         elif (method == 'clear'):
             user.permissions.clear()
     else:
-        logging.error("用户名或者密码错误！")
+        logger.error("用户名或者密码错误！")
 

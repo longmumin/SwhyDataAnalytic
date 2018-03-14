@@ -24,7 +24,7 @@ urlpatterns = [
     path('YTMAnalytic/', dataAnalytic.loadPage, name='loadYTMAnalytic'),
 
     #导入债券到期数据
-    path('YTMAnalytic/insertDataToBondYTM', dao.insertDataToBondYTM, name='insertDataToBondYTM'),
+    #path('YTMAnalytic/insertDataToBondYTM', dao.insertDataToBondYTM, name='insertDataToBondYTM'),
     #导入期货合约数据
     #path('YTMAnalytic/insertDataToFutureInfo', dao.insertDataToFutureInfo, name='insertDataToFutureInfo'),
     #导入期货行情数据
