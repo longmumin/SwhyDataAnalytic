@@ -9,6 +9,9 @@
 from django.contrib.auth import login, logout, authenticate
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, Group
+from django.http import JsonResponse
+from django.db import connection
+from rest_framework import status
 import logging
 
 logger = logging.getLogger('SwhyDataAnalytic.Debug')
@@ -22,8 +25,14 @@ def createUser(request):
     userName = request.POST.get('userName')
     userEmail = request.POST.get('userEmail')
     userPassword = request.POST.get('userPassword')
-    user = User.objects.create_user(userName, userEmail, userPassword)
-    user.save()
+    try:
+        user = User.objects.create_user(userName, userEmail, userPassword)
+        user.save()
+        return JsonResponse(status=status.HTTP_200_OK)
+    except Exception as e:
+        logger.error("get request error, ret = %s" % e.args[0])
+        #406_NOT_ACCEPTABLE为插入失败
+        return JsonResponse(status=status.HTTP_406_NOT_ACCEPTABLE)
 
 #修改密码
 def changePwd(request):
@@ -100,3 +109,13 @@ def addPermission2User(request):
     else:
         logger.error("用户名或者密码错误！")
 
+def getUserData(request):
+    #建立数据库连接
+    cursor = connection.cursor()
+    try:
+        cursor.execute("select A.username, A.email from auth_user A")
+    except Exception as e:
+        logger.error("select table failed, ret = %s" % e.args[0])
+        cursor.close()
+    listData = cursor.fetchall()
+    cursor.close()
