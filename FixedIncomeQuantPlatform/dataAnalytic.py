@@ -12,7 +12,7 @@ from rest_framework.views import APIView
 
 from .models import loadDataModel
 from .serializers import loadDataSerializer, bondYTMAnalyicDataSerializer, bondYTMMatrixSerializer
-from SwhyDataAnalytic.publicMethod import getLastTradeDate
+from SwhyDataAnalytic.publicMethod import getLastTradeDate, list2dict
 
 '''
 日志模块加载
@@ -557,17 +557,6 @@ def getBondYTMData(bondType, duration, startTime, endTime):
     dictData = list2dict(keys, listData)
     return dictData
 
-
-def list2dict(keys, values):
-    dictData = {}
-    for value in values:
-        row = {}
-        value = list(value)
-        for i in range(0, len(keys)):
-            row[keys[i]] = str(value[i])
-        #时间戳作为keys
-        dictData[str(value[1])] = row
-    return dictData
 
 def dictMinusCacl(dict1, dict2):
     diffDict = {}

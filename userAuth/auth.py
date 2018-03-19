@@ -12,8 +12,11 @@ from django.contrib.auth.models import User, Group
 from django.http import JsonResponse
 from django.db import connection
 from rest_framework import status
-import logging
 
+from SwhyDataAnalytic.publicMethod import list2dict
+from .serializers import loadUserDataSerializer
+
+import logging
 logger = logging.getLogger('SwhyDataAnalytic.Debug')
 
 def loadAuthPage(request):
@@ -110,6 +113,7 @@ def addPermission2User(request):
         logger.error("用户名或者密码错误！")
 
 def getUserData(request):
+    userData = {}
     #建立数据库连接
     cursor = connection.cursor()
     try:
@@ -119,3 +123,17 @@ def getUserData(request):
         cursor.close()
     listData = cursor.fetchall()
     cursor.close()
+    # 类型转换
+    keys = ['userName', 'userEmail']
+    userData['userData'] = list2dict(keys, listData)
+
+    logger.info(userData)
+
+    serializer = loadUserDataSerializer(data=userData)
+    if serializer.is_valid():
+        serializer.save()
+        # json_dumps_params为json.dumps的参数
+        return JsonResponse(serializer.data, json_dumps_params={"ensure_ascii": False, "sort_keys": True}, safe=False,
+                            status=status.HTTP_201_CREATED)
+    else:
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
