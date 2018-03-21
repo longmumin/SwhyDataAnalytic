@@ -149,17 +149,31 @@
 
     //初始化用户列表
     var initUserGrid = function (data) {
+        console.log(data.userData);
+        var t = $('#userListTable').DataTable();
+        for(var i in data.userData) {
+            //添加一行
+            $.each(data.userData[i], function (k, val) {
+                t.row.add( []);
+            });
+        }
+        /*
         //生成表体
         var tbody = $("<tbody> <\tbody>");
         tbody.appendTo($("#userListTable"));
-        for (var key1 in bondType) {
+        debugger;
+        //添加内容
+        for(var i in data.userData) {
+            //添加一行
             var tr = $("<tr> <\tr>");
             tr.appendTo(tbody);
-            for (var key2 in bondType) {
-                var td = $("<td>" + diffMatrix[bondType[key1]][bondType[key2]] + "</td>");
+            $.each(data.userData[i], function (k, val) {
+                var td = $("<td id='" + k + "'>" + val + "</td>");
                 td.appendTo(tr);
-            }
+            });
         }
+        $('#userListTable').data.reload();
+        */
     };
 
 
