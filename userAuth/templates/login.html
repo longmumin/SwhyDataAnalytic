@@ -60,9 +60,11 @@
 
     function init() {
         //初始化表格
+        /*
         $('#userListTable').DataTable({
             colReorder: true
         });
+       */
         userListTableInit();
 
         //绑定确定按钮
@@ -134,46 +136,65 @@
 
         $.ajax({
             type: 'POST',
-            data:{
-            },
+            data: {},
             dataType: 'json',
             url: url,
             success: initUserGrid,
-            error: function(msg) {
+            error: function (msg) {
                 console.log(msg);
             },
             //采用异步
             async: true
-        });
+            });
     }
 
     //初始化用户列表
     var initUserGrid = function (data) {
-        console.log(data.userData);
-        var t = $('#userListTable').DataTable();
+        data = JSON.parse(data.userData);
+        console.log(data);
+        debugger;
+        var table = $('#userListTable').DataTable({
+            "url": "data.json",
+            "contentType": "application/json",
+            "ajax": {
+                "userData": {'userName':'aaa', 'userEmail':'aaa@126.com', 'userPassword':'abc', 'userCode':'11'}},
+            'columns' : [
+                {'userData': 'userName'},
+                {'userData': 'userEmail'},
+                {'userData': 'userPassword'},
+                {'userData': 'userCode'}
+            ],
+            processing: true,
+            'language':{
+                'loadingRecords': '&nbsp;',
+                'processing': 'Loading...'
+            },
+            colReorder: true
+        });
+        /*
         for(var i in data.userData) {
             //添加一行
             $.each(data.userData[i], function (k, val) {
                 t.row.add( []);
             });
         }
-        /*
+        */
         //生成表体
-        var tbody = $("<tbody> <\tbody>");
-        tbody.appendTo($("#userListTable"));
-        debugger;
+        //var tbody = $("<tbody> <\tbody>");
+        //tbody.appendTo($("#userListTable"));
         //添加内容
+        /*
         for(var i in data.userData) {
             //添加一行
-            var tr = $("<tr> <\tr>");
-            tr.appendTo(tbody);
+            //var tr = $("<tr> <\tr>");
+            //tr.appendTo(tbody);
             $.each(data.userData[i], function (k, val) {
                 var td = $("<td id='" + k + "'>" + val + "</td>");
                 td.appendTo(tr);
             });
         }
-        $('#userListTable').data.reload();
-        */
+       */
+        //$('#userListTable').data.reload();
     };
 
 
