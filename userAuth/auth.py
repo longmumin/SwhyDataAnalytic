@@ -13,7 +13,7 @@ from django.http import JsonResponse
 from django.db import connection
 from rest_framework import status
 
-from SwhyDataAnalytic.publicMethod import list2dict
+from SwhyDataAnalytic.publicMethod import list2array
 from .serializers import loadUserDataSerializer
 
 import logging
@@ -117,15 +117,14 @@ def getUserData(request):
     #建立数据库连接
     cursor = connection.cursor()
     try:
-        cursor.execute("select A.username, A.email from auth_user A")
+        cursor.execute("select A.username, A.email, A.first_name, A.last_name from auth_user A")
     except Exception as e:
         logger.error("select table failed, ret = %s" % e.args[0])
         cursor.close()
     listData = cursor.fetchall()
     cursor.close()
     # 类型转换
-    keys = ['userName', 'userEmail']
-    userData['userData'] = list2dict(keys, listData)
+    userData['userData'] = list2array(listData)
 
     logger.info(userData)
 

@@ -44,6 +44,17 @@ def list2dict(keys, values):
         dictData.append(row)
     return dictData
 
+def list2array(data):
+    dictData = []
+    for value in data:
+        row = []
+        value = list(value)
+        for i in range(0, len(value)):
+            row.append(value[i])
+        #时间戳作为keys
+        dictData.append(row)
+    return dictData
+
 #输入为string类型
 def getLastTradeDate(date):
     # 判断节假日

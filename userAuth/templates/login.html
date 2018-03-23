@@ -64,7 +64,7 @@
         $('#userListTable').DataTable({
             colReorder: true
         });
-       */
+        */
         userListTableInit();
 
         //绑定确定按钮
@@ -150,22 +150,20 @@
 
     //初始化用户列表
     var initUserGrid = function (data) {
-        data = JSON.parse(data.userData);
-        console.log(data);
+        //data = JSON.parse(data.userData);
         debugger;
+        var userData = eval("("+JSON.stringify(data.userData)+")");
+        console.log(userData);
         var table = $('#userListTable').DataTable({
-            "url": "data.json",
-            "contentType": "application/json",
-            "ajax": {
-                "userData": {'userName':'aaa', 'userEmail':'aaa@126.com', 'userPassword':'abc', 'userCode':'11'}},
-            'columns' : [
+            data: userData,
+            columns : [
                 {'userData': 'userName'},
                 {'userData': 'userEmail'},
-                {'userData': 'userPassword'},
-                {'userData': 'userCode'}
+                {'userData': 'userfirstName'},
+                {'userData': 'userLastName'},
             ],
             processing: true,
-            'language':{
+            language:{
                 'loadingRecords': '&nbsp;',
                 'processing': 'Loading...'
             },

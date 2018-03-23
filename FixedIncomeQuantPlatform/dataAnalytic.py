@@ -13,6 +13,7 @@ from rest_framework.views import APIView
 from .models import loadDataModel
 from .serializers import loadDataSerializer, bondYTMAnalyicDataSerializer, bondYTMMatrixSerializer
 from SwhyDataAnalytic.publicMethod import getLastTradeDate, list2dict
+from django.contrib.auth.decorators import permission_required
 
 '''
 日志模块加载
@@ -42,6 +43,7 @@ def loadPage(request):
     3. containerName 容器名称
     4. method 是否是价差函数方法名
 '''
+#@permission_required('car.drive_car')，在这里定义所需要的权限后就可以限制，但是必须对request进行显示
 class loadData(APIView):
 
     def get(self, request, format=None):
