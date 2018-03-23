@@ -34,14 +34,14 @@ def getSysCode(request):
 
 
 def list2dict(keys, values):
-    dictData = []
+    dictData = {}
     for value in values:
         row = {}
         value = list(value)
         for i in range(0, len(keys)):
             row[keys[i]] = str(value[i])
         #时间戳作为keys
-        dictData.append(row)
+        dictData[str(value[1])] = row
     return dictData
 
 def list2array(data):

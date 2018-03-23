@@ -18,7 +18,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Highstock Example</title>
+    <title>FixedIncome Quant</title>
 
     <link href="{% static 'css/flexible.css' %}" rel="stylesheet">
     <link href="{% static 'css/public.css' %}" rel="stylesheet">
@@ -585,7 +585,6 @@
         }
         var loadMatrix = function(data) {
             console.log(data);
-            //data = eval('(' + data + ')');
             //创建映射字典,债券类型和期限的bondType存储的内容不同，分别为类型和久期，例如'FR007'和'1Y'
             var bondType = {}, index = 0;
             $.each(data.quoteData, function (i, item) {
@@ -611,14 +610,14 @@
             });
             //console.log(diffMatrix, bondType);
             //清除原表格
-            var containerName = data.containerName
+            var containerName = data.containerName;
             $("#" + containerName).remove();
             /*生成表格并把表格加入容器*/
             var table = $("<table id='" + containerName + "' class='hor-minimalist-b'>");
             table.appendTo($("#diffMatrixContainer"));
             //生成表头
             var thead = $("<thead> <tr> </tr> </thead>");
-            thead.appendTo(table)
+            thead.appendTo(table);
             //添加空格
             var th = $("<th scope='col'>跨品种矩阵</th>");
             th.appendTo(thead);
