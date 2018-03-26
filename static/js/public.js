@@ -132,12 +132,12 @@ function getCode(codeType) {
         url: url,
         success: function (data) {
             data = JSON.parse(data);
-            for(var i=0;i<data.length;i++){
+            $.each(data, function (i, item) {
                 var code = {};
-                code['val'] = data[i].val;
-                code['text'] = data[i].text;
+                code['val'] = item.val;
+                code['text'] = item.text;
                 codeData.push(code);
-            }
+            });
         },
         error: errorInfo,
         //是否采用异步，false表示同步

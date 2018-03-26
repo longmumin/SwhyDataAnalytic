@@ -28,7 +28,7 @@ def getSysCode(request):
     cursor.close()
     codeData = sorted(codeData, key=lambda s: s[2])
     keys = ['val', 'text', 'sortorder']
-    codeData = list2dict(keys, codeData)
+    codeData = list2dict_array(keys, codeData)
     #logger.info(codeData)
     return JsonResponse(json.dumps(codeData, ensure_ascii=False, sort_keys=True), safe=False)
 
@@ -42,6 +42,17 @@ def list2dict(keys, values):
             row[keys[i]] = str(value[i])
         #时间戳作为keys
         dictData[str(value[1])] = row
+    return dictData
+
+
+def list2dict_array(keys, values):
+    dictData = []
+    for value in values:
+        row = {}
+        value = list(value)
+        for i in range(0, len(keys)):
+            row[keys[i]] = str(value[i])
+        dictData.append(row)
     return dictData
 
 def list2array(data):

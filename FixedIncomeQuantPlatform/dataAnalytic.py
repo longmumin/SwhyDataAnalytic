@@ -424,6 +424,13 @@ class getBondYTMAnalyicData(APIView):
         analysisData['min'] = round(min, 4)
         #获取最新波动率
         analysisData['vol'] = round((getVolDay(arrayData))[-1], 4)
+        #获取资金成本，FR007 1年期，上一个交易日的数据
+        startTime = (datetime.datetime.now() - datetime.timedelta(days = 1)).strftime("%Y-%m-%d")
+        startTime = getLastTradeDate(startTime)
+        fr007YTM = getBondYTMData('FR007', '1Y', startTime, startTime)
+        for (key, value) in fr007YTM.items():
+            analysisData['capitalCost'] = value['bondytm']
+
 
         quoteData['quoteData'] = analysisData
         logger.info(quoteData)
