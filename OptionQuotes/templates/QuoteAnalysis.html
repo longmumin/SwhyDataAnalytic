@@ -36,47 +36,28 @@
                  <div id="YTMSpread_tab2_container" class="container_highstock"></div>
              </section>
          </div>
-         <div class="tab-group" id="YTMAnaltic" style="margin-top: 1.2rem; margin-left: 0.2rem; width: 90.5%; height: 100%">
+         <div class="tab-group" id="YTMAnaltic" style="margin-top: 1.2rem; margin-left: 0.2rem; width: 90.5%">
              <section id="YTMAnaltic_tab1" title="期权组合方案">
                  <!-- 品种选择框 -->
                  <div style="position:relative;float: left; width:45%">
 
-                         <div id="bondName1" style="height: 0.5rem; float:left; margin-left: 1rem; margin-top: .2rem">
-                             期权品种：
-                             <select id = "FuturesNameSelect" style="height: 0.5rem; margin-top: .2rem;">
-                                 <option value="00">--选择品种--</option>
-                             </select>
-                         </div>
-                         <div class="clear" ></div>
-
-                         <div id="durationText1" style="height: 0.5rem; margin-left: 1rem; margin-top: .2rem">
-                             产品期限：
-                             <select id = "durationSelect" style="height: 0.5rem;  margin-top: .2rem;">
-                                 <option value="00">--选择期限--</option>
-                             </select>
-                         </div>
-
                          <div class="clear" ></div>
                          <!-- 债券选择框2 -->
-                         <div id="bondName2" style="height: 0.5rem; margin-top: 0.4rem; margin-left: 1rem;">
-                             期权类型：
-                             <select id = "durationSelect2" style="height: 0.5rem; ">
-                                 <option value="00">--选择买卖方向--</option>
-                             </select>
-                             <input style="color: #888888; height: 0.5rem; text-align: center" id="StrikePrice" value="请输入执行价格">
+                         <div id="bondName2" style="height: 0.5rem; margin-top: 0.4rem; margin-left: .4rem; font-size: 0.3rem">
+                         期权合约框:
+                             <input style="color: #888888; height: 0.5rem; width: 4rem; text-align: center" id="PackageAnalysis" value="请输入期权方案">
+                              <button id="PackageClear" type="button" style="height: 0.5rem; width: 1.5rem; margin-left: 1rem; margin-top:0.2rem;">清空</button>
                          </div>
 
-                         <button id="PackageAnalysis" type="button" style="height: 0.5rem; width: 1.5rem; margin-left: 1rem; margin-top:0.4rem;">添加</button>
-                         <button id="PackageClear" type="button" style="height: 0.5rem; width: 1.5rem; margin-left: 1rem; margin-top:0.2rem;">清空</button>
 
                      <!-- 清除float样式 -->
                          <div class="clear" ></div>
 
                      <div style="position:relative; float:left; margin-top:0.5rem; font-size: 0.3rem">
                          <!-- 期权组合方案展示 -->
-                         <div style="position:relative; float:left; margin-left: .4rem">当前期权组合方案:</div>
+                         <div style="position:relative; float:left; margin-top:0.5rem; margin-left: .4rem">当前期权组合方案:</div>
 {#                         <input id="optionPackage" style="width: 5rem" value="@HC1805,PUT,1M,1.05" >#}
-                         <table id="optionPackage" style="position:relative; float:left; margin-left: .4rem">
+                         <table id="optionPackage" style="position:relative; float:left; margin-left: .4rem; margin-top:0.5rem;">
                              <tr style="padding: auto">
                                  <th class="table-th">@HC1805,PUT,1M,1.05</th>
                              </tr>
@@ -87,16 +68,9 @@
                          <!-- 清除float样式 -->
                          <div class="clear" ></div>
 
-                         <!-- 当前组合期权付费展示 -->
-                         <div style="position:relative; margin-top: 0.5rem;">
-                            <div style="position:relative; float:left;  margin-left: .4rem">当前组合权利金价格:</div>
-                            <div id="PremiumStructure" style="position:relative; float:left; color:red;  margin-left: .4rem">@HC1805,PUT,1M,1.05,1.1%</div>
-                            <div id="Premium" style="position:relative; float:left; color:red;  margin-left: .4rem">10.21元</div>
-                         </div>
                      </div>
 
                  </div>
-
 
                  <!-- 期权报价展示 -->
                  <div style="position:relative;width:45%; font-size:0.3rem; float:right;margin-top:.4rem; margin-right: 1.5rem">
@@ -107,60 +81,67 @@
 
                      <div style="position:relative; color:midnightblue; float:left; margin-top: 0.2rem; margin-left:1rem">昨收盘价：</div>
                      <div id="PremiumStructure" style="position:relative; float:left; margin-top: 0.2rem; margin-left: .4rem">--</div>
+
                      <div class="clear" ></div>
+                     <!-- 当前组合期权付费展示 -->
+                         <div style="position:relative; margin-top: 0.5rem;">
+                            <div style="position:relative; float:left;  margin-left: .4rem">当前组合权利金价格:</div>
+                            <div id="PremiumStructure" style="position:relative; float:left; color:red;  margin-left: .4rem">@HC1805,PUT,1M,1.05,1.1%</div>
+                            <div id="Premium" style="position:relative; float:left; color:red;  margin-left: .4rem">10.21元</div>
+                         </div>
 
-                     <div id="diffMatrixContainer" style="position:relative; float:left;">
-                         <!-- 期限矩阵初始化 -->
-                         <table id="PremiumMatrix" style="margin-top: 0rem" class="hor-minimalist-b">
-                             <thead>
-                                 <tr>
-                                     <th scope="col"></th>
-        	                         <th scope="row">执行价格</th>
-                                     <th scope="row">买入</th>
-                                     <th scope="row">卖出</th>
-                                 </tr>
-                             </thead>
-                             <tbody>
-                                 <tr>
-                                     <th rowspan="6">看涨期权</th><th scope="col">105%</th><td>--</td><td>--</td>
-                                 </tr>
-                                 <tr>
-        	                         <th scope="col">104%</th><td>--</td><td>--</td>
-                                 </tr>
-                                 <tr>
-        	                         <th scope="col">103%</th><td>--</td><td>--</td>
-                                 </tr>
-                                 <tr>
-        	                         <th scope="col">102%</th><td>--</td><td>--</td>
-                                 </tr>
-                                 <tr>
-        	                         <th scope="col">101%</th><td>--</td><td>--</td>
-                                 </tr>
-                                 <tr>
-        	                         <th scope="col">100%</th><td>--</td><td>--</td>
-                                 </tr>
-                                 <tr>
-        	                         <th rowspan="6">看跌期权</th><th scope="col">100%</th><td>--</td><td>--</td>
-                                 </tr>
-                                 <tr>
-        	                         <th scope="col">99%</th><td>--</td><td>--</td>
-                                 </tr>
-                                 <tr>
-        	                         <th scope="col">98%</th><td>--</td><td>--</td>
-                                 </tr>
-                                 <tr>
-        	                         <th scope="col">97%</th><td>--</td><td>--</td>
-                                 </tr>
-                                 <tr>
-        	                         <th scope="col">96%</th><td>--</td><td>--</td>
-                                 </tr>
-                                 <tr>
-        	                         <th scope="col">95%</th><td>--</td><td>--</td>
-                                 </tr>
-
-                            </tbody>
-                         </table>
-                     </div>
+{#                     <div id="diffMatrixContainer" style="position:relative; float:left;">#}
+{#                         <!-- 期限矩阵初始化 -->#}
+{#                         <table id="PremiumMatrix" style="margin-top: 0rem" class="hor-minimalist-b">#}
+{#                             <thead>#}
+{#                                 <tr>#}
+{#                                     <th scope="col"></th>#}
+{#        	                         <th scope="row">执行价格</th>#}
+{#                                     <th scope="row">买入</th>#}
+{#                                     <th scope="row">卖出</th>#}
+{#                                 </tr>#}
+{#                             </thead>#}
+{#                             <tbody>#}
+{#                                 <tr>#}
+{#                                     <th rowspan="6">看涨期权</th><th scope="col">105%</th><td>--</td><td>--</td>#}
+{#                                 </tr>#}
+{#                                 <tr>#}
+{#        	                         <th scope="col">104%</th><td>--</td><td>--</td>#}
+{#                                 </tr>#}
+{#                                 <tr>#}
+{#        	                         <th scope="col">103%</th><td>--</td><td>--</td>#}
+{#                                 </tr>#}
+{#                                 <tr>#}
+{#        	                         <th scope="col">102%</th><td>--</td><td>--</td>#}
+{#                                 </tr>#}
+{#                                 <tr>#}
+{#        	                         <th scope="col">101%</th><td>--</td><td>--</td>#}
+{#                                 </tr>#}
+{#                                 <tr>#}
+{#        	                         <th scope="col">100%</th><td>--</td><td>--</td>#}
+{#                                 </tr>#}
+{#                                 <tr>#}
+{#        	                         <th rowspan="6">看跌期权</th><th scope="col">100%</th><td>--</td><td>--</td>#}
+{#                                 </tr>#}
+{#                                 <tr>#}
+{#        	                         <th scope="col">99%</th><td>--</td><td>--</td>#}
+{#                                 </tr>#}
+{#                                 <tr>#}
+{#        	                         <th scope="col">98%</th><td>--</td><td>--</td>#}
+{#                                 </tr>#}
+{#                                 <tr>#}
+{#        	                         <th scope="col">97%</th><td>--</td><td>--</td>#}
+{#                                 </tr>#}
+{#                                 <tr>#}
+{#        	                         <th scope="col">96%</th><td>--</td><td>--</td>#}
+{#                                 </tr>#}
+{#                                 <tr>#}
+{#        	                         <th scope="col">95%</th><td>--</td><td>--</td>#}
+{#                                 </tr>#}
+{##}
+{#                            </tbody>#}
+{#                         </table>#}
+{#                     </div>#}
                  </div>
 
              </section>
@@ -180,8 +161,15 @@
             */
             //初始化页面
             init();
-            var duration = "1Y", startTime = null, endTime = null;
-            loadYTMData("中债农发行债",duration, startTime, endTime, 'YTM_tab1_container');
+            var duration = "1M", startTime = null, endTime = null;
+
+            var optionStructure = document.getElementById("PremiumStructure").getElementsByTagName("th");
+            if (optionStructure.length == 0) {
+                alert("Error");
+                return;
+            }
+            var optionData = generatePackage(optionStructure);
+            loadYTMData("CU1805.SHF",duration, startTime, endTime, optionData, 'YTM_tab1_container');
 
         });
 
@@ -190,57 +178,22 @@
             //加载标签栏
             $('.tab-group').tabify();
 
-            var optionStructure = document.getElementById("optionPackage").getElementsByTagName("th");
-
-            if (optionStructure.length == 0) {
-                alert("Error");
-                return;
-            }
-
-            var optionData = {}
-            for (var i = 0; i < optionStructure.length; i++) {
-                optionStructure[i] = optionStructure[i].split(",");
-                var optionStr = {}
-                var price = optionStructure[i][3];
-                optionStr['futuresType'] = substring(optionStructure.indexOf('@')+1,optionStructure.indexOf(','));
-                optionStr['duration'] = optionStructure[i][2];
-                optionStr['price'] = optionStructure[i][3];
-                optionStr['optionType'] = optionStructure[i][1];
-                optionStr['trade'] = substring(0,optionStructure[i].indexOf('@'));
-                optionData[price] = optionStr
-            }
-
-            //初始期权品种下拉框
-            selectInit($("#FuturesNameSelect"),'bondytmtype');
-            //初始期限下拉框
-            selectInit($("#durationSelect"),'bondytmduration');
-
-            //绑定期权品种下拉框选择事件
-            $("#FuturesNameSelect").change(function(){
-                var duration = $("#durationSelect").children('option:selected').text();
-                var futuresType = $(this).children('option:selected').text();
+            //解析期权组合结构并填入表格
+            $( "#PackageAnalysis" ).change(function() {
+                var optionPackage = document.getElementById("PremiumStructure");
+                var optionsType = substring(optionPackage.indexOf('@')+1,optionPackage.indexOf(','));
+                var optionPackage =  optionPackage.split(";");
+                $.each(optionPackage, function (i, item) {
+                    var newRow = $('<tr style="padding: auto">' +
+                         '<th class="table-th">'+item+'</th>').hide().fadeIn(1000);
+                    $('#optionPackage').append(newRow);
+                });
+                var optionStructure = document.getElementById("PremiumStructure").getElementsByTagName("th");
+                var optionData = generatePackage(optionStructure);
                 var startTime = null, endTime = null;
-                loadYTMData(futuresType, duration, startTime, endTime, 'YTM_tab1_container');
-                var futuresType = $(this).children('option:selected').text();
-                var duration = ['1Y', '3Y', '5Y', '7Y', '10Y'];
-                generateYTMMatrix(futuresType, duration, 'PremiumMatrix');
-            });
-            //绑定期限下拉框选择事件
-            $("#durationSelect").change(function(){
-                var duration = $(this).children('option:selected').text();
-                var futuresType = $("#FuturesNameSelect").children('option:selected').text();
-                var startTime = null, endTime = null;
-                loadYTMData(futuresType,duration, startTime, endTime, 'YTM_tab1_container');
-            });
 
-            //绑定情景分析按钮
-            $( "#PackageAnalysis" ).click(function() {
-                var optionsType = [], duration = [];
-                optionsType[0] = $("#FuturesNameSelect").children('option:selected').text();
-                duration[0] = $("#durationSelect").children('option:selected').text();
-                var startTime = null, endTime = null;
-                generatePackage(optionsType, duration, startTime, endTime, 'optionPackage');
-                getBondYTMDiffCacl(optionsType,duration, startTime, endTime, 'YTMSpread_tab2_container');
+                loadYTMData(optionsType,duration, startTime, endTime, optionData, 'YTM_tab1_container');
+                getBondYTMDiffCacl(optionsType, duration, startTime, endTime, 'YTMSpread_tab2_container');
             });
             //绑定清空按钮
             $( "#PackageClear" ).click(function() {
@@ -249,6 +202,21 @@
             });
 
 
+        }
+
+        function generatePackage(optionStructure){
+            var optionData = {}
+            for (var i = 0; i < optionStructure.length; i++) {
+                optionStructure[i] = optionStructure[i].split(",");
+                var optionStr = {}
+                var price = optionStructure[i][3];
+                optionStr['futuresType'] = substring(optionStructure[i].indexOf('@')+1,optionStructure[i].indexOf(','));
+                optionStr['duration'] = optionStructure[i][2];
+                optionStr['price'] = optionStructure[i][3];
+                optionStr['optionType'] = optionStructure[i][1];
+                optionStr['trade'] = substring(0,optionStructure[i].indexOf('@'));
+                optionData[price] = optionStr
+            }
         }
 
         /***** 标的合约走势图 *****/
@@ -261,7 +229,7 @@
          * method 加载数据的方式，‘loadData’不包含价差分析函数loadAnalysisData， ‘loadDiff’包含价差分析函数，默认为‘loadData’
          *
          * */
-        function loadYTMData(futuresType, duration, startTime, endTime, containerName){
+        function loadYTMData(futuresType, duration, startTime, endTime, optionData, containerName){
             var url = '/Quotes/OptionAnalytic/loadData';
             //给method赋默认参数
             method = method ? method : 'loadData';
@@ -272,6 +240,7 @@
                     "duration":duration,
                     "startTime":startTime,
                     "endTime":endTime,
+                    "optionStr":optionData,
                     'containerName':containerName
                 },
                 dataType: 'json',
@@ -288,7 +257,7 @@
             var seriesData = [];
             var arrayData = [];
 
-            $.each(optionStructure, function (i, item) {
+            $.each(quoteData, function (i, item) {
                 seriesData.push([
                     str2UTC(item.timestamp),
                     parseFloat(item.bondytm)
