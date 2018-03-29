@@ -119,22 +119,25 @@ def GetQuotesDataFromTY(qixian) -> object:
     #开启wind接口
     # w.start()
 
+
     # 读取期货合约
-    contractDate = '2018-01-10'
-    lastContractDate = (datetime.date(*map(int, contractDate.split('-'))) + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
-    cursor = connection.cursor()
+    # contractDate = '2018-01-10'
+    # lastContractDate = (datetime.date(*map(int, contractDate.split('-'))) + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
+    # cursor = connection.cursor()
     baseDir = os.path.dirname(os.path.abspath(__name__))
     contractListFileDir = baseDir + '/files/BasicInfo/contractList.xlsx'
     logger.info(baseDir)
-    contractID = list(pd.read_excel(contractListFileDir)['contractid'])
     contractName = list(pd.read_excel(contractListFileDir)['name'])
-    contractList = []
-    cursor.execute("select getdominantcontract('2018-01-10', 'A')")
-    a = cursor.fetchone()
-    for contract in contractID:
-        cursor.execute("select getdominantcontract('%(date)s', '%(contract)s')" % {"date": lastContractDate, "contract": contract})
-        contractList.append(cursor.fetchone()[0])
+    contractList = list(pd.read_excel(contractListFileDir)['contract'])
+    # contractID = list(pd.read_excel(contractListFileDir)['contractid'])
+    # contractList = []
+    # cursor.execute("select getdominantcontract('2018-01-10', 'A')")
+    # a = cursor.fetchone()
+    # for contract in contractID:
+    #     cursor.execute("select getdominantcontract('%(date)s', '%(contract)s')" % {"date": lastContractDate, "contract": contract})
+    #     contractList.append(cursor.fetchone()[0])
     contractList = dict(zip(contractList, contractName))
+
 
     #获取报价
     for contract in contractList.keys():
