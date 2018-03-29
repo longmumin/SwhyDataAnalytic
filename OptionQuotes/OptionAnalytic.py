@@ -51,7 +51,7 @@ def loadData(request):
             endTime = request.POST['endTime']
             containerName = request.POST['containerName']
             arrayData = request.POST.getlist['arrayData[]']
-            optionStructure = request.POST.getlist['optionStr[]']
+            optionStructure = request.POST['optionStr']
         except Exception as e:
             logger.error("get request error, ret = %s" % e.args[0])
 
@@ -196,40 +196,36 @@ def getFuturesData(futuresType, duration, startTime, endTime):
     '''
     if(startTime == '' and endTime == ''):
         try:
-            cursor.execute("select bondytm.bondytm, bondytm.timestamp"
-                       " from bondytm, sys_code where sys_code.codetype = 'bondytmtype' "
-                       "and bondytm.bondytmtype = sys_code.code and sys_code.codename = %s "
-                       "and bondytm.bondduration = %s ORDER BY bondytm.timestamp DESC", (futuresType, duration))
+            cursor.execute("select fut_mkt_quot_day.close, fut_mkt_quot_day.timestamp"
+                       " from fut_mkt_quot_day where fut_mkt_quot_day.contractid = % "
+                       "ORDER BY fut_mkt_quot_day.timestamp DESC", (futuresType))
         except Exception as e:
             logger.error("select table failed, ret = %s" % e.args[0])
             cursor.close()
     elif(startTime != '' and endTime == ''):
         try:
-            cursor.execute("select bondytm.bondytm, bondytm.timestamp"
-                       " from bondytm, sys_code where sys_code.codetype = 'bondytmtype' "
-                       "and bondytm.bondytmtype = sys_code.code and sys_code.codename = %s "
-                       "and bondytm.bondduration = %s and bondytm.timestamp >= %s "
-                       "ORDER BY bondytm.timestamp DESC", (futuresType, duration, startTime))
+            cursor.execute("select fut_mkt_quot_day.close, fut_mkt_quot_day.timestamp"
+                       " from fut_mkt_quot_day where fut_mkt_quot_day.contractid = %s "
+                       "and fut_mkt_quot_day.timestamp >= %s "
+                       "ORDER BY fut_mkt_quot_day.timestamp DESC", (futuresType, startTime))
         except Exception as e:
             logger.error("select table failed, ret = %s" % e.args[0])
             cursor.close()
     elif (startTime == '' and endTime != ''):
         try:
-            cursor.execute("select bondytm.bondytm, bondytm.timestamp"
-                           " from bondytm, sys_code where sys_code.codetype = 'bondytmtype' "
-                           "and bondytm.bondytmtype = sys_code.code and sys_code.codename = %s "
-                           "and bondytm.bondduration = %s and bondytm.timestamp <= %s "
-                            "ORDER BY bondytm.timestamp DESC", (futuresType, duration, endTime))
+            cursor.execute("select fut_mkt_quot_day.close, fut_mkt_quot_day.timestamp"
+                           " from fut_mkt_quot_day where fut_mkt_quot_day.contractid = %s "
+                           "and fut_mkt_quot_day.timestamp <= %s "
+                            "ORDER BY fut_mkt_quot_day.timestamp DESC", (futuresType, endTime))
         except Exception as e:
             logger.error("select table failed, ret = %s" % e.args[0])
             cursor.close()
     else:
         try:
-            cursor.execute("select bondytm.bondytm, bondytm.timestamp"
-                           " from bondytm, sys_code where sys_code.codetype = 'bondytmtype' "
-                           "and bondytm.bondytmtype = sys_code.code and sys_code.codename = %s "
-                           "and bondytm.bondduration = %s and bondytm.timestamp >= %s and "
-                           "bondytm.timestamp <= %s ORDER BY bondytm.timestamp DESC", (futuresType, duration, startTime, endTime))
+            cursor.execute("select fut_mkt_quot_day.close, fut_mkt_quot_day.timestamp"
+                           " from fut_mkt_quot_day where fut_mkt_quot_day.contractid = %s "
+                           "and bondytm.timestamp >= %s "
+                           "and bondytm.timestamp <= %s ORDER BY bondytm.timestamp DESC", (futuresType, startTime, endTime))
         except Exception as e:
             logger.error("select table failed, ret = %s" % e.args[0])
             cursor.close()
@@ -238,7 +234,7 @@ def getFuturesData(futuresType, duration, startTime, endTime):
     listData = cursor.fetchall()
     cursor.close()
     #类型转换
-    keys = ['bondytm', 'timestamp']
+    keys = ['close', 'timestamp']
     dictData = list2dict(keys, listData)
     # dictData = [(k, dictData[k]) for k in sorted(dictData.keys())]
     return dictData
