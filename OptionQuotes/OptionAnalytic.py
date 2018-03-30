@@ -24,20 +24,19 @@ def loadPage(request):
 
 
 '''
-价差分析
+期货历史数据及预测
 传递参数:
-    1. bondType 债券名称
-    2. duration 债券久期
+    1. FuturesType 标的合约名称
+    2. duration 期限
     3. startTime 开始时间
     4. endTime 结束时间
     5. containerName 容器名称
-    6. method 是否是价差函数方法名
-    7. arrayData价格序列数组
+    6. arrayData价格序列数组
 返回参数：
     1. quoteData 行情序列
-    2. bondType 价差title
+    2. lastPrice 前一交易日收盘价
+    3. premium 组合权利金
     3. containerName 容器名称
-    4. method 是否是价差函数方法名
 '''
 
 def loadData(request):
@@ -59,7 +58,7 @@ def loadData(request):
         获取各种数据指标
     '''
     #获取期货合约数据
-    quoteData['quoteData'] = getFuturesData(futuresType, duration, startTime, endTime)
+    quoteData['quoteData'] = getFuturesData(futuresType, startTime, endTime)
     #存储期货合约名称
     quoteData['futuresType'] = futuresType
     #存储container的名字
@@ -87,12 +86,20 @@ def loadData(request):
 
     # 最新收盘价
     lastPrice = arrayData[-1]
+
+    '''
+    参数含义
+    1. Price 行权价
+    2. option 看涨/看跌期权类型
+    3. pricing 单个期权价格
+    4. premium 期权组合期权费
+    '''
     contractData = {}
     for i in range(0, len(optionStructure)):
         SData={}
         predictPrice = str(optionStructure[i].price * lastPrice)
         SData['price'] = predictPrice
-        SData['option'] = optionStructure[i].option
+        SData['option'] = optionStructure[i].optionType
         pricing = tyApi.TYPricing(forward, optionStructure[i].price, vol - 0.03, tau, r, str.lower(optionStructure[i].option))
         SData['pricing'] = str(round(pricing, 2))
         contractData[predictPrice] = SData
@@ -135,19 +142,11 @@ def loadData(request):
 
 
 '''
-价差分析
-传递参数:
-    1. bondType[] 债券名称数组
-    2. duration[] 债券久期数组
-    3. startTime 开始时间
-    4. endTime 结束时间
-    5. containerName 容器名称
-    6. method 是否是价差函数方法名
+情景分析
 返回参数：
-    1. quoteData 价差序列
-    2. bondType 价差title
-    3. containerName 容器名称
-    4. method 是否是价差函数方法名
+    1. revenueList 损益
+    2. contractData 期权组合结构
+    3. futuresType 标的期货合约
 '''
 
 def getRevenue(lastPrice, forward, premium, contractData):
@@ -187,7 +186,7 @@ def getPackagePrice(contractData):
 
 
 
-def getFuturesData(futuresType, duration, startTime, endTime):
+def getFuturesData(futuresType, startTime, endTime):
     #建立数据库连接
     cursor = connection.cursor()
 
