@@ -643,18 +643,31 @@ def dictVolMinusCacl(dict1, dict2):
     volDiffDict = {}
     sortedDict1 = [(k, dict1[k]) for k in sorted(dict1.keys())]
     sortedDict2 = [(k, dict2[k]) for k in sorted(dict2.keys())]
+    volDict1 = []
+    volDict2 = []
 
     #求波动率
     for i in range(1, len(sortedDict1)-1):
-        sortedDict1[i][1]['bondytm'] = (float(sortedDict1[i][1]['bondytm']) - float(sortedDict1[i-1][1]['bondytm']))/float(sortedDict1[i-1][1]['bondytm'])
-    del sortedDict1[0]
+        dataDict = {}
+        dataDict['bondytm'] = (float(sortedDict1[i][1]['bondytm']) - float(sortedDict1[i-1][1]['bondytm']))/float(sortedDict1[i-1][1]['bondytm'])
+        dataDict['timestamp'] = sortedDict1[i][1]['timestamp']
+        dataTuple = (sortedDict1[i][1]['timestamp'], dataDict)
+        volDict1.append(dataTuple)
+        #sortedDict1[i][1]['bondytm'] = (float(sortedDict1[i][1]['bondytm']) - float(sortedDict1[i-1][1]['bondytm']))/float(sortedDict1[i-1][1]['bondytm'])
+    #del sortedDict1[0]
     for i in range(1, len(sortedDict2)-1):
-        sortedDict2[i][1]['bondytm'] = (float(sortedDict2[i][1]['bondytm']) - float(sortedDict2[i-1][1]['bondytm']))/float(sortedDict2[i-1][1]['bondytm'])
-    del sortedDict2[0]
+        dataDict = {}
+        dataDict['bondytm'] = (float(sortedDict2[i][1]['bondytm']) - float(sortedDict2[i - 1][1]['bondytm'])) / float(
+            sortedDict2[i - 1][1]['bondytm'])
+        dataDict['timestamp'] = sortedDict1[i][1]['timestamp']
+        dataTuple = (sortedDict1[i][1]['timestamp'], dataDict)
+        volDict2.append(dataTuple)
+        #sortedDict2[i][1]['bondytm'] = (float(sortedDict2[i][1]['bondytm']) - float(sortedDict2[i-1][1]['bondytm']))/float(sortedDict2[i-1][1]['bondytm'])
+    #del sortedDict2[0]
 
-    for i in range(0, min(len(sortedDict1), len(sortedDict2))):
+    for i in range(0, min(len(volDict1), len(volDict2))):
         data = {}
-        data['bondytm'] = float(sortedDict1[i][1]['bondytm']) - float(sortedDict2[i][1]['bondytm'])
-        data['timestamp'] = sortedDict1[i][0]
-        volDiffDict[sortedDict1[i][0]] = data
+        data['bondytm'] = float(volDict1[i][1]['bondytm']) - float(volDict2[i][1]['bondytm'])
+        data['timestamp'] = volDict1[i][0]
+        volDiffDict[volDict1[i][0]] = data
     return volDiffDict
