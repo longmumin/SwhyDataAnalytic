@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!--引用静态文件 -->
+{% load staticfiles %}
+<!--<script src="/static/js/jquery-3.2.1.min.js" type="text/javascript"></script>-->
+<script src="{% static 'js/jquery-3.2.1.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/highstock.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/exporting.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/highcharts-zh_CN.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/public.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/flexible.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/fm.selectator.jquery.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/moment.js' %}" type="text/javascript"></script>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>期权组合情景分析</title>
+
+    <link href="{% static 'css/flexible.css' %}" rel="stylesheet">
+    <link href="{% static 'css/public.css' %}" rel="stylesheet">
+    <link href="{% static 'css/fm.selectator.jquery.css' %}" rel="stylesheet">
+
+</head>
+<body>
+
+     <div class="div_tab_container">
+         <div class="tab-group" id="YTM" style="margin-top: 0.2rem;width: 55%; margin-left: 0.2rem; padding-left: 0">
+             <section id="YTM_tab1" title="期货价格走势图">
+                 <div id="YTM_tab1_container" class="container_highstock"></div>
+             </section>
+         </div>
+         <div class="tab-group" id="YTMSpread" style="margin-top: 0.2rem; width: 35%; margin-left: 0.2rem">
+             <section id="YTMSpread_tab2" title="期权组合交易结构">
+                 <div id="YTMSpread_tab2_container" class="container_highstock"></div>
+             </section>
+         </div>
+         <div class="tab-group" id="YTMAnaltic" style="margin-top: 1.2rem; margin-left: 0.2rem; width: 90.5%">
+             <section id="YTMAnaltic_tab1" title="期权组合方案">
+                 <!-- 品种选择框 -->
+                 <div style="position:relative;float: left; width:45%">
+
+                         <div class="clear" ></div>
+                         <!-- 债券选择框2 -->
+                         <div id="bondName2" style="height: 0.5rem; margin-top: 0.4rem; margin-left: .4rem; font-size: 0.3rem">
+                         期权合约框:
+                             <input style="color: #888888; height: 0.5rem; width: 4rem; text-align: center" id="PackageAnalysis" value="请输入期权方案">
+                              <button id="PackageClear" type="button" style="height: 0.5rem; width: 1.5rem; margin-left: 1rem; margin-top:0.2rem;">清空</button>
+                         </div>
+
+
+                     <!-- 清除float样式 -->
+                         <div class="clear" ></div>
+
+                     <div style="position:relative; float:left; margin-top:0.5rem; font-size: 0.3rem">
+                         <!-- 期权组合方案展示 -->
+                         <div style="position:relative; float:left; margin-top:0.5rem; margin-left: .4rem">当前期权组合方案:</div>
+{#                         <input id="optionPackage" style="width: 5rem" value="@HC1805,PUT,1M,1.05" >#}
+                         <table id="optionPackage" style="position:relative; float:left; margin-left: .4rem; margin-top:0.5rem;">
+                             <tr style="padding: auto">
+                                 <th class="table-th">@HC1805,PUT,1M,1.05</th>
+                             </tr>
+                             <tr style="padding: auto">
+                                 <th class="table-th">@HC1805,CALL,1M,0.98</th>
+                             </tr>
+                         </table>
+                         <!-- 清除float样式 -->
+                         <div class="clear" ></div>
+
+                     </div>
+
+                 </div>
+
+                 <!-- 期权报价展示 -->
+                 <div style="position:relative;width:45%; font-size:0.3rem; float:right;margin-top:.4rem; margin-right: 1.5rem">
+                     <!-- 标题 -->
+                     <div style="position:relative; color:midnightblue; float:left; margin-top:.1rem; margin-left:1rem">基准合约：</div>
+                     <div id="instrument" style="position:relative; float:left; margin-top: 0.1rem; margin-left: .4rem">--</div>
+                     <div class="clear" ></div>
+
+                     <div style="position:relative; color:midnightblue; float:left; margin-top: 0.2rem; margin-left:1rem">昨收盘价：</div>
+                     <div id="PremiumStructure" style="position:relative; float:left; margin-top: 0.2rem; margin-left: .4rem">--</div>
+
+                     <div class="clear" ></div>
+                     <!-- 当前组合期权付费展示 -->
+                         <div style="position:relative; margin-top: 0.5rem;">
+                            <div style="position:relative; float:left;  margin-left: .4rem">当前组合权利金价格:</div>
+                            <div id="PremiumStructure" style="position:relative; float:left; color:red;  margin-left: .4rem">@HC1805,PUT,1M,1.05,1.1%</div>
+                            <div id="Premium" style="position:relative; float:left; color:red;  margin-left: .4rem">10.21元</div>
+                         </div>
+
+{#                     <div id="diffMatrixContainer" style="position:relative; float:left;">#}
+{#                         <!-- 期限矩阵初始化 -->#}
+{#                         <table id="PremiumMatrix" style="margin-top: 0rem" class="hor-minimalist-b">#}
+{#                             <thead>#}
+{#                                 <tr>#}
+{#                                     <th scope="col"></th>#}
+{#        	                         <th scope="row">执行价格</th>#}
+{#                                     <th scope="row">买入</th>#}
+{#                                     <th scope="row">卖出</th>#}
+{#                                 </tr>#}
+{#                             </thead>#}
+{#                             <tbody>#}
+{#                                 <tr>#}
+{#                                     <th rowspan="6">看涨期权</th><th scope="col">105%</th><td>--</td><td>--</td>#}
+{#                                 </tr>#}
+{#                                 <tr>#}
+{#        	                         <th scope="col">104%</th><td>--</td><td>--</td>#}
+{#                                 </tr>#}
+{#                                 <tr>#}
+{#        	                         <th scope="col">103%</th><td>--</td><td>--</td>#}
+{#                                 </tr>#}
+{#                                 <tr>#}
+{#        	                         <th scope="col">102%</th><td>--</td><td>--</td>#}
+{#                                 </tr>#}
+{#                                 <tr>#}
+{#        	                         <th scope="col">101%</th><td>--</td><td>--</td>#}
+{#                                 </tr>#}
+{#                                 <tr>#}
+{#        	                         <th scope="col">100%</th><td>--</td><td>--</td>#}
+{#                                 </tr>#}
+{#                                 <tr>#}
+{#        	                         <th rowspan="6">看跌期权</th><th scope="col">100%</th><td>--</td><td>--</td>#}
+{#                                 </tr>#}
+{#                                 <tr>#}
+{#        	                         <th scope="col">99%</th><td>--</td><td>--</td>#}
+{#                                 </tr>#}
+{#                                 <tr>#}
+{#        	                         <th scope="col">98%</th><td>--</td><td>--</td>#}
+{#                                 </tr>#}
+{#                                 <tr>#}
+{#        	                         <th scope="col">97%</th><td>--</td><td>--</td>#}
+{#                                 </tr>#}
+{#                                 <tr>#}
+{#        	                         <th scope="col">96%</th><td>--</td><td>--</td>#}
+{#                                 </tr>#}
+{#                                 <tr>#}
+{#        	                         <th scope="col">95%</th><td>--</td><td>--</td>#}
+{#                                 </tr>#}
+{##}
+{#                            </tbody>#}
+{#                         </table>#}
+{#                     </div>#}
+                 </div>
+
+             </section>
+         </div>
+     </div>
+
+
+
+<script type="text/javascript">
+
+        $(function() {
+            //进度条
+            /*
+                $('body').mLoading({
+                    text:"申万宏源欢迎您，加载数据中",//加载文字，默认值：加载中...
+                });
+            */
+            //初始化页面
+            init();
+            var duration = "1M", startTime = null, endTime = null;
+
+            var optionStructure = document.getElementById("PremiumStructure").getElementsByTagName("th");
+            if (optionStructure.length == 0) {
+                alert("Error");
+                return;
+            }
+            var optionData = generatePackage(optionStructure);
+            loadYTMData("CU1805.SHF",duration, startTime, endTime, optionData, 'YTM_tab1_container');
+
+        });
+
+        function init()
+        {
+            //加载标签栏
+            $('.tab-group').tabify();
+
+            //解析期权组合结构并填入表格
+            $( "#PackageAnalysis" ).change(function() {
+                var optionPackage = document.getElementById("PremiumStructure");
+                var optionsType = substring(optionPackage.indexOf('@')+1,optionPackage.indexOf(','));
+                var optionPackage =  optionPackage.split(";");
+                $.each(optionPackage, function (i, item) {
+                    var newRow = $('<tr style="padding: auto">' +
+                         '<th class="table-th">'+item+'</th>').hide().fadeIn(1000);
+                    $('#optionPackage').append(newRow);
+                });
+                var optionStructure = document.getElementById("PremiumStructure").getElementsByTagName("th");
+                var optionData = generatePackage(optionStructure);
+                var startTime = null, endTime = null;
+
+                loadYTMData(optionsType,duration, startTime, endTime, optionData, 'YTM_tab1_container');
+                getBondYTMDiffCacl(optionsType, duration, startTime, endTime, 'YTMSpread_tab2_container');
+            });
+            //绑定清空按钮
+            $( "#PackageClear" ).click(function() {
+                //清空下方方案条
+                $('#optionPackage').remove();
+            });
+
+
+        }
+
+        function generatePackage(optionStructure){
+            var optionData = {}
+            for (var i = 0; i < optionStructure.length; i++) {
+                optionStructure[i] = optionStructure[i].split(",");
+                var optionStr = {}
+                var price = optionStructure[i][3];
+                optionStr['futuresType'] = substring(optionStructure[i].indexOf('@')+1,optionStructure[i].indexOf(','));
+                optionStr['duration'] = optionStructure[i][2];
+                optionStr['price'] = optionStructure[i][3];
+                optionStr['optionType'] = optionStructure[i][1];
+                optionStr['trade'] = substring(0,optionStructure[i].indexOf('@'));
+                optionData[price] = optionStr
+            }
+        }
+
+        /***** 标的合约走势图 *****/
+        /*****
+         * optionstype 期货合约名称，例如“豆一”
+         * duration 合约期限，例如“1Y”
+         * startTime 查询开始时间 默认null
+         * endTime 查询结束时间 默认null
+         * containerName 装载分析图的容器
+         * method 加载数据的方式，‘loadData’不包含价差分析函数loadAnalysisData， ‘loadDiff’包含价差分析函数，默认为‘loadData’
+         *
+         * */
+        function loadYTMData(futuresType, duration, startTime, endTime, optionData, containerName){
+            var url = '/Quotes/OptionAnalytic/loadData';
+            //给method赋默认参数
+            method = method ? method : 'loadData';
+            $.ajax({
+                type: 'POST',
+                data:{
+                    "futuresType":futuresType,
+                    "duration":duration,
+                    "startTime":startTime,
+                    "endTime":endTime,
+                    "optionStr":optionData,
+                    'containerName':containerName
+                },
+                dataType: 'json',
+                url: url,
+                success: loadData,
+                error: errorInfo,
+                //采用异步
+                async: true
+            });
+        }
+
+
+        var loadData = function(data) {
+            var seriesData = [];
+            var arrayData = [];
+
+            $.each(quoteData, function (i, item) {
+                seriesData.push([
+                    str2UTC(item.timestamp),
+                    parseFloat(item.bondytm)
+                ]);
+                arrayData.push([
+                    parseFloat(item.bondytm)
+                ]);
+            });
+
+            //解析json数据
+            data = eval('('+data+')');
+            //取出债券名称
+            var futuresType = data.futuresType;
+            var containerName = data.containerName;
+            //加载数据
+            $.each(data.quoteData, function (i, item) {
+                seriesData.push([
+                    str2UTC(item.timestamp),
+                    parseFloat(item.bondytm)
+                ]);
+                arrayData.push([
+                    parseFloat(item.bondytm)
+                ]);
+            });
+            /*******  创建图形  ******/
+            createCharts(seriesData, futuresType, containerName);
+            //$('body').mLoading("hide");
+
+            /*******  加载数据分析数据  ******/
+            //销毁变量，释放空间
+            delete seriesData;
+
+            //console.log(data);
+        };
+
+        /***** 数据分析函数 *****/
+        function loadAnalysisData(arrayData) {
+            var url = '/FixedIncome/YTMAnalytic/getBondYTMAnalyicData';
+            $.ajax({
+                type: 'POST',
+                data:{
+                    "arrayData[]":arrayData
+                },
+                dataType: 'json',
+                url: url,
+                success: loadAnalysis,
+                error: errorInfo,
+                //采用异步
+                async: true
+            });
+        }
+
+         var loadAnalysis = function(data) {
+            //console.log(data);
+            //解析json数据
+            data = JSON.parse(data) ;
+            //取出分析指标
+            var latestDiff = data.latestDiff;
+            var latestDiffDiff = data.latestDiffDiff;
+            var latestDiffPercent = (data.latestDiffPercent*100).toFixed(2) + '%';
+
+            //最新价差
+            if(latestDiffDiff < 0){
+               changeFont('latestDiffPrice', latestDiff, 'green');
+               changeFont('latestDiffDiff', latestDiffDiff, 'green');
+               changeFont('latestDiffPercent', latestDiffPercent, 'green');
+            }
+            else if(latestDiffDiff == 0) {
+               changeFont('latestDiffPrice', latestDiff, 'black');
+               changeFont('latestDiffDiff', latestDiffDiff, 'black');
+               changeFont('latestDiffPercent', latestDiffPercent, 'black');
+            }
+            else {
+               changeFont('latestDiffPrice', latestDiff, 'red');
+               changeFont('latestDiffDiff', latestDiffDiff, 'red');
+               changeFont('latestDiffPercent', latestDiffPercent, 'red');
+            }
+
+            //昨日价差
+            changeFont('lastDiffPrice', lastDiff, 'black');
+
+         };
+
+
+        function createCharts(data, futuresType, containerName) {
+            //关闭UTC时间,设置title格式
+            Highcharts.setOptions({
+                global: {
+                    useUTC: false,
+                    timezoneOffset: -8 * 60
+                },
+                //去除左上角的字体
+                lang: {
+                    rangeSelectorZoom: null
+                },
+                title: {
+                    align: 'left', x: 5, y: 20,
+                    style: {
+                        fontSize: '20px',
+                        color: '#304354',
+                        fontWeight: 'bold',
+                    }
+                }
+            });
+            // Create the chart
+            Highcharts.stockChart(containerName, {
+                title: {
+                    //设置标题
+                    text: futuresType,
+                },
+                tooltip: {
+                    xDateFormat: '%Y-%m-%d',
+                    shared: true,
+                },
+                plotOptions: {
+                    series: {
+                        pointStart: Date.UTC(2012, 0, 1),
+                        pointInterval: 24 * 3600 * 1000
+                    }
+                },
+                xAxis: {
+                    type: 'datetime',
+                    labels: {
+                        rotation: -45,
+                        style: {
+                            fontSize: '8px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
+                },
+                yAxis: {
+
+                    title: {
+                        text: '标的价格',
+
+                    }
+                },
+                series: [{
+                    name: 'YTM',
+                    data: data,
+                    id: 'dataseries'
+                    // the event marker flags
+                }, {
+                    type: 'flags',
+                    data: [{}],
+                    onSeries: 'dataseries',
+                    shape: 'circlepin',
+                    width: 16
+                }],
+                rangeSelector: {
+                    buttonTheme: {
+                        display: 'none' // 不显示按钮
+                    },
+                    selected: 0,
+                    inputEnabled: true // 不显示日期输入框
+                },
+                //添加切换久期的按钮
+                exporting: {
+                    buttons: {
+                        contextButton: {
+                            enabled: false,
+                            menuItems: [{
+                                text: 'Download PDF',
+                                onclick: function () {
+                                    this.exportChart({
+                                        type: 'application/pdf'
+                                    });
+                                }
+                            }, {
+                                    text: 'Print',
+                                    onclick: function () {
+                                        alert('Launch Print Table function')
+                                    },
+                                    separator: false
+                            }]
+                        }
+                    }
+                }
+            });
+        }
+
+         /***** 情景分析函数 *****/
+        var loadScene = function(data) {
+            var seriesData = [];
+            var arrayData = [];
+            //解析json数据
+            data = eval('('+data+')');
+            //取出债券名称
+            var futuresType = data.futuresType;
+            var containerName = data.containerName;
+            var strikePrice = data.strikePrice;
+
+            /*******  创建图形  ******/
+            createOptionCharts(seriesData, futuresType, strikePrice, containerName);
+            //$('body').mLoading("hide");
+
+            /*******  加载数据分析数据  ******/
+            //销毁变量，释放空间
+            delete seriesData;
+            //加载数据分析函数
+            loadAnalysisData(arrayData);
+
+
+            //console.log(data);
+        };
+
+        function createOptionCharts(data, futuresType, containerName) {
+            //关闭UTC时间,设置title格式
+            Highcharts.setOptions({
+                global: {
+                    useUTC: false,
+                    timezoneOffset: 8 * 60
+                },
+                //去除左上角的字体
+                lang: {
+                    rangeSelectorZoom: null
+                },
+                title: {
+                    align: 'left', x: 5, y: 20,
+                    style: {
+                        fontSize: '20px',
+                        color: '#304354',
+                        fontWeight: 'bold',
+                    }
+                }
+            });
+            // Create the chart
+            Highcharts.Chart(containerName, {
+                title: {
+                    //设置标题
+                    text: futuresType +'期权结构示意',
+                },
+                tooltip: {
+                    shared: true,
+                    pointFormat: 'x = {point.x}, y = {point.y}'
+                },
+                xAxis: {
+                    type: 'datetime',
+                    startOnTick: true,
+                    endOnTick: true,
+                    showLastLabel: true,
+                    categories: data.strike,
+                    labels: {
+                        rotation: -45,
+                        style: {
+                            fontSize: '8px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: '收益'
+                    }
+                },
+                series: [{
+                    type: 'arearange',
+                    data: [
+                        [0, 2, 4],
+                        [2, 4, 7]
+                    ]
+                }],
+                rangeSelector: {
+                    buttonTheme: {
+                        display: 'none' // 不显示按钮
+                    },
+                    selected: 0,
+                    inputEnabled: true // 不显示日期输入框
+                },
+                //添加切换久期的按钮
+                exporting: {
+                    buttons: {
+                        contextButton: {
+                            enabled: false,
+                            menuItems: [{
+                                text: 'Download PDF',
+                                onclick: function () {
+                                    this.exportChart({
+                                        type: 'application/pdf'
+                                    });
+                                }
+                            }, {
+                                    text: 'Print',
+                                    onclick: function () {
+                                        alert('Launch Print Table function')
+                                    },
+                                    separator: false
+                            }]
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
+

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+from django.db import connection
 import re, datetime, os, json, math, logging
 import pandas as pd
 from django.http import JsonResponse
@@ -20,13 +20,7 @@ from .serializers import loadDataSerializer
 logger = logging.getLogger('SwhyDataAnalytic.Debug')
 
 
-#读取期货合约
-baseDir = os.path.dirname(os.path.abspath(__name__))
-contractListFileDir = baseDir + '/files/BasicInfo/contractList.xlsx'
-logger.info(baseDir)
-contractList = list(pd.read_excel(contractListFileDir)['contract'])
-contractName = list(pd.read_excel(contractListFileDir)['name'])
-contractList = dict(zip(contractList, contractName))
+
 
 
 '''
@@ -124,6 +118,26 @@ def GetQuotesDataFromTY(qixian) -> object:
 
     #开启wind接口
     # w.start()
+
+
+    # 读取期货合约
+    # contractDate = '2018-01-10'
+    # lastContractDate = (datetime.date(*map(int, contractDate.split('-'))) + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
+    # cursor = connection.cursor()
+    baseDir = os.path.dirname(os.path.abspath(__name__))
+    contractListFileDir = baseDir + '/files/BasicInfo/contractList.xlsx'
+    logger.info(baseDir)
+    contractName = list(pd.read_excel(contractListFileDir)['name'])
+    contractList = list(pd.read_excel(contractListFileDir)['contract'])
+    # contractID = list(pd.read_excel(contractListFileDir)['contractid'])
+    # contractList = []
+    # cursor.execute("select getdominantcontract('2018-01-10', 'A')")
+    # a = cursor.fetchone()
+    # for contract in contractID:
+    #     cursor.execute("select getdominantcontract('%(date)s', '%(contract)s')" % {"date": lastContractDate, "contract": contract})
+    #     contractList.append(cursor.fetchone()[0])
+    contractList = dict(zip(contractList, contractName))
+
 
     #获取报价
     for contract in contractList.keys():

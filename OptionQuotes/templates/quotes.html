@@ -71,19 +71,14 @@
                  $('body').mLoading({
                     text:"申万宏源欢迎您，加载数据中",//加载文字，默认值：加载中...
                  });
-
                  //初始化选择框
                  init();
-
                  //加载报价数据
                  var qixian = 1, dateselect = null;
                  loadQuotesData(qixian);
-
                 //刷新页面，每隔5秒刷新一次数据
                 setInterval(refreshQuoteData,10000);
              });
-
-
              function init() {
                  $("#qixian").empty();
                  selectInit($("#qixian"), 'qixian');
@@ -91,7 +86,6 @@
                      showAllOptionsOnFocus: true,
                      useSearch: false
                  });
-
                  //绑定期限下拉框及日期
                  $("#qixian").change(function(){
                      $('body').mLoading({
@@ -103,7 +97,6 @@
                      loadQuotesData(qixian);
                  });
              }
-
              /***** 价格获取函数 *****/
              function loadQuotesData(qixian){
                  var url = '/quotes/loadQuotes/';
@@ -120,7 +113,6 @@
                      async: true
                  });
              }
-
              var loadData = function(data){
                  //更新数据
                  console.log(data);
@@ -145,7 +137,6 @@
                  });
                  $('body').mLoading("hide");
              };
-
              /***** 页面自动刷新函数 *****/
              function refreshQuoteData() {
                  var url = '/quotes/updateQuotes/';
@@ -155,7 +146,6 @@
                      type: 'POST',
                      data:{
                          "qixian":qixian,
-
                      },
                      dataType: 'json',
                      url: url,
@@ -165,7 +155,6 @@
                      async: true
                  });
              }
-
             var updateData = function(data){
                 //更新数据
                 console.log(data);
@@ -182,7 +171,6 @@
                     changeFont(itemId+'pricingBid', item[1].pricingBid, fontColor);
                 });
             };
-
             // 更改内容渐变字体,#####需要判断修改的数值是否有变化#####
             function changeFont(id, text, fontColor) {
                 //如果字段值有变化，触发修改动作
@@ -196,7 +184,6 @@
             var errorInfo = function(msg){
                 //关闭进度条
                 $('body').mLoading("hide");
-
             };
         </script>
     </body>
