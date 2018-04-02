@@ -169,6 +169,7 @@
             var optionStructure = [];
 
             //解析基准合约
+            var optionStr = $('#PremiumStructure').val();
             var optionsType = substring($('#PremiumStructure').indexOf('@')+1,$('#PremiumStructure').indexOf(','));
             changeFont('instrument', optionsType, 'black');
 
@@ -196,19 +197,22 @@
             //绑定输入框，解析期权组合结构
             //需要加入读取剪贴板内容
             $('#PackageAnalysis').change(function() {
-                var optionPackage = $(this).text();
-                var optionsType = substring(optionPackage.indexOf('@')+1,optionPackage.indexOf(','));
+                var optionPackage = $(this).val();
+                var optionsType = optionPackage.substring(optionPackage.indexOf('@')+1,optionPackage.indexOf(','));
 
+                debugger;
                 //解析基准合约
                 changeFont('instrument', optionsType, 'black');
 
                 optionPackage = optionPackage.split(";");
+                //#########这里不是用each，因为不是json串#############
                 $.each(optionPackage, function (i, item) {
                     var newRow = $ ('<tr style="padding: auto">' +
                          '<th class="table-th">'+item+'</th></tr>').hide().fadeIn(1000);
                     $('#optionPackage').append(newRow);
                 });
 
+                //############这个函数没有正确返回值##############
                 var optionData = generatePackage(optionStructure);
                 var startTime = null, endTime = null;
 
