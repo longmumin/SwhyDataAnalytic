@@ -12,7 +12,8 @@ from rest_framework.views import APIView
 
 from .models import loadDataModel
 from .serializers import loadDataSerializer, bondYTMAnalyicDataSerializer, bondYTMMatrixSerializer
-from SwhyDataAnalytic.publicMethod import getLastTradeDate
+from SwhyDataAnalytic.publicMethod import getLastTradeDate, list2dict
+from django.contrib.auth.decorators import permission_required
 
 '''
 日志模块加载
@@ -42,6 +43,7 @@ def loadPage(request):
     3. containerName 容器名称
     4. method 是否是价差函数方法名
 '''
+#@permission_required('car.drive_car')，在这里定义所需要的权限后就可以限制，但是必须对request进行显示
 class loadData(APIView):
 
     def get(self, request, format=None):
@@ -144,7 +146,7 @@ class getBondYTMDiffCacl(APIView):
         # 获取价差数据，价差可以换为除法。--------此处如果有多条数据可以用循环
         YTMData1 = getBondYTMData(bondType[0], duration[0], startTime, endTime)
         YTMData2 = getBondYTMData(bondType[1], duration[1], startTime, endTime)
-        diffData = dictMinusCacl(YTMData1, YTMData2)
+        diffData = dictVolMinusCacl(YTMData1, YTMData2)
         # 获取YTM数据
         quoteData['quoteData'] = diffData
         # 存储债券名称
@@ -195,6 +197,50 @@ def getBondYTMDiffCacl(request):
     logger.info(quoteData)
     return JsonResponse(json.dumps(quoteData, ensure_ascii=False, sort_keys=True), safe=False)
 '''
+
+class getBondYTMVolDiffCacl(APIView):
+
+    def get(self, request, format=None):
+        modelObject = loadDataModel.objects.all()
+        serializer = loadDataSerializer(modelObject, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        quoteData = {}
+        # 抽取request中数据
+        try:
+            bondType = request.data.getlist('bondType[]')
+            duration = request.data.getlist('duration[]')
+            startTime = request.data['startTime']
+            endTime = request.data['endTime']
+            containerName = request.data['containerName']
+            method = request.data['method']
+        except Exception as e:
+            logger.error("get request error, ret = %s" % e.args[0])
+
+        # 获取价差数据，价差可以换为除法。--------此处如果有多条数据可以用循环
+        YTMData1 = getBondYTMData(bondType[0], duration[0], startTime, endTime)
+        YTMData2 = getBondYTMData(bondType[1], duration[1], startTime, endTime)
+        diffData = dictMinusCacl(YTMData1, YTMData2)
+        # 获取YTM数据
+        quoteData['quoteData'] = diffData
+        # 存储债券名称
+        quoteData['bondType'] = '价差--' + bondType[0] + '和' + bondType[1]
+        # 存储container的名字
+        quoteData['containerName'] = containerName
+        # 存储方法名
+        quoteData['method'] = method
+        logger.info(quoteData)
+
+        serializer = loadDataSerializer(data=quoteData)
+        # serializedData = {'data': serializer.data}
+        if serializer.is_valid():
+            serializer.save()
+            #json_dumps_params为json.dumps的参数
+            return JsonResponse(serializer.data, json_dumps_params={"ensure_ascii": False, "sort_keys": True},safe=False, status=status.HTTP_201_CREATED)
+        else:
+            return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 '''
 价差分析
@@ -283,7 +329,7 @@ class getBondYTMMatrix(APIView):
         else:
             return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-'''
+''' 
 def getBondYTMMatrix(request):
     quoteData = {}
     YTMData = {}
@@ -422,6 +468,13 @@ class getBondYTMAnalyicData(APIView):
         analysisData['min'] = round(min, 4)
         #获取最新波动率
         analysisData['vol'] = round((getVolDay(arrayData))[-1], 4)
+        #获取资金成本，FR007 1年期，上一个交易日的数据
+        startTime = (datetime.datetime.now() - datetime.timedelta(days = 1)).strftime("%Y-%m-%d")
+        startTime = getLastTradeDate(startTime)
+        fr007YTM = getBondYTMData('FR007', '1Y', startTime, startTime)
+        for (key, value) in fr007YTM.items():
+            analysisData['capitalCost'] = value['bondytm']
+
 
         quoteData['quoteData'] = analysisData
         logger.info(quoteData)
@@ -558,17 +611,6 @@ def getBondYTMData(bondType, duration, startTime, endTime):
     return dictData
 
 
-def list2dict(keys, values):
-    dictData = {}
-    for value in values:
-        row = {}
-        value = list(value)
-        for i in range(0, len(keys)):
-            row[keys[i]] = str(value[i])
-        #时间戳作为keys
-        dictData[str(value[1])] = row
-    return dictData
-
 def dictMinusCacl(dict1, dict2):
     diffDict = {}
     for k, v in dict2.items():
@@ -595,3 +637,37 @@ def getVolDay(arrayData):
     for i in range(0, len(arrayData)-2):
         volData.append(arrayData[i+1]/arrayData[i])
     return volData
+
+#根据dict的键值排序
+def dictVolMinusCacl(dict1, dict2):
+    volDiffDict = {}
+    sortedDict1 = [(k, dict1[k]) for k in sorted(dict1.keys())]
+    sortedDict2 = [(k, dict2[k]) for k in sorted(dict2.keys())]
+    volDict1 = []
+    volDict2 = []
+
+    #求波动率
+    for i in range(1, len(sortedDict1)-1):
+        dataDict = {}
+        dataDict['bondytm'] = (float(sortedDict1[i][1]['bondytm']) - float(sortedDict1[i-1][1]['bondytm']))/float(sortedDict1[i-1][1]['bondytm'])
+        dataDict['timestamp'] = sortedDict1[i][1]['timestamp']
+        dataTuple = (sortedDict1[i][1]['timestamp'], dataDict)
+        volDict1.append(dataTuple)
+        #sortedDict1[i][1]['bondytm'] = (float(sortedDict1[i][1]['bondytm']) - float(sortedDict1[i-1][1]['bondytm']))/float(sortedDict1[i-1][1]['bondytm'])
+    #del sortedDict1[0]
+    for i in range(1, len(sortedDict2)-1):
+        dataDict = {}
+        dataDict['bondytm'] = (float(sortedDict2[i][1]['bondytm']) - float(sortedDict2[i - 1][1]['bondytm'])) / float(
+            sortedDict2[i - 1][1]['bondytm'])
+        dataDict['timestamp'] = sortedDict1[i][1]['timestamp']
+        dataTuple = (sortedDict1[i][1]['timestamp'], dataDict)
+        volDict2.append(dataTuple)
+        #sortedDict2[i][1]['bondytm'] = (float(sortedDict2[i][1]['bondytm']) - float(sortedDict2[i-1][1]['bondytm']))/float(sortedDict2[i-1][1]['bondytm'])
+    #del sortedDict2[0]
+
+    for i in range(0, min(len(volDict1), len(volDict2))):
+        data = {}
+        data['bondytm'] = float(volDict1[i][1]['bondytm']) - float(volDict2[i][1]['bondytm'])
+        data['timestamp'] = volDict1[i][0]
+        volDiffDict[volDict1[i][0]] = data
+    return volDiffDict

@@ -18,7 +18,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Highstock Example</title>
+    <title>FixedIncome Quant</title>
 
     <link href="{% static 'css/flexible.css' %}" rel="stylesheet">
     <link href="{% static 'css/public.css' %}" rel="stylesheet">
@@ -113,6 +113,8 @@
                       <div id="diffMin" style="position:relative; margin-top: 0.3rem; margin-left: .5rem; float:left;">--</div>
                       <!-- 清除float样式 -->
                       <div class="clear" ></div>
+                      <div style="position:relative; font-size: 15px; float:left; margin-top: .6rem; margin-left: .4rem">今日资金成本:</div>
+                      <div id="capitalCost" style="position:relative; font-size: 15px; float:left; margin-top: .6rem; margin-left: .4rem">--</div>
                   </div>
 
                  <!-- 价差矩阵多选框 -->
@@ -324,7 +326,7 @@
                 var duration = ['1Y', '3Y', '5Y', '7Y', '10Y'], container = 'durationMatrix';
                 generateYTMMatrix(bondType, duration, startTime, endTime, container);
             });
-            $( "#bondYTMDurationSelect" ).change(function() {
+            $("#bondYTMDurationSelect").change(function() {
                 //获取bondType数组
                 var bondType = [], container = 'bondYTMMatrix';
                 for (var i=0; i<codeDataBondType.length; ++i) {
@@ -408,7 +410,7 @@
             var seriesData = [];
             //var arrayData = [];
             //解析json数据
-            console.log(data);
+            //console.log(data);
             //data = eval('('+data+')');
             //取出债券名称
             var bondType = data.bondType;
@@ -467,7 +469,7 @@
             //var seriesData = [];
             var arrayData = [];
             //解析json数据
-            console.log(data);
+            //console.log(data);
             //data = eval('('+data+')');
             //取出债券名称
             var bondType = data.bondType;
@@ -515,8 +517,7 @@
             });
         }
          var loadAnalysis = function(data) {
-            console.log(data);
-            debugger;
+            //console.log(data);
             //获取json数据
             data = data.quoteData;
             //取出分析指标
@@ -532,6 +533,7 @@
             var diffMax = data.max;
             var diffDeviateStandardDeviation = data.deviateStandardDeviation;
             var diffMin = data.min;
+            var capitalCost = data.capitalCost;
             //最新价差
             if(latestDiffDiff < 0){
                changeFont('latestDiffPrice', latestDiff, 'green');
@@ -562,6 +564,8 @@
             //偏离标准差，最小值展示
             changeFont('diffDeviateStandardDeviation', diffDeviateStandardDeviation, 'black');
             changeFont('diffMin', diffMin, 'black');
+            //资金成本展示
+            changeFont('capitalCost', capitalCost, 'black');
          };
         /***** 生成矩阵函数 *****/
         function generateYTMMatrix(bondType,duration, startTime, endTime, containerName) {
@@ -584,8 +588,6 @@
             });
         }
         var loadMatrix = function(data) {
-            console.log(data);
-            //data = eval('(' + data + ')');
             //创建映射字典,债券类型和期限的bondType存储的内容不同，分别为类型和久期，例如'FR007'和'1Y'
             var bondType = {}, index = 0;
             $.each(data.quoteData, function (i, item) {
@@ -594,6 +596,8 @@
                 });
             });
             //bondType排序
+
+            //var bondType = {'1Y':1, '3Y':2, '5Y':3, '7Y':4, '10Y':5};
             var bondType = dictSort(bondType);
             /**
              * 创建价差矩阵
@@ -611,14 +615,14 @@
             });
             //console.log(diffMatrix, bondType);
             //清除原表格
-            var containerName = data.containerName
+            var containerName = data.containerName;
             $("#" + containerName).remove();
             /*生成表格并把表格加入容器*/
             var table = $("<table id='" + containerName + "' class='hor-minimalist-b'>");
             table.appendTo($("#diffMatrixContainer"));
             //生成表头
             var thead = $("<thead> <tr> </tr> </thead>");
-            thead.appendTo(table)
+            thead.appendTo(table);
             //添加空格
             var th = $("<th scope='col'>跨品种矩阵</th>");
             th.appendTo(thead);

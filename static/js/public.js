@@ -101,12 +101,12 @@ function selectInit(obj,codeType) {
         success: function (data) {
             data = JSON.parse(data);
             //根据data返回值初始化下拉框
-            for(var i=0;i<data.length;i++){
+            $.each(data, function (i, item) {
                 var opt=$("<option>");
-                opt.val(data[i].val);
-                opt.text(data[i].text);
+                opt.val(item.val);
+                opt.text(item.text);
                 obj.append(opt);
-            }
+            });
         },
         error: errorInfo,
         //采用异步
@@ -122,7 +122,7 @@ function selectInit(obj,codeType) {
 function getCode(codeType) {
     //初始下拉框
     var url = '/publicMethod/getSYSCode';
-    var codeData = []
+    var codeData = [];
     $.ajax({
         type: 'POST',
         data:{
@@ -132,12 +132,12 @@ function getCode(codeType) {
         url: url,
         success: function (data) {
             data = JSON.parse(data);
-            for(var i=0;i<data.length;i++){
-                var code = {}
-                code['val'] = data[i].val;
-                code['text'] = data[i].text;
+            $.each(data, function (i, item) {
+                var code = {};
+                code['val'] = item.val;
+                code['text'] = item.text;
                 codeData.push(code);
-            }
+            });
         },
         error: errorInfo,
         //是否采用异步，false表示同步
