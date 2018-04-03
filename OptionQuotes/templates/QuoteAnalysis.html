@@ -167,24 +167,6 @@
 
             var duration = "1M", startTime = null, endTime = null;
             var optionStructure = [];
-
-            //解析基准合约
-            var optionStr = $('#PremiumStructure').val();
-            var optionsType = substring($('#PremiumStructure').indexOf('@')+1,$('#PremiumStructure').indexOf(','));
-            changeFont('instrument', optionsType, 'black');
-
-            var optionData = generatePackage(optionStructure);
-            loadOpData("CU1805.SHF",duration, startTime, endTime, optionData, 'YTM_tab1_container');
-
-        });
-
-        function init()
-        {
-            //加载标签栏
-            $('.tab-group').tabify();
-
-            //获得期权组合结构
-            var optionStructure = [];
             $('#optionPackage tr').each(function (i) {
                 optionStructure[i]=$(this).text();
             });
@@ -192,6 +174,20 @@
                 alert("Error");
                 //$('body').mLoading("hide");
             }
+
+            //解析基准合约
+            var optionsType = optionStructure[0].substring(optionStructure[0].indexOf('@')+1,optionStructure[0].indexOf(','));
+            changeFont('instrument', optionsType, 'black');
+
+            var optionData = generatePackage(optionStructure);
+            loadOpData("CU1805.SHF", startTime, endTime, optionData, 'YTM_tab1_container');
+
+        });
+
+        function init()
+        {
+            //加载标签栏
+            $('.tab-group').tabify();
 
 
             //绑定输入框，解析期权组合结构
@@ -206,44 +202,63 @@
 
                 optionPackage = optionPackage.split(";");
                 //#########这里不是用each，因为不是json串#############
+                for(var j = 0; j < optionPackage.length; j++){
+                    var newRow = '<tr style="padding: auto">' +
+                         '<th class="table-th">'+optionPackage[j]+'</th></tr>';
+                    $('#optionPackage').append(newRow);
+                }
+                /*
                 $.each(optionPackage, function (i, item) {
                     var newRow = $ ('<tr style="padding: auto">' +
                          '<th class="table-th">'+item+'</th></tr>').hide().fadeIn(1000);
                     $('#optionPackage').append(newRow);
                 });
+                */
+
+                //获得期权组合结构
+                var optionStructure = [];
+                $('#optionPackage tr').each(function (i) {
+                    optionStructure[i]=$(this).text();
+                });
+                if (optionStructure.length == 0) {
+                    alert("Error");
+                    //$('body').mLoading("hide");
+                }
 
                 //############这个函数没有正确返回值##############
                 var optionData = generatePackage(optionStructure);
+
                 var startTime = null, endTime = null;
 
-                loadOpData(optionsType,duration, startTime, endTime, optionData, 'YTM_tab1_container');
+                loadOpData(optionsType, startTime, endTime, optionData, 'YTM_tab1_container');
                 getSenarioAnalysis(optionsType, optionData, 'YTMSpread_tab2_container');
             });
             //绑定清空按钮
             $( "#PackageClear" ).click(function() {
                 //清空下方方案条
-                $('#optionPackage').remove();
-                $('#Premium').remove();
-                $('#PremiumStructure').remove();
+                $('#optionPackage').empty("");
+                $('#Premium').empty("");
+                $('#PremiumStructure').empty("");
+                $('#PackageAnalysis').val("");
             });
 
 
         }
 
         function generatePackage(optionStructure){
-            var optionData = {}
+            var optionData = {};
             for (var i = 0; i < optionStructure.length; i++) {
-                optionStructure[i] = optionStructure[i].split(",");
-                var optionStr = {}
-                var price = optionStructure[i][3];
-                optionStr['futuresType'] = substring(optionStructure[i].indexOf('@')+1,optionStructure[i].indexOf(','));
-                optionStr['duration'] = optionStructure[i][2];
-                optionStr['price'] = optionStructure[i][3];
-                optionStr['optionType'] = optionStructure[i][1];
-                optionStr['trade'] = substring(0,optionStructure[i].indexOf('@'));
+                var option = optionStructure[i].split(",");
+                var optionStr={};
+                var price =option[3];
+                optionStr['futuresType'] = option[0].substring(option[0].indexOf('@')+1);
+                optionStr['duration'] = option[2];
+                optionStr['price'] = option[3];
+                optionStr['optionType'] = option[1];
+                optionStr['trade'] = option[0].substring(0,option[0].indexOf('@'));
                 optionData[price] = optionStr;
-                return optionData
             }
+            return optionData;
         }
 
         /***** 标的合约走势图 *****/
@@ -255,17 +270,16 @@
          * optionData 期权组合结构
          * containerName 装载分析图的容器
          * */
-        function loadOpData(futuresType, duration, startTime, endTime, optionData, containerName){
+        function loadOpData(futuresType, startTime, endTime, optionData, containerName){
             var url = '/Quotes/OptionAnalytic/loadData';
             //给method赋默认参数
             $.ajax({
                 type: 'POST',
                 data:{
                     "futuresType":futuresType,
-                    "duration":duration,
                     "startTime":startTime,
                     "endTime":endTime,
-                    "optionStr":optionData,
+                    "optionStr[]":optionData,
                     'containerName':containerName
                 },
                 dataType: 'json',
