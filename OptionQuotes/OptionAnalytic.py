@@ -45,12 +45,11 @@ def loadData(request):
     if(request.method == 'POST'):
         try:
             futuresType = request.POST['futuresType']
-            duration = request.POST['duration']
             startTime = request.POST['startTime']
             endTime = request.POST['endTime']
             containerName = request.POST['containerName']
-            arrayData = request.POST.getlist['arrayData[]']
-            optionStructure = request.POST['optionStr']
+
+            optionStructure = request.POST.getlist['optionStr[]']
         except Exception as e:
             logger.error("get request error, ret = %s" % e.args[0])
 
@@ -66,6 +65,7 @@ def loadData(request):
     quoteData['futuresPredict'] = '收益--' + futuresType
 
     #存储类型转换
+    arrayData = quoteData.quoteData
     arrayData = np.array(arrayData)
     arrayData = arrayData.astype(np.float)
     arrayData = [data for data in arrayData if str(data) != 'nan']
