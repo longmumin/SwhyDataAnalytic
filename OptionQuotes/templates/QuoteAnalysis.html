@@ -196,7 +196,7 @@
                 var optionPackage = $(this).val();
                 var optionsType = optionPackage.substring(optionPackage.indexOf('@')+1,optionPackage.indexOf(','));
 
-                debugger;
+
                 //解析基准合约
                 changeFont('instrument', optionsType, 'black');
 
@@ -221,12 +221,13 @@
                     optionStructure[i]=$(this).text();
                 });
                 if (optionStructure.length == 0) {
-                    alert("Error");
+                    console.log("Error input");
                     //$('body').mLoading("hide");
                 }
 
                 //############这个函数没有正确返回值##############
                 var optionData = generatePackage(optionStructure);
+                debugger;
 
                 var startTime = null, endTime = null;
 
@@ -246,18 +247,19 @@
         }
 
         function generatePackage(optionStructure){
-            var optionData = {};
+            var optionData = [];
             for (var i = 0; i < optionStructure.length; i++) {
                 var option = optionStructure[i].split(",");
                 var optionStr={};
-                var price =option[3];
+                var price =parseFloat(option[3]);
                 optionStr['futuresType'] = option[0].substring(option[0].indexOf('@')+1);
                 optionStr['duration'] = option[2];
-                optionStr['price'] = option[3];
+                optionStr['price'] = String(price);
                 optionStr['optionType'] = option[1];
-                optionStr['trade'] = option[0].substring(0,option[0].indexOf('@'));
-                optionData[price] = optionStr;
+                optionStr['trade'] = (option[0].substring(0,option[0].indexOf('@'))).substr(-3);
+                optionData[i] = [String(price), optionStr];
             }
+            console.log(optionData);
             return optionData;
         }
 
@@ -271,8 +273,7 @@
          * containerName 装载分析图的容器
          * */
         function loadOpData(futuresType, startTime, endTime, optionData, containerName){
-            var url = '/Quotes/OptionAnalytic/loadData';
-            //给method赋默认参数
+            var url = '/quotes/OptionAnalytic/loadOptions/';
             $.ajax({
                 type: 'POST',
                 data:{
@@ -431,7 +432,7 @@
         }
 
         function getSenarioAnalysis(futuresType, optionData, containerName){
-            var url = '/Quotes/OptionAnalytic/loadData';
+            var url = '/quotes/OptionAnalytic/loadOptions/';
             //给method赋默认参数
             $.ajax({
                 type: 'POST',
@@ -472,6 +473,12 @@
 
 
             //console.log(data);
+        };
+
+        var errorInfo = function (msg) {
+            console.log(msg);
+            //关闭进度条
+            //$('body').mLoading("hide");
         };
 
         function createOptionCharts(data, futuresType, containerName) {
