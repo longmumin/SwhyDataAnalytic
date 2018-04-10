@@ -57,6 +57,7 @@ def loadData(request):
     '''
 
     #获取期货合约数据
+    futuresType = futuresType[0:futuresType.find('.')]
     optionStructure = generatePackage(optionData)
     quoteData['quoteData'] = getFuturesData(futuresType, startTime, endTime)
     #存储期货合约名称
@@ -252,33 +253,33 @@ def getFuturesData(futuresType, startTime, endTime):
         try:
 
             cursor.execute("SELECT fut_mkt_quot_day.close, fut_mkt_quot_day.timestamp"
-                           " FROM fut_mkt_quot_day WHERE fut_mkt_quot_day.contractid = %s "
-                           " ORDER BY fut_mkt_quot_day.timestamp DESC", (futuresType,))
+                           " FROM fut_mkt_quot_day WHERE fut_mkt_quot_day.contractid LIKE '%s%%'"
+                           " ORDER BY fut_mkt_quot_day.timestamp DESC" %(futuresType))
         except Exception as e:
             logger.error("select table failed, ret = %s" % e.args[0])
             cursor.close()
     elif(startTime != '' and endTime == ''):
         try:
             cursor.execute("select fut_mkt_quot_day.close, fut_mkt_quot_day.timestamp"
-                           " from fut_mkt_quot_day where fut_mkt_quot_day.contractid = %s "
-                           "and fut_mkt_quot_day.timestamp >= %s ORDER BY fut_mkt_quot_day.timestamp DESC", (futuresType, startTime))
+                           " from fut_mkt_quot_day where fut_mkt_quot_day.contractid LIKE '%s%%' "
+                           "and fut_mkt_quot_day.timestamp >= %s ORDER BY fut_mkt_quot_day.timestamp DESC" % (futuresType, startTime))
         except Exception as e:
             logger.error("select table failed, ret = %s" % e.args[0])
             cursor.close()
     elif (startTime == '' and endTime != ''):
         try:
             cursor.execute("select fut_mkt_quot_day.close, fut_mkt_quot_day.timestamp"
-                           " from fut_mkt_quot_day where fut_mkt_quot_day.contractid = %s "
-                           "and fut_mkt_quot_day.timestamp <= %s ORDER BY fut_mkt_quot_day.timestamp DESC", (futuresType, endTime))
+                           " from fut_mkt_quot_day where fut_mkt_quot_day.contractid LIKE '%s%%' "
+                           "and fut_mkt_quot_day.timestamp <= %s ORDER BY fut_mkt_quot_day.timestamp DESC" % (futuresType, endTime))
         except Exception as e:
             logger.error("select table failed, ret = %s" % e.args[0])
             cursor.close()
     else:
         try:
             cursor.execute("select fut_mkt_quot_day.close, fut_mkt_quot_day.timestamp"
-                           " from fut_mkt_quot_day where fut_mkt_quot_day.contractid = %s "
+                           " from fut_mkt_quot_day where fut_mkt_quot_day.contractid LIKE '%s%%' "
                            "and bondytm.timestamp >= %s "
-                           "and bondytm.timestamp <= %s ORDER BY bondytm.timestamp DESC", (futuresType, startTime, endTime))
+                           "and bondytm.timestamp <= %s ORDER BY bondytm.timestamp DESC" % (futuresType, startTime, endTime))
         except Exception as e:
             logger.error("select table failed, ret = %s" % e.args[0])
             cursor.close()

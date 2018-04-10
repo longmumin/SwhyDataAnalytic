@@ -180,7 +180,7 @@
             changeFont('instrument', optionsType, 'black');
 
             loadOpData("CU1805.SHF", startTime, endTime, optionStructure, 'YTM_tab1_container');
-            getSenarioAnalysis("CU1805.SHF",startTime, endTime, optionStructure, 'YTMSpread_tab2_container');
+            //getSenarioAnalysis("CU1805.SHF",startTime, endTime, optionStructure, 'YTMSpread_tab2_container');
 
         });
 
@@ -218,17 +218,18 @@
                 //获得期权组合结构
                 var optionStructure = [];
                 $('#optionPackage tr').each(function (i) {
-                    optionStructure.append($(this).text());
-                    optionStructure.replace("\n","")
+                optionStructure.push(($(this).text()).replace("\n",""));
                 });
                 if (optionStructure.length == 0) {
                     console.log("Error input");
                     //$('body').mLoading("hide");
                 }
 
+                debugger;
+
                 var startTime = null, endTime = null;
                 loadOpData(optionsType, startTime, endTime, optionStructure, 'YTM_tab1_container');
-                getSenarioAnalysis(optionsType, startTime, endTime, optionStructure, 'YTMSpread_tab2_container');
+                //getSenarioAnalysis(optionsType, startTime, endTime, optionStructure, 'YTMSpread_tab2_container');
             });
             //绑定清空按钮
             $( "#PackageClear" ).click(function() {
