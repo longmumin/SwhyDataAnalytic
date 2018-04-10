@@ -57,7 +57,6 @@ def loadData(request):
     '''
 
     #获取期货合约数据
-    futuresType = futuresType[0:futuresType.find('.')]
     optionStructure = generatePackage(optionData)
     quoteData['quoteData'] = getFuturesData(futuresType, startTime, endTime)
     #存储期货合约名称
@@ -244,6 +243,7 @@ def getRevenue(lastPrice, forward, contractData):
 
 def getFuturesData(futuresType, startTime, endTime):
     #建立数据库连接
+    futuresType = futuresType[0:futuresType.find('.')]
     cursor = connection.cursor()
 
     '''
