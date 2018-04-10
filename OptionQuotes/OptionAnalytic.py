@@ -116,6 +116,7 @@ def loadData(request):
     premium = getPackagePrice(contractData)
     quoteData['premium'] = str(round(premium, 2))
 
+
     if (containerName == 'YTM_tab1_container'):
         logger.info(quoteData)
         return JsonResponse(json.dumps(quoteData, ensure_ascii=False, sort_keys=True), safe=False)
