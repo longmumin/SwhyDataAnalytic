@@ -48,15 +48,16 @@ def loadData(request):
             startTime = request.POST['startTime']
             endTime = request.POST['endTime']
             containerName = request.POST['containerName']
-
-            optionStructure = request.POST.getlist['optionStr[]']
+            optionData = request.POST.getlist('optionStr[]')
         except Exception as e:
             logger.error("get request error, ret = %s" % e.args[0])
 
     '''
         获取各种数据指标
     '''
+
     #获取期货合约数据
+    optionStructure = generatePackage(optionData)
     quoteData['quoteData'] = getFuturesData(futuresType, startTime, endTime)
     #存储期货合约名称
     quoteData['futuresType'] = futuresType
@@ -65,10 +66,10 @@ def loadData(request):
     quoteData['futuresPredict'] = '收益--' + futuresType
 
     #存储类型转换
-    arrayData = quoteData.quoteData
-    arrayData = np.array(arrayData)
-    arrayData = arrayData.astype(np.float)
-    arrayData = [data for data in arrayData if str(data) != 'nan']
+    arrayData = quoteData['quoteData']
+    arrayData = sorted(zip(arrayData.keys(), arrayData.values()))
+    # 最新收盘价
+    lastPrice = float(arrayData[-1][1]['close'])
 
     # 初始化同余API
     tyApi = TYApi.TYApi()
@@ -84,8 +85,7 @@ def loadData(request):
     # 获得波动率
     vol = tyApi.TYVolSurfaceImpliedVolGet(forward, forward, today, volSpread)
 
-    # 最新收盘价
-    lastPrice = arrayData[-1]
+
 
     '''
     参数含义
@@ -95,13 +95,17 @@ def loadData(request):
     4. premium 期权组合期权费
     '''
     contractData = {}
-    for i in range(0, len(optionStructure)):
+    for k in optionStructure.keys():
         SData={}
-        predictPrice = str(optionStructure[i].price * lastPrice)
+        predictPrice = float(optionStructure[k]['price']) * lastPrice
+        optionType = str.lower(optionStructure[k]['optionType'])
+        tradeDirect = str.lower(optionStructure[k]['trade'])
+        #float(tyApi.TYPricing(forward, forward, vol - 0.03, tau, r, 'call'))
+        pricing = tyApi.TYPricing(lastPrice, predictPrice, vol - 0.03, tau, r, optionType)
         SData['price'] = predictPrice
-        SData['option'] = optionStructure[i].optionType
-        pricing = tyApi.TYPricing(forward, optionStructure[i].price, vol - 0.03, tau, r, str.lower(optionStructure[i].option))
+        SData['option'] = optionType
         SData['pricing'] = str(round(pricing, 2))
+        SData['trade'] = tradeDirect
         contractData[predictPrice] = SData
 
 
@@ -110,7 +114,7 @@ def loadData(request):
     quoteData['contractData'] = contractData
     quoteData['lastPrice'] = str(lastPrice)
     premium = getPackagePrice(contractData)
-    quoteData['premium'] =  str(round(premium, 2))
+    quoteData['premium'] = str(round(premium, 2))
 
     if (containerName == 'YTM_tab1_container'):
         logger.info(quoteData)
@@ -119,14 +123,13 @@ def loadData(request):
 
         # 存储价格区间
         forwardList = getForwardList(contractData)
-        logger.info(forwardList)
         scenaData = {}
 
         # 获取组合收益曲线
         forwardData = {}
         for forward in forwardList:
             TQuoteData = {}
-            revenue = getRevenue(lastPrice, forward, premium, contractData)
+            revenue = getRevenue(lastPrice, forward, contractData)
             TQuoteData['revenue'] = str(round(revenue, 4))
             TQuoteData['forward'] = str(round(forward, 2))
             forwardData[forward] = TQuoteData
@@ -135,11 +138,37 @@ def loadData(request):
         组装数据，收益曲线、期权组合结构
         '''
         scenaData['revenueList'] = forwardData
-        scenaData['contractData'] = contractData
+        #scenaData['contractData'] = contractData
+        scenaData['strikePrice'] = sorted([k[0] for k in contractData])
         scenaData['futuresType'] = futuresType
+        scenaData['containerName'] = containerName
 
-        return scenaData
+        return JsonResponse(json.dumps(scenaData, ensure_ascii=False, sort_keys=True), safe=False)
 
+
+'''
+解析期权组合结构
+1. futuresType 期货标的合约
+2. duration    到期期限
+3. price       期权行权价，现价百分比标价
+4. optionType  看涨看跌期权
+5. trade       多or空（ASK/BID)
+'''
+def generatePackage(optionStructure):
+            optionData = {}
+            for option in optionStructure:
+                option = option.split(",")
+                optionStr={}
+                price = option[3][0:4]
+                future = option[0].strip()
+                optionStr['futuresType'] = future[4:]
+                optionStr['duration'] = option[2]
+                optionStr['price'] = str(price)
+                optionStr['optionType'] = option[1]
+                optionStr['trade'] = (option[0].lstrip())[0:3]
+                optionData[price] = optionStr
+            logger.info(optionData)
+            return optionData
 
 '''
 情景分析
@@ -149,40 +178,66 @@ def loadData(request):
     3. futuresType 标的期货合约
 '''
 
-def getRevenue(lastPrice, forward, premium, contractData):
-    # 获取期权收益结构
-
-    for (i, item) in contractData:
-            if (item[1].price > lastPrice):
-                if (item[1].option == 'ASK'):
-                    if (forward < item[1].price ):
-                        revenue = - premium
-                    else:
-                        revenue = forward - item[1].price - premium
-                else:
-                    if (forward < item[1].price ):
-                        revenue = premium
-                    else:
-                        revenue = premium - forward + item[1].price
-            else:
-                if (item[1].option == 'ASK'):
-                    revenue = (bool(forward < item[1].price))*(item[1].price - forward) - premium
-                else:
-                    revenue = premium - (bool(forward < item[1].price)) * (item[1].price - forward)
-    return revenue
-
-
-
 def getPackagePrice(contractData):
 
     premium = 0
     #期权组合费用叠加
     for (i,item) in contractData:
-        if (item.trade == 'ask'):
-            premium += item.pricing
+        if (item['trade'] == 'ask'):
+            premium += float(item['pricing'])
         else:
-            premium -= item.pricing
+            premium -= float(item['pricing'])
     return premium
+
+
+def getForwardList(contractData):
+    forwardList = []
+    predictPrice = [k[0] for k in contractData]
+    step = (max(predictPrice) - min(predictPrice)) / 20
+
+    '''
+    x<500 变动范围5, 500<x<2000 变动范围10, 2000<x<6000 变动范围50, 6000<x 变动范围100
+    '''
+    for i in range(-3, 25):
+        if (i < 0):
+            forwardList.append(round(min(predictPrice)-step*2*i,2))
+        elif (i >= 0 and i < 10 ):
+            forwardList.append(round(min(predictPrice)+step*1.5*i,2))
+        elif (i >=10 ):
+            forwardList.append(round(max(predictPrice)+step*(i-15),2))
+    logger.info(forwardList)
+
+    return forwardList
+
+
+
+def getRevenue(lastPrice, forward, contractData):
+    # 获取期权结构组合收益
+
+    revenue = 0
+
+    for (i, item) in contractData:
+            #获取键值
+            pricing = float(item['pricing'])
+            strikePrice = item['price']
+
+            if (strikePrice > lastPrice):
+                if (item['trade'] == 'ask'):
+                    if (forward < strikePrice ):
+                        revenue += (- pricing)
+                    else:
+                        revenue += (forward - strikePrice - pricing)
+                else:
+                    if (forward < strikePrice ):
+                        revenue += (pricing)
+                    else:
+                        revenue += (pricing - forward + strikePrice)
+            else:
+                if (item['trade'] == 'ask'):
+                    revenue += ((bool(forward < strikePrice))*(strikePrice - forward) - pricing)
+                else:
+                    revenue += (pricing - (bool(forward < strikePrice)) * (strikePrice - forward))
+    return revenue
 
 
 
@@ -195,18 +250,18 @@ def getFuturesData(futuresType, startTime, endTime):
     '''
     if(startTime == '' and endTime == ''):
         try:
-            cursor.execute("select fut_mkt_quot_day.close, fut_mkt_quot_day.timestamp"
-                       " from fut_mkt_quot_day where fut_mkt_quot_day.contractid = % "
-                       "ORDER BY fut_mkt_quot_day.timestamp DESC", (futuresType))
+
+            cursor.execute("SELECT fut_mkt_quot_day.close, fut_mkt_quot_day.timestamp"
+                           " FROM fut_mkt_quot_day WHERE fut_mkt_quot_day.contractid = %s "
+                           " ORDER BY fut_mkt_quot_day.timestamp DESC", (futuresType,))
         except Exception as e:
             logger.error("select table failed, ret = %s" % e.args[0])
             cursor.close()
     elif(startTime != '' and endTime == ''):
         try:
             cursor.execute("select fut_mkt_quot_day.close, fut_mkt_quot_day.timestamp"
-                       " from fut_mkt_quot_day where fut_mkt_quot_day.contractid = %s "
-                       "and fut_mkt_quot_day.timestamp >= %s "
-                       "ORDER BY fut_mkt_quot_day.timestamp DESC", (futuresType, startTime))
+                           " from fut_mkt_quot_day where fut_mkt_quot_day.contractid = %s "
+                           "and fut_mkt_quot_day.timestamp >= %s ORDER BY fut_mkt_quot_day.timestamp DESC", (futuresType, startTime))
         except Exception as e:
             logger.error("select table failed, ret = %s" % e.args[0])
             cursor.close()
@@ -214,8 +269,7 @@ def getFuturesData(futuresType, startTime, endTime):
         try:
             cursor.execute("select fut_mkt_quot_day.close, fut_mkt_quot_day.timestamp"
                            " from fut_mkt_quot_day where fut_mkt_quot_day.contractid = %s "
-                           "and fut_mkt_quot_day.timestamp <= %s "
-                            "ORDER BY fut_mkt_quot_day.timestamp DESC", (futuresType, endTime))
+                           "and fut_mkt_quot_day.timestamp <= %s ORDER BY fut_mkt_quot_day.timestamp DESC", (futuresType, endTime))
         except Exception as e:
             logger.error("select table failed, ret = %s" % e.args[0])
             cursor.close()
@@ -235,27 +289,8 @@ def getFuturesData(futuresType, startTime, endTime):
     #类型转换
     keys = ['close', 'timestamp']
     dictData = list2dict(keys, listData)
-    # dictData = [(k, dictData[k]) for k in sorted(dictData.keys())]
     return dictData
 
-
-
-def getForwardList(predictPrice):
-    forwardList = []
-    step = (np.max(predictPrice)-np.min(predictPrice))/20
-
-    '''
-    x<500 变动范围5, 500<x<2000 变动范围10, 2000<x<6000 变动范围50, 6000<x 变动范围100
-    '''
-    for i in range(-3, 25):
-        if (i < 0):
-            forwardList.append(np.min(predictPrice)-step*2*i)
-        elif (i >= 0 and i < 10 ):
-            forwardList.append(np.min(predictPrice)+step*1.5*i)
-        elif (i >=10 ):
-            forwardList.append(np.max(predictPrice)+step*(i-15))
-
-    return forwardList
 
 
 def list2dict(keys, values):
