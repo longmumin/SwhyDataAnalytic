@@ -68,7 +68,7 @@
 
                              <div style="margin-top: .4rem">当前组合权利金价格:</div>
                              <div id="Premium" style="color:red">10.21元</div>
-                             <div id="PremiumStructure" style="color:red">@HC1805,PUT,1M,1.05,1.1%</div>
+                             <div id="PremiumStructure" style="color:red">@CU1805,PUT,1M,1.05,1.1%</div>
 
                          </div>
 
@@ -77,10 +77,10 @@
                              <h4 class="card-title" style="text-align: left; font-size: 0.3rem">当前期权组合方案:</h4>
                              <table id="optionPackage" style="position:relative; float:left;">
                                  <tr >
-                                     <th class="table-th">ASK@HC1805,PUT,1M,1.05</th>
+                                     <th class="table-th">ASK@CU1805,CALL,1M,1.05</th>
                                  </tr>
                                  <tr style=>
-                                     <th class="table-th">BID@HC1805,CALL,1M,0.98</th>
+                                     <th class="table-th">BID@CU1805,PUT,1M,0.98</th>
                                  </tr>
                              </table>
 
@@ -168,7 +168,7 @@
             var duration = "1M", startTime = null, endTime = null;
             var optionStructure = [];
             $('#optionPackage tr').each(function (i) {
-                optionStructure[i]=$(this).text();
+                optionStructure.push(($(this).text()).replace("\n",""));
             });
             if (optionStructure.length == 0) {
                 alert("Error");
@@ -179,8 +179,9 @@
             var optionsType = optionStructure[0].substring(optionStructure[0].indexOf('@')+1,optionStructure[0].indexOf(','));
             changeFont('instrument', optionsType, 'black');
 
-            var optionData = generatePackage(optionStructure);
-            loadOpData("CU1805.SHF", startTime, endTime, optionData, 'YTM_tab1_container');
+            debugger;
+            loadOpData("CU1805.SHF", startTime, endTime, optionStructure, 'YTM_tab1_container');
+            //getSenarioAnalysis("CU1805.SHF",startTime, endTime, optionStructure, 'YTMSpread_tab2_container');
 
         });
 
@@ -198,7 +199,7 @@
 
 
                 //解析基准合约
-                changeFont('instrument', optionsType, 'black');
+                $('#instrument').html(optionsType);
 
                 optionPackage = optionPackage.split(";");
                 //#########这里不是用each，因为不是json串#############
@@ -218,21 +219,18 @@
                 //获得期权组合结构
                 var optionStructure = [];
                 $('#optionPackage tr').each(function (i) {
-                    optionStructure[i]=$(this).text();
+                optionStructure.push(($(this).text()).replace("\n",""));
                 });
                 if (optionStructure.length == 0) {
                     console.log("Error input");
                     //$('body').mLoading("hide");
                 }
 
-                //############这个函数没有正确返回值##############
-                var optionData = generatePackage(optionStructure);
                 debugger;
 
                 var startTime = null, endTime = null;
-
-                loadOpData(optionsType, startTime, endTime, optionData, 'YTM_tab1_container');
-                getSenarioAnalysis(optionsType, optionData, 'YTMSpread_tab2_container');
+                loadOpData(optionsType, startTime, endTime, optionPackage, 'YTM_tab1_container');
+                //getSenarioAnalysis(optionsType, startTime, endTime, optionStructure, 'YTMSpread_tab2_container');
             });
             //绑定清空按钮
             $( "#PackageClear" ).click(function() {
@@ -246,22 +244,6 @@
 
         }
 
-        function generatePackage(optionStructure){
-            var optionData = [];
-            for (var i = 0; i < optionStructure.length; i++) {
-                var option = optionStructure[i].split(",");
-                var optionStr={};
-                var price =parseFloat(option[3]);
-                optionStr['futuresType'] = option[0].substring(option[0].indexOf('@')+1);
-                optionStr['duration'] = option[2];
-                optionStr['price'] = String(price);
-                optionStr['optionType'] = option[1];
-                optionStr['trade'] = (option[0].substring(0,option[0].indexOf('@'))).substr(-3);
-                optionData[i] = [String(price), optionStr];
-            }
-            console.log(optionData);
-            return optionData;
-        }
 
         /***** 标的合约走势图 *****/
         /*****
@@ -297,18 +279,12 @@
             var seriesData = [];
             var arrayData = [];
 
-            $.each(data.quoteData, function (i, item) {
-                seriesData.push([
-                    str2UTC(item.timestamp),
-                    parseFloat(item.bondytm)
-                ]);
-                arrayData.push([
-                    parseFloat(item.bondytm)
-                ]);
-            });
-
             //解析json数据
             data = eval('('+data+')');
+            //解析合约收盘价
+            debugger;
+            changeFont('closePrice', data.lastPrice, 'black');
+            debugger;
             //取出合约名称
             var futuresType = data.futuresType;
             var containerName = data.containerName;
@@ -316,10 +292,10 @@
             $.each(data.quoteData, function (i, item) {
                 seriesData.push([
                     str2UTC(item.timestamp),
-                    parseFloat(item.bondytm)
+                    parseFloat(item.close)
                 ]);
                 arrayData.push([
-                    parseFloat(item.bondytm)
+                    parseFloat(item.close)
                 ]);
             });
             /*******  创建图形  ******/
@@ -431,14 +407,15 @@
             });
         }
 
-        function getSenarioAnalysis(futuresType, optionData, containerName){
+        function getSenarioAnalysis(futuresType, startTime, endTime, optionData, containerName){
             var url = '/quotes/OptionAnalytic/loadOptions/';
-            //给method赋默认参数
             $.ajax({
                 type: 'POST',
                 data:{
                     "futuresType":futuresType,
-                    "optionStr":optionData,
+                    "startTime":startTime,
+                    "endTime":endTime,
+                    "optionStr[]":optionData,
                     'containerName':containerName
                 },
                 dataType: 'json',
@@ -461,8 +438,19 @@
             var containerName = data.containerName;
             var strikePrice = data.strikePrice;
 
+            //加载数据
+            $.each(data.revenueList, function (i, item) {
+                seriesData.push(
+                    parseFloat(item.revenue)
+                );
+                arrayData.push(
+                    parseFloat(item.forward)
+                );
+            });
+            debugger;
+
             /*******  创建图形  ******/
-            createOptionCharts(seriesData, futuresType, strikePrice, containerName);
+            createOptionCharts(seriesData, arrayData, futuresType, strikePrice, containerName);
             //$('body').mLoading("hide");
 
             /*******  加载数据分析数据  ******/
@@ -481,7 +469,7 @@
             //$('body').mLoading("hide");
         };
 
-        function createOptionCharts(data, futuresType, containerName) {
+        function createOptionCharts(data, arrayData, futuresType, strikePrice, containerName) {
             //关闭UTC时间,设置title格式
             Highcharts.setOptions({
                 global: {
@@ -501,23 +489,24 @@
                     }
                 }
             });
+
             // Create the chart
             Highcharts.Chart(containerName, {
                 title: {
                     //设置标题
                     text: futuresType +'期权结构示意',
                 },
-                tooltip: {
-                    shared: true,
-                    pointFormat: 'x = {point.x}, y = {point.y}'
+
+                chart: {
+                    type: 'bar'
                 },
+
                 xAxis: {
-                    type: 'datetime',
-                    startOnTick: true,
-                    endOnTick: true,
-                    showLastLabel: true,
-                    categories: data.strike,
+                    //type: 'datetime',
+                    categories: arrayData,
+                    reversed :false,
                     labels: {
+                        step:1,
                         rotation: -45,
                         style: {
                             fontSize: '8px',
@@ -530,12 +519,9 @@
                         text: '收益'
                     }
                 },
+
                 series: [{
-                    type: 'arearange',
-                    data: [
-                        [0, 2, 4],
-                        [2, 4, 7]
-                    ]
+                    data: data
                 }],
                 rangeSelector: {
                     buttonTheme: {
