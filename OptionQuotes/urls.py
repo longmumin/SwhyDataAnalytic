@@ -32,6 +32,6 @@ urlpatterns = [
     #情景分析页面
     path('OptionAnalytic/', OptionAnalytic.loadPage, name='OptionAnalytic'),
     #获得情景分析数据
-    path('OptionAnalytic/loadOptions/', OptionAnalytic.loadData, name='loadOptions'),
+    path('OptionAnalytic/loadOptions/', OptionAnalytic.loadData.as_view(), name='loadOptions'),
 
 ]
