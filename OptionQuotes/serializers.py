@@ -19,17 +19,17 @@ class loadTDataSerializer(serializers.ModelSerializer):
 #         fields = ('qixian', 'selected_date', 'instrument', 'futuresType', 'containerName', 'quoteData')
 
 
-class bondYTMAnalyicDataSerializer(serializers.ModelSerializer):
+class optionSerializer(serializers.ModelSerializer):
     quoteData = serializers.JSONField()
 
     class Meta:
         model = loadDataModel
-        fields = ('quoteData',)
+        fields = ('quoteData', 'futuresType', 'containerName', 'lastPrice', 'optionPremium')
 
 
-class bondYTMMatrixSerializer(serializers.ModelSerializer):
-    quoteData = serializers.JSONField()
+class optionAnalyicDataSerializer(serializers.ModelSerializer):
+    revenueList = serializers.JSONField()
 
     class Meta:
         model = loadDataModel
-        fields = ('containerName', 'quoteData')
+        fields = ('revenueList', 'futuresType', 'containerName')

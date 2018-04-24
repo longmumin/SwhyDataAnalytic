@@ -59,8 +59,10 @@
                          <div class="card-header">
                              <div style=" color:midnightblue; float:left">基准合约：</div>
                              <div id="instrument" style="float:left; margin-left: .4rem">--</div>
+                             <!-- 清除float样式 -->
+                             <div class="clear" ></div>
 
-                             <div style="position:relative; color:midnightblue; float:left; margin-left:.5rem">昨收盘价：</div>
+                             <div style="position:relative; color:midnightblue; float:left">昨收盘价：</div>
                              <div id="closePrice" style="position:relative; float:left; margin-left: .4rem">--</div>
 
                              <!-- 清除float样式 -->
@@ -179,9 +181,9 @@
             var optionsType = optionStructure[0].substring(optionStructure[0].indexOf('@')+1,optionStructure[0].indexOf(','));
             changeFont('instrument', optionsType, 'black');
 
-            debugger;
+            //debugger;
             loadOpData("CU1805.SHF", startTime, endTime, optionStructure, 'YTM_tab1_container');
-            //getSenarioAnalysis("CU1805.SHF",startTime, endTime, optionStructure, 'YTMSpread_tab2_container');
+            getSenarioAnalysis("CU1805.SHF",startTime, endTime, optionStructure, 'YTMSpread_tab2_container');
 
         });
 
@@ -200,6 +202,7 @@
 
                 //解析基准合约
                 $('#instrument').html(optionsType);
+                $('#PremiumStructure').empty("");
 
                 optionPackage = optionPackage.split(";");
                 //#########这里不是用each，因为不是json串#############
@@ -208,7 +211,7 @@
                          '<th class="table-th">'+optionPackage[j]+'</th></tr>';
                     $('#optionPackage').append(newRow);
                 }
-                /*
+                /* 错误方法
                 $.each(optionPackage, function (i, item) {
                     var newRow = $ ('<tr style="padding: auto">' +
                          '<th class="table-th">'+item+'</th></tr>').hide().fadeIn(1000);
@@ -226,11 +229,10 @@
                     //$('body').mLoading("hide");
                 }
 
-                debugger;
 
                 var startTime = null, endTime = null;
                 loadOpData(optionsType, startTime, endTime, optionPackage, 'YTM_tab1_container');
-                //getSenarioAnalysis(optionsType, startTime, endTime, optionStructure, 'YTMSpread_tab2_container');
+                getSenarioAnalysis(optionsType, startTime, endTime, optionStructure, 'YTMSpread_tab2_container');
             });
             //绑定清空按钮
             $( "#PackageClear" ).click(function() {
@@ -280,11 +282,13 @@
             var arrayData = [];
 
             //解析json数据
-            data = eval('('+data+')');
+            //data = eval('('+data+')');
+
             //解析合约收盘价
-            debugger;
             changeFont('closePrice', data.lastPrice, 'black');
-            debugger;
+            //获得期权组合的权利金
+            changeFont('Premium', data.optionPremium, 'red');
+
             //取出合约名称
             var futuresType = data.futuresType;
             var containerName = data.containerName;
@@ -364,7 +368,7 @@
                     }
                 },
                 series: [{
-                    name: 'YTM',
+                    name: '收盘价',
                     data: data,
                     id: 'dataseries'
                     // the event marker flags
@@ -432,7 +436,7 @@
             var seriesData = [];
             var arrayData = [];
             //解析json数据
-            data = eval('('+data+')');
+            //data = eval('('+data+')');
             //取出债券名称
             var futuresType = data.futuresType;
             var containerName = data.containerName;
@@ -445,6 +449,7 @@
                 );
                 arrayData.push(
                     parseFloat(item.forward)
+                    //item.forward
                 );
             });
             debugger;
@@ -456,8 +461,6 @@
             /*******  加载数据分析数据  ******/
             //销毁变量，释放空间
             delete seriesData;
-            //加载数据分析函数
-            loadAnalysisData(arrayData);
 
 
             //console.log(data);
@@ -470,6 +473,7 @@
         };
 
         function createOptionCharts(data, arrayData, futuresType, strikePrice, containerName) {
+            debugger;
             //关闭UTC时间,设置title格式
             Highcharts.setOptions({
                 global: {
@@ -491,6 +495,61 @@
             });
 
             // Create the chart
+            var options = {
+                chart: {
+                    renderTo: containerName,
+                    type: 'bar',
+                    marginTop: 80,
+                },
+                title: {
+                    text:futuresType +'期权收益结构示意',
+                },
+                xAxis: {
+                    title:{text:'市场价格'},
+                    categories: arrayData,
+                    reversed:false,
+                    labels: {
+                        step: 1
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: '收益'
+                    },
+                    labels: {
+                        formatter: function () {
+                            return '￥'+this.value;
+                        }
+                    }
+                },
+                plotOptions: {
+                    series: {
+                        stacking: 'normal'
+                    }
+                },
+                tooltip: {
+                    formatter: function () {
+                        return '<b>' + '目标价: ' + this.point.category + '</b><br/>' +
+                            '期权收益: ' + Highcharts.numberFormat(this.point.y, 0);
+                    }
+                },
+                series: [{
+                    name:'收益',
+                    data:data,
+                    color: 'red',
+                    zones: [{
+                        value: 0,
+                        color: '#00FF00'
+                    }]
+                }]
+            };
+
+            chart = new Highcharts.Chart(options);
+
+
+
+            /*****  原格式  ******/
+            /********
             Highcharts.Chart(containerName, {
                 title: {
                     //设置标题
@@ -501,9 +560,9 @@
                     type: 'bar'
                 },
 
-                xAxis: {
-                    //type: 'datetime',
-                    categories: arrayData,
+                xAxis: [{
+                    //type: 'data.price',
+                    categories: [arrayData],
                     reversed :false,
                     labels: {
                         step:1,
@@ -513,10 +572,29 @@
                             fontFamily: 'Verdana, sans-serif'
                         }
                     }
-                },
+                },{ // mirror axis on right side
+                    opposite: true,
+                    reversed: false,
+                    categories: [],
+                    linkedTo: 0,
+                    labels: {
+                        step: 1
+                    }
+                }],
                 yAxis: {
                     title: {
                         text: '收益'
+                    },
+                    labels:{
+                        formatter: function (){
+                            return this.value +'￥';
+                        }
+                    }
+                },
+                tooltip: {
+                    formatter: function () {
+                        return '<b>' + '目标价: ' + this.point.category + '</b><br/>' +
+                            '期权收益: ' + Highcharts.numberFormat(Math.abs(this.point.y), 0);
                     }
                 },
 
@@ -553,6 +631,7 @@
                     }
                 }
             });
+             *******/
         }
     </script>
 
