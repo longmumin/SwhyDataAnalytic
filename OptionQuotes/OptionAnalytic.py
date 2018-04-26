@@ -5,12 +5,12 @@ import json, re, logging, datetime
 import numpy as np
 from . import TYApi
 
-# from rest_framework import status
-# from rest_framework.response import Response
-# from rest_framework.views import APIView
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .models import loadDataModel
-from .serializers import loadDataSerializer, bondYTMAnalyicDataSerializer
+from .serializers import optionSerializer, optionAnalyicDataSerializer
 '''
 日志模块加载
 '''
@@ -39,10 +39,26 @@ def loadPage(request):
     3. containerName 容器名称
 '''
 
-def loadData(request):
-    quoteData = {}
-    #抽取request中数据
-    if(request.method == 'POST'):
+# def loadData(request):
+#     #抽取request中数据
+#     if(request.method == 'POST'):
+#         try:
+#             futuresType = request.POST['futuresType']
+#             startTime = request.POST['startTime']
+#             endTime = request.POST['endTime']
+#             containerName = request.POST['containerName']
+#             optionData = request.POST.getlist('optionStr[]')
+#         except Exception as e:
+#             logger.error("get request error, ret = %s" % e.args[0])
+
+class loadData(APIView):
+
+    def get(self, request, format=None):
+        modelObject = loadDataModel.objects.all()
+        serializer = optionSerializer(modelObject, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
         try:
             futuresType = request.POST['futuresType']
             startTime = request.POST['startTime']
@@ -52,99 +68,122 @@ def loadData(request):
         except Exception as e:
             logger.error("get request error, ret = %s" % e.args[0])
 
-    '''
-        获取各种数据指标
-    '''
-
-    #获取期货合约数据
-    optionStructure = generatePackage(optionData)
-    quoteData['quoteData'] = getFuturesData(futuresType, startTime, endTime)
-    #存储期货合约名称
-    quoteData['futuresType'] = futuresType
-    #存储container的名字
-    quoteData['containerName'] = containerName
-    quoteData['futuresPredict'] = '收益--' + futuresType
-
-    #存储类型转换
-    arrayData = quoteData['quoteData']
-    arrayData = sorted(zip(arrayData.keys(), arrayData.values()))
-    # 最新收盘价
-    lastPrice = float(arrayData[-1][1]['close'])
-
-    # 初始化同余API
-    tyApi = TYApi.TYApi()
-
-    today = datetime.datetime.now().strftime('%Y-%m-%d')
-    time_zone = 'Asia/Shanghai'
-    tau = 1/12  # 期限
-    r = 0.015  # 无风险利率
-    forward = tyApi.TYMktQuoteGet(today, futuresType, time_zone)
-
-    # 获取波动率曲线
-    volSpread = tyApi.TYMdload('VOL_BLACK_ATM_' + re.sub(r'([\d]+)', '', futuresType))
-    # 获得波动率
-    vol = tyApi.TYVolSurfaceImpliedVolGet(forward, forward, today, volSpread)
-
-
-
-    '''
-    参数含义
-    1. Price 行权价
-    2. option 看涨/看跌期权类型
-    3. pricing 单个期权价格
-    4. premium 期权组合期权费
-    '''
-    contractData = {}
-    for k in optionStructure.keys():
-        SData={}
-        predictPrice = float(optionStructure[k]['price']) * lastPrice
-        optionType = str.lower(optionStructure[k]['optionType'])
-        tradeDirect = str.lower(optionStructure[k]['trade'])
-        #float(tyApi.TYPricing(forward, forward, vol - 0.03, tau, r, 'call'))
-        pricing = tyApi.TYPricing(lastPrice, predictPrice, vol - 0.03, tau, r, optionType)
-        SData['price'] = predictPrice
-        SData['option'] = optionType
-        SData['pricing'] = str(round(pricing, 2))
-        SData['trade'] = tradeDirect
-        contractData[predictPrice] = SData
-
-
-    # 计算期权组合期权费，并对行权价排序
-    contractData = [(k, contractData[k]) for k in sorted(contractData.keys())]
-    quoteData['contractData'] = contractData
-    quoteData['lastPrice'] = str(lastPrice)
-    premium = getPackagePrice(contractData)
-    quoteData['premium'] = str(round(premium, 2))
-
-
-    if (containerName == 'YTM_tab1_container'):
-        logger.info(quoteData)
-        return JsonResponse(json.dumps(quoteData, ensure_ascii=False, sort_keys=True), safe=False)
-    else:
-
-        # 存储价格区间
-        forwardList = getForwardList(contractData)
-        scenaData = {}
-
-        # 获取组合收益曲线
-        forwardData = {}
-        for forward in forwardList:
-            TQuoteData = {}
-            revenue = getRevenue(lastPrice, forward, contractData)
-            TQuoteData['revenue'] = str(round(revenue, 4))
-            TQuoteData['forward'] = str(round(forward, 2))
-            forwardData[forward] = TQuoteData
+        quoteData = {}
 
         '''
-        组装数据，收益曲线、期权组合结构
+            获取各种数据指标
         '''
-        scenaData['revenueList'] = forwardData
-        #scenaData['contractData'] = contractData
-        scenaData['strikePrice'] = sorted([k[0] for k in contractData])
-        scenaData['futuresType'] = futuresType
-        scenaData['containerName'] = containerName
 
-        return JsonResponse(json.dumps(scenaData, ensure_ascii=False, sort_keys=True), safe=False)
+        #获取期货合约数据
+        optionStructure = generatePackage(optionData)
+        quoteData['quoteData'] = getFuturesData(futuresType, startTime, endTime)
+        #存储期货合约名称
+        quoteData['futuresType'] = futuresType
+        #存储container的名字
+        quoteData['containerName'] = containerName
+
+        #存储类型转换
+        arrayData = quoteData['quoteData']
+        arrayData = sorted(zip(arrayData.keys(), arrayData.values()))
+        # 最新收盘价
+        lastPrice = float(arrayData[-1][1]['close'])
+
+        # 初始化同余API
+        tyApi = TYApi.TYApi()
+
+        today = datetime.datetime.now().strftime('%Y-%m-%d')
+        time_zone = 'Asia/Shanghai'
+        tau = 1/12  # 期限
+        r = 0.015  # 无风险利率
+        forward = tyApi.TYMktQuoteGet(today, futuresType, time_zone)
+
+        # 获取波动率曲线
+        volSpread = tyApi.TYMdload('VOL_BLACK_ATM_' + re.sub(r'([\d]+)', '', futuresType))
+        # 获得波动率
+        vol = tyApi.TYVolSurfaceImpliedVolGet(forward, forward, today, volSpread)
+
+
+
+        '''
+        参数含义
+        1. Price 行权价
+        2. option 看涨/看跌期权类型
+        3. pricing 单个期权价格
+        4. premium 期权组合期权费
+        '''
+        contractData = {}
+        for k in optionStructure.keys():
+            SData={}
+            predictPrice = float(optionStructure[k]['price']) * lastPrice
+            optionType = str.lower(optionStructure[k]['optionType'])
+            tradeDirect = str.lower(optionStructure[k]['trade'])
+            #float(tyApi.TYPricing(forward, forward, vol - 0.03, tau, r, 'call'))
+            pricing = tyApi.TYPricing(lastPrice, predictPrice, vol - 0.03, tau, r, optionType)
+            SData['price'] = predictPrice
+            SData['option'] = optionType
+            SData['pricing'] = str(round(pricing, 2))
+            SData['trade'] = tradeDirect
+            contractData[predictPrice] = SData
+
+        #quoteData['contractData'] = contractData
+        quoteData['lastPrice'] = str(lastPrice)
+
+        # 计算期权组合期权费，并对行权价排序
+        contractData = [(k, contractData[k]) for k in sorted(contractData.keys())]
+        premium = getPackagePrice(contractData)
+        quoteData['optionPremium'] = str(round(premium, 2))
+
+
+        if (containerName == 'YTM_tab1_container'):
+            logger.info(quoteData)
+            # return JsonResponse(json.dumps(quoteData, ensure_ascii=False, sort_keys=True), safe=False)
+
+            serializer = optionSerializer(data=quoteData)
+            a = serializer.is_valid()
+            if serializer.is_valid():
+                serializer.save()
+                b = serializer.data
+                # json_dumps_params为json.dumps的参数
+                return JsonResponse(serializer.data, json_dumps_params={"ensure_ascii": False, "sort_keys": True},
+                                    safe=False, status=status.HTTP_201_CREATED)
+            else:
+                return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+
+            # 存储价格区间
+            forwardList = getForwardList(contractData)
+            scenaData = {}
+
+            # 获取组合收益曲线
+            forwardData = {}
+            for forward in forwardList:
+                TQuoteData = {}
+                revenue = getRevenue(lastPrice, forward, contractData)
+                TQuoteData['revenue'] = str(round(revenue, 2))
+                TQuoteData['forward'] = str(round(forward))
+                forwardData[str(forward)] = TQuoteData
+
+            '''
+            组装数据，收益曲线、期权组合结构
+            '''
+            scenaData['revenueList'] = forwardData
+            # scenaData['contractData'] = contractData
+            # scenaData['strikePrice'] = sorted([str(k[0]) for k in contractData])
+            scenaData['futuresType'] = futuresType
+            scenaData['containerName'] = containerName
+
+            # return JsonResponse(json.dumps(scenaData, ensure_ascii=False, sort_keys=True), safe=False)
+
+            serializer = optionAnalyicDataSerializer(data=scenaData)
+            c = serializer.is_valid()
+            if serializer.is_valid():
+                serializer.save()
+                # json_dumps_params为json.dumps的参数
+                return JsonResponse(serializer.data, json_dumps_params={"ensure_ascii": False, "sort_keys": True},
+                                    safe=False, status=status.HTTP_201_CREATED)
+            else:
+                return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 '''
@@ -174,7 +213,7 @@ def generatePackage(optionStructure):
 '''
 情景分析
 返回参数：
-    1. revenueList 损益
+    1. revenueList 损益曲线
     2. contractData 期权组合结构
     3. futuresType 标的期货合约
 '''
@@ -194,18 +233,18 @@ def getPackagePrice(contractData):
 def getForwardList(contractData):
     forwardList = []
     predictPrice = [k[0] for k in contractData]
-    step = (max(predictPrice) - min(predictPrice)) / 20
+    step = (max(predictPrice) - min(predictPrice)) / 10
 
     '''
     x<500 变动范围5, 500<x<2000 变动范围10, 2000<x<6000 变动范围50, 6000<x 变动范围100
     '''
-    for i in range(-3, 25):
-        if (i < 0):
-            forwardList.append(round(min(predictPrice)-step*2*i,2))
-        elif (i >= 0 and i < 10 ):
-            forwardList.append(round(min(predictPrice)+step*1.5*i,2))
-        elif (i >=10 ):
-            forwardList.append(round(max(predictPrice)+step*(i-15),2))
+    for i in range(-3, 15):
+        # if (i < 0):
+            forwardList.append(round(min(predictPrice)+step*i,2))
+        # elif (i >= 0 and i < 10 ):
+        #     forwardList.append(round(min(predictPrice)+step*1.5*i,2))
+        # elif (i >=10 ):
+        #     forwardList.append(round(max(predictPrice)+step*(i-15),2))
     logger.info(forwardList)
 
     return forwardList
