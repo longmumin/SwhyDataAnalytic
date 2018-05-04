@@ -165,7 +165,7 @@ def GetQuotesDataFromTY(qixian) -> object:
         # 出错处理
         if (math.isnan(pricingAsk)):
             pricingAsk = float(0)
-        pricingBid = float(tyApi.TYPricing (forward, forward, vol - 0.03, tau, r, 'call'))
+        pricingBid = float(tyApi.TYPricing(forward, forward, vol - 0.03, tau, r, 'call'))
         # 出错处理
         if (math.isnan(pricingBid)):
             pricingBid = float(0)
